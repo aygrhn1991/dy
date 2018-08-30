@@ -31,6 +31,7 @@ public class HomeCtrl {
     }
     @RequestMapping(value = "/imageUpload")
     public @ResponseBody String imageUpload(HttpServletRequest request) throws IOException {
+        String CKEditorFuncNum = request.getParameter("CKEditorFuncNum");
         boolean uploadFlag = false;
         // 创建一个通用的多部分解析器
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession()
