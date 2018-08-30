@@ -11,12 +11,13 @@
        http://www.springframework.org/schema/context/spring-context.xsd">
     <!--1.注解的使用前提配置-->
     <mvc:annotation-driven/>
-    <!--2.检查是否为静态资源的请求，如果是静态资源，则不由路由的servlet处理-->
-    <!--<mvc:default-servlet-handler/>-->
+    <!--2.静态资源处理servlet配置-->
+    <mvc:default-servlet-handler/>
     <!--3.对包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
     <context:component-scan base-package="com.dy"/>
     <!--4.定义视图解析器，在视图模型前后添加前缀后缀-->
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
@@ -27,4 +28,6 @@
         <!-- 指定所上传文件的总大小,单位字节(B)。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
         <property name="maxUploadSize" value="1000000"/><!--1M左右-->
     </bean>
+    <!--6.静态资源文件放行 -->
+    <mvc:resources location="/WEB-INF/resources/" mapping="/static/**"/>
 </beans>

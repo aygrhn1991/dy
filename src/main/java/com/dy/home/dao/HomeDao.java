@@ -1,19 +1,19 @@
-package com.dy.controller;
+package com.dy.home.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Service
+@Repository("homeDao")
 public class HomeDao {
     @Autowired
     @Qualifier("jdbcTemplate")
     JdbcTemplate jdbcTemplate;
 
-    public int getNum() {
+    public int queryUserCount() {
         String sql = "select count(*) from t_user";
-        int i = this.jdbcTemplate.queryForObject(sql, Integer.class);
-        return i;
+        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return count;
     }
 }

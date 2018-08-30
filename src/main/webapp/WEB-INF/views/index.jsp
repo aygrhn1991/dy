@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>Title</title>
+    <script src="/static/js/test.js"></script>
+    <link href="/static/css/test.css" rel="stylesheet">
 </head>
 <body>
 hello dy

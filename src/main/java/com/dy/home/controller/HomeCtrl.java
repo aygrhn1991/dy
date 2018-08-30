@@ -1,22 +1,23 @@
-package com.dy.controller;
+package com.dy.home.controller;
 
+import com.dy.home.dao.HomeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
-@RequestMapping({"/home"})
+@RequestMapping("/home")
 public class HomeCtrl {
-
     @Autowired
-    HomeDao dao;
+    @Qualifier("homeDao")
+    HomeDao homeDao;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @RequestMapping("/index")
     public String index() {
-        int i = this.dao.getNum();
+        int count = this.homeDao.queryUserCount();
         return "index";
     }
 }
