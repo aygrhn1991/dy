@@ -1,12 +1,11 @@
-package com.dy.home.controller;
+package com.dy.controller;
 
-import com.dy.home.dao.HomeDao;
+import com.dy.model.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -14,25 +13,80 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 @RequestMapping("/home")
 public class HomeCtrl {
     @Autowired
-    @Qualifier("homeDao")
-    HomeDao homeDao;
+    @Qualifier("jdbcTemplate")
+    JdbcTemplate jdbcTemplate;
 
     @RequestMapping("/index")
-    public
-    String index() {
-        int count = this.homeDao.queryUserCount();
+    public String index() {
         return "index";
     }
+
+    //<editor-fold desc="类型">
+    @RequestMapping("/querytypescount")
+    @ResponseBody
+    public int querytypescount() {
+        String sql = "select count(*) from t_type";
+        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return count;
+    }
+
+    @RequestMapping("/querytypes/{pageIndex}/{pageSize}")
+    @ResponseBody
+    public List<Map<String, Object>> querytypes(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+        String sql = "select * from t_type";
+        sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @RequestMapping("/addtype")
+    @ResponseBody
+    public boolean addtype(@RequestBody Type type) {
+        String sql = "insert into t_type(t_type_name) values(?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{type.t_type_name});
+        return count == 1;
+    }
+
+    @RequestMapping("/edittype")
+    @ResponseBody
+    public boolean edittype(@RequestBody Type type) {
+        String sql = "update t_type set t_type_name=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{type.t_type_name, type.t_id});
+        return count == 1;
+    }
+
+    @RequestMapping("/deletetype/{id}")
+    @ResponseBody
+    public boolean deletetype(@PathVariable("id") int id) {
+        String sql = "delete from t_type where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        return count == 1;
+    }
+
+    //</editor-fold>
+    @RequestMapping("/ls")
+    @ResponseBody
+    public List<Map<String, Object>> ls() {
+
+        //List<Answer> list = new ArrayList<>();
+        //list.add(new Answer(1, 1, true, 1, ""));
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList("select * from t_type");
+        return list;
+    }
+
     @RequestMapping(value = "/imageUpload")
-    public @ResponseBody String imageUpload(HttpServletRequest request) throws IOException {
+    public @ResponseBody
+    String imageUpload(HttpServletRequest request) throws IOException {
         String CKEditorFuncNum = request.getParameter("CKEditorFuncNum");
-        String urll=request.getQueryString() ;
+        String urll = request.getQueryString();
         boolean uploadFlag = false;
         // 创建一个通用的多部分解析器
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession()
@@ -58,7 +112,7 @@ public class HomeCtrl {
                 if (file != null) {
                     // 取得当前上传文件的文件名称
                     String myFileName = file.getOriginalFilename();
-                    int i=0;
+                    int i = 0;
 //                    // 如果名称不为“”,说明该文件存在，否则说明该文件不存在
 //                    if (myFileName.trim() != "") {
 //                        // 获得图片的原始名称
@@ -96,8 +150,20 @@ public class HomeCtrl {
                 }
             }
         }
-        return "{\"uploaded\":1,\"fileName\":\""+"qq.png"+"\",\"url\":\"" + "http://localhost:8080/static/img/qq.png" + "\"}";
+        return "{\"uploaded\":1,\"fileName\":\"" + "qq.png" + "\",\"url\":\"" + "http://localhost:8080/static/img/qq.png" + "\"}";
         //return "{\"uploaded\":0,\"error\":{\"message\":\"upload file is not success!\"}}";
 
-}
+    }
+
+
+    //        List<Type> list = this.jdbcTemplate.query(sql, new RowMapper<Type>() {
+//            @Override
+//            public Type mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                Type type = new Type(
+//                        rs.getInt("t_id"),
+//                        rs.getString("t_type_name")
+//                );
+//                return type;
+//            }
+//        });
 }

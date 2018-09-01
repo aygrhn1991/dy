@@ -1,4 +1,4 @@
-package com.dy.model.db;
+package com.dy.model;
 
 public class User {
     public int id;

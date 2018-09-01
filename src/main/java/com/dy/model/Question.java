@@ -1,13 +1,11 @@
-package com.dy.model.db;
+package com.dy.model;
 
-public class Article {
+public class Question {
     public int id;
     public int type_id;
     public String title;
-    public int author;
+    public int user_id;
     public long time;
-    public String cover;
-    public String content;
     public int scan;
     public int sort;
     public boolean top;
