@@ -1,14 +1,14 @@
 package com.dy.model;
 
 public class Article {
-    public int id;
-    public int type_id;
-    public String title;
-    public int author;
-    public long time;
-    public String cover;
-    public String content;
-    public int scan;
-    public int sort;
-    public boolean top;
+    public int t_id;
+    public int t_type_id;
+    public String t_title;
+    public int t_author;
+    public long t_time;
+    public String t_cover;
+    public String t_content;
+    public int t_scan;
+    public int t_sort;
+    public boolean t_top;
 }
