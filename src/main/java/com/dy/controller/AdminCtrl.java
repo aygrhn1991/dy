@@ -85,6 +85,7 @@ public class AdminCtrl {
     }
 
     //</editor-fold>
+
     //<editor-fold desc="图文">
     @RequestMapping("/queryarticlescount")
     @ResponseBody
