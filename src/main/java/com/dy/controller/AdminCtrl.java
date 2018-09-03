@@ -99,6 +99,7 @@ public class AdminCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryarticles(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
         String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top from t_article left join t_type on t_type.t_id=t_article.t_type_id";
+        sql += " order by t_top desc,t_sort desc,t_scan desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
@@ -136,6 +137,29 @@ public class AdminCtrl {
         return count == 1;
     }
 
+    @RequestMapping("/setarticlescan/{id}/{scan}")
+    @ResponseBody
+    public boolean setarticlescan(@PathVariable("id") int id, @PathVariable("scan") int scan) {
+        String sql = "update t_article set t_scan=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{scan, id});
+        return count == 1;
+    }
+
+    @RequestMapping("/setarticlesort/{id}/{sort}")
+    @ResponseBody
+    public boolean setarticlesort(@PathVariable("id") int id, @PathVariable("sort") int sort) {
+        String sql = "update t_article set t_sort=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{sort, id});
+        return count == 1;
+    }
+
+    @RequestMapping("/setarticletop/{id}/{top}")
+    @ResponseBody
+    public boolean setarticletop(@PathVariable("id") int id, @PathVariable("top") int top) {
+        String sql = "update t_article set t_top=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{top, id});
+        return count == 1;
+    }
     //</editor-fold>
 
     //<editor-fold desc="上传文件处理">
