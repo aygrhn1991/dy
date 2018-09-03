@@ -104,6 +104,14 @@ public class AdminCtrl {
         return list;
     }
 
+    @RequestMapping("/queryarticle/{id}")
+    @ResponseBody
+    public Map<String, Object> queryarticle(@PathVariable("id") int id) {
+        String sql = "select * from t_article where t_id=?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list.get(0);
+    }
+
     @RequestMapping("/addarticle")
     @ResponseBody
     public boolean addarticle(@RequestBody Article article) {
