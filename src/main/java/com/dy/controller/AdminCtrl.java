@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,7 +98,7 @@ public class AdminCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryarticles(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
         String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top from t_article left join t_type on t_type.t_id=t_article.t_type_id";
-        sql += " order by t_top desc,t_sort desc,t_scan desc ";
+        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
@@ -124,8 +123,8 @@ public class AdminCtrl {
     @RequestMapping("/editarticle")
     @ResponseBody
     public boolean editarticle(@RequestBody Article article) {
-        String sql = "update t_article set t_type_id=?,t_title=?,t_author=?,t_time=?,t_cover=?,t_content=?,t_scan=?,t_sort=?,t_top=? where t_id=?";
-        int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content, article.t_scan, article.t_sort, article.t_top, article.t_id});
+        String sql = "update t_article set t_type_id=?,t_title=?,t_author=?,t_time=?,t_cover=?,t_content=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content, article.t_id});
         return count == 1;
     }
 
@@ -162,8 +161,76 @@ public class AdminCtrl {
     }
     //</editor-fold>
 
+    //<editor-fold desc="提问">
+    @RequestMapping("/queryquestionscount")
+    @ResponseBody
+    public int queryquestionscount() {
+        String sql = "select count(*) from t_question";
+        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return count;
+    }
+
+    @RequestMapping("/queryquestions/{pageIndex}/{pageSize}")
+    @ResponseBody
+    public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+        String sql = "select t_question.*,t_type_name,t_user.t_name from t_question left join t_type on t_type.t_id=t_question.t_type_id left join t_user on t_user.t_id=t_question.t_user_id";
+        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @RequestMapping("/addquestion")
+    @ResponseBody
+    public boolean addquestion(@RequestBody Question question) {
+        String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (?,?,null,?,0,0,0,0)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_type_id, question.t_title, new Date().getTime()});
+        return count == 1;
+    }
+
+    @RequestMapping("/editquestion")
+    @ResponseBody
+    public boolean editquestion(@RequestBody Question question) {
+        String sql = "update t_question set t_type_id=?,t_title=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_type_id, question.t_title, question.t_id});
+        return count == 1;
+    }
+
+    @RequestMapping("/deletequestion/{id}")
+    @ResponseBody
+    public boolean deletequestion(@PathVariable("id") int id) {
+        String sql = "delete from t_question where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        return count == 1;
+    }
+
+    @RequestMapping("/setquestionscan/{id}/{scan}")
+    @ResponseBody
+    public boolean setquestionscan(@PathVariable("id") int id, @PathVariable("scan") int scan) {
+        String sql = "update t_question set t_scan=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{scan, id});
+        return count == 1;
+    }
+
+    @RequestMapping("/setquestionsort/{id}/{sort}")
+    @ResponseBody
+    public boolean setquestionsort(@PathVariable("id") int id, @PathVariable("sort") int sort) {
+        String sql = "update t_question set t_sort=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{sort, id});
+        return count == 1;
+    }
+
+    @RequestMapping("/setquestiontop/{id}/{top}")
+    @ResponseBody
+    public boolean setquestiontop(@PathVariable("id") int id, @PathVariable("top") int top) {
+        String sql = "update t_question set t_top=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{top, id});
+        return count == 1;
+    }
+    //</editor-fold>
+
     //<editor-fold desc="上传文件处理">
-    @RequestMapping("/articleUpload")
+    @RequestMapping("/articleCoverUpload")
     @ResponseBody
     public Map<String, String> articleUpload(HttpServletRequest request) throws IOException {
         Map<String, String> result = new HashMap<>();
@@ -179,6 +246,30 @@ public class AdminCtrl {
                     File localFile = new File(savePath);
                     multipartFile.transferTo(localFile);
                     result.put("path", fileName);
+                }
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping("/articleContentUpload")
+    @ResponseBody
+    public Map<String, Object> articleContentUpload(HttpServletRequest request) throws IOException {
+        Map<String, Object> result = new HashMap<>();
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getServletContext());
+        if (commonsMultipartResolver.isMultipart(request)) {
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+            while (iterator.hasNext()) {
+                MultipartFile multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+                if (multipartFile != null) {
+                    String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(multipartFile.getOriginalFilename());
+                    String savePath = this.global.articleUploadPath + fileName;
+                    File localFile = new File(savePath);
+                    multipartFile.transferTo(localFile);
+                    result.put("uploaded", 1);
+                    result.put("fileName", multipartFile.getOriginalFilename());
+                    result.put("url", this.global.fileServer + "article/" + fileName);
                 }
             }
         }

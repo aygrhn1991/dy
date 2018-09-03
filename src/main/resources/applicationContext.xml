@@ -14,6 +14,7 @@
           class="com.dy.util.Global">
         <property name="articleUploadPath" value="${file.articleUploadPath}"/>
         <property name="userUploadPath" value="${file.userUploadPath}"/>
+        <property name="fileServer" value="${file.fileServer}"/>
     </bean>
 
 </beans>
