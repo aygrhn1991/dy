@@ -1,9 +1,11 @@
 package com.dy.controller;
 
+import com.dy.model.Answer;
 import com.dy.model.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,17 +31,6 @@ public class HomeCtrl {
     @RequestMapping("/index")
     public String index() {
         return "index";
-    }
-
-
-    @RequestMapping("/ls")
-    @ResponseBody
-    public List<Map<String, Object>> ls() {
-
-        //List<Answer> list = new ArrayList<>();
-        //list.add(new Answer(1, 1, true, 1, ""));
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList("select * from t_type");
-        return list;
     }
 
     @RequestMapping(value = "/imageUpload")
@@ -124,4 +117,19 @@ public class HomeCtrl {
 //                return type;
 //            }
 //        });
+
+
+    class AnswerRowMapper implements RowMapper<Answer> {
+        @Override
+        public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Answer user = new Answer(
+                    rs.getInt("t_id"),
+                    rs.getInt("t_question_id"),
+                    rs.getBoolean("t_by_user"),
+                    rs.getLong("t_time"),
+                    rs.getString("t_content")
+            );
+            return user;
+        }
+    }
 }

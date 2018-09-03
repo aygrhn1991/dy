@@ -1,14 +1,22 @@
 package com.dy.controller;
 
 import com.dy.model.*;
+import com.dy.util.FileUtil;
+import com.dy.util.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
@@ -16,7 +24,10 @@ import java.util.Map;
 public class AdminCtrl {
     @Autowired
     @Qualifier("jdbcTemplate")
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    @Qualifier("global")
+    private Global global;
 
     @RequestMapping("/index")
     public String index() {
@@ -39,6 +50,7 @@ public class AdminCtrl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
     }
+
     @RequestMapping("/querytypes/{pageIndex}/{pageSize}")
     @ResponseBody
     public List<Map<String, Object>> querytypes(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
@@ -115,5 +127,29 @@ public class AdminCtrl {
         return count == 1;
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="上传文件处理">
+    @RequestMapping("/articleUpload")
+    @ResponseBody
+    public Map<String, String> articleUpload(HttpServletRequest request) throws IOException {
+        Map<String, String> result = new HashMap<>();
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getServletContext());
+        if (commonsMultipartResolver.isMultipart(request)) {
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+            Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
+            while (iterator.hasNext()) {
+                MultipartFile multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+                if (multipartFile != null) {
+                    String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(multipartFile.getOriginalFilename());
+                    String savePath = this.global.articleUploadPath + fileName;
+                    File localFile = new File(savePath);
+                    multipartFile.transferTo(localFile);
+                    result.put("path", fileName);
+                }
+            }
+        }
+        return result;
+    }
     //</editor-fold>
 }
