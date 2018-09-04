@@ -229,6 +229,33 @@ public class AdminCtrl {
     }
     //</editor-fold>
 
+    //<editor-fold desc="回答">
+    @RequestMapping("/queryallanswers/{id}")
+    @ResponseBody
+    public List<Map<String, Object>> queryallanswers(@PathVariable("id") int id) {
+        String sql = "select t_answer.* from t_answer where t_question_id=? order by t_time asc";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @RequestMapping("/addanswer")
+    @ResponseBody
+    public boolean addanswer(@RequestBody Answer answer) {
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_time, t_content) values (?,null,?,?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, new Date().getTime(), answer.t_content});
+        return count == 1;
+    }
+
+    @RequestMapping("/deleteanswer/{id}")
+    @ResponseBody
+    public boolean deleteanswer(@PathVariable("id") int id) {
+        String sql = "delete from t_answer where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        return count == 1;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="上传文件处理">
     @RequestMapping("/articleCoverUpload")
     @ResponseBody
