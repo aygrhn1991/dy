@@ -46,6 +46,7 @@ public class AdminCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryalltypes() {
         String sql = "select * from t_type";
+        sql += " order by t_id desc ";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
     }
@@ -54,6 +55,7 @@ public class AdminCtrl {
     @ResponseBody
     public List<Map<String, Object>> querytypes(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
         String sql = "select * from t_type";
+        sql += " order by t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
@@ -161,7 +163,7 @@ public class AdminCtrl {
     }
     //</editor-fold>
 
-    //<editor-fold desc="提问">
+    //<editor-fold desc="问题">
     @RequestMapping("/queryquestionscount")
     @ResponseBody
     public int queryquestionscount() {
@@ -170,10 +172,19 @@ public class AdminCtrl {
         return count;
     }
 
+    @RequestMapping("/queryallquestions/{id}")
+    @ResponseBody
+    public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
+        String sql = "select t_title,t_type_name,t_time from t_question left join t_type on t_type.t_id=t_question.t_type_id where t_user_id=?";
+        sql += " order by t_time desc ";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list;
+    }
+
     @RequestMapping("/queryquestions/{pageIndex}/{pageSize}")
     @ResponseBody
     public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
-        String sql = "select t_question.*,t_type_name,t_user.t_name from t_question left join t_type on t_type.t_id=t_question.t_type_id left join t_user on t_user.t_id=t_question.t_user_id";
+        String sql = "select t_question.*,t_type_name,t_user.w_nickname from t_question left join t_type on t_type.t_id=t_question.t_type_id left join t_user on t_user.t_id=t_question.t_user_id";
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
@@ -234,7 +245,7 @@ public class AdminCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryallanswers(@PathVariable("id") int id) {
         String sql = "select t_answer.* from t_answer where t_question_id=? order by t_time asc";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
         return list;
     }
 
@@ -243,13 +254,54 @@ public class AdminCtrl {
     public boolean addanswer(@RequestBody Answer answer) {
         String sql = "insert into t_answer(t_question_id, t_user_id, t_time, t_content) values (?,null,?,?)";
         int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, new Date().getTime(), answer.t_content});
-        return count == 1;
+        if (count == 1) {
+            sql = "update t_question set t_solved=1 where t_id=" + answer.t_question_id;
+            count = this.jdbcTemplate.update(sql);
+            return count == 1;
+        }
+        return false;
     }
 
     @RequestMapping("/deleteanswer/{id}")
     @ResponseBody
     public boolean deleteanswer(@PathVariable("id") int id) {
         String sql = "delete from t_answer where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        return count == 1;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="用户">
+    @RequestMapping("/queryuserscount")
+    @ResponseBody
+    public int queryuserscount() {
+        String sql = "select count(*) from t_user";
+        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return count;
+    }
+
+    @RequestMapping("/queryuser/{id}")
+    @ResponseBody
+    public Map<String, Object> queryuser(@PathVariable("id") int id) {
+        String sql = "select * from t_user where t_id=?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list.get(0);
+    }
+
+    @RequestMapping("/queryusers/{pageIndex}/{pageSize}")
+    @ResponseBody
+    public List<Map<String, Object>> queryusers(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+        String sql = "select * from t_user";
+        sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @RequestMapping("/deleteuser/{id}")
+    @ResponseBody
+    public boolean deleteuser(@PathVariable("id") int id) {
+        String sql = "delete from t_user where t_id=?";
         int count = this.jdbcTemplate.update(sql, new Object[]{id});
         return count == 1;
     }

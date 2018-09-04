@@ -119,17 +119,17 @@ public class HomeCtrl {
 //        });
 
 
-    class AnswerRowMapper implements RowMapper<Answer> {
-        @Override
-        public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Answer user = new Answer(
-                    rs.getInt("t_id"),
-                    rs.getInt("t_question_id"),
-                    rs.getBoolean("t_by_user"),
-                    rs.getLong("t_time"),
-                    rs.getString("t_content")
-            );
-            return user;
-        }
-    }
+//    class AnswerRowMapper implements RowMapper<Answer> {
+//        @Override
+//        public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
+//            Answer user = new Answer(
+//                    rs.getInt("t_id"),
+//                    rs.getInt("t_question_id"),
+//                    rs.getInt("t_by_user"),
+//                    rs.getLong("t_time"),
+//                    rs.getString("t_content")
+//            );
+//            return user;
+//        }
+//    }
 }
