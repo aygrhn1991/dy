@@ -4,6 +4,15 @@ public class Global {
     public String articleUploadPath;
     public String userUploadPath;
     public String fileServer;
+    public String wxToken;
+
+    public String getWxToken() {
+        return wxToken;
+    }
+
+    public void setWxToken(String wxToken) {
+        this.wxToken = wxToken;
+    }
 
     public String getArticleUploadPath() {
         return articleUploadPath;
