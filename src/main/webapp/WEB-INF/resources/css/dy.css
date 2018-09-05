@@ -1,0 +1,153 @@
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+.header-wrapper {
+    position: relative;
+    padding: 15px;
+    background: #f9f8f8;
+    border-bottom: 1px solid #f9f8f8;
+}
+
+.header-wrapper img {
+    height: 20px;
+}
+
+.header-back {
+}
+
+.header-home {
+    float: right;
+}
+
+.footer-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #f9f8f8;
+    text-align: center;
+    background: white;
+}
+
+.footer-tab {
+    padding: 5px 0;
+    display: inline-block;
+    width: 48%;
+}
+
+.footer-tab img {
+    height: 20px;
+}
+
+.footer-line {
+    display: inline-block;
+    height: 30px;
+    width: 2px;
+    background: #f9f8f8;
+}
+
+.index-top-img {
+    padding: 3px 5px;
+}
+
+.index-top-img img {
+    width: 100%;
+}
+
+.common-wrapper {
+    background: #f9f8f8;
+    padding: 5px;
+}
+
+.common-content {
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.question-textarea {
+    display: block;
+    width: 100%;
+    resize: none;
+    border-radius: 5px;
+    border: none;
+}
+
+.question-nav-v {
+    display: inline-block;
+    width: 15%;
+}
+
+.question-nav-v img {
+    height: 150px;
+    width: 100%;
+}
+
+.question-items {
+    display: inline-block;
+    width: 83%;
+    float: right;
+}
+
+.question-item {
+    line-height: 30px;
+}
+
+.question-tag {
+    font-weight: normal;
+    display: inline-block;
+    border: 1px solid red;
+    border-radius: 10px;
+    color: red;
+    line-height: 14px;
+    font-size: 10px;
+    padding: 0 6px;
+}
+
+.question-title {
+    font-weight: bold;
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.article-nav-h {
+    padding: 5px 0;
+}
+
+.article-nav-h img {
+    height: 20px;
+}
+
+.article-items {
+    text-align: center;
+}
+
+.article-item {
+    position: relative;
+    display: inline-block;
+    width: 48%;
+    margin-bottom: 10px;
+}
+
+.article-item img {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #f9f8f8;
+}
+
+.article-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+}
