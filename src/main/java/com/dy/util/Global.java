@@ -5,6 +5,24 @@ public class Global {
     public String userUploadPath;
     public String fileServer;
     public String wxToken;
+    public String wxAppid;
+    public String wxAppsecret;
+
+    public String getWxAppid() {
+        return wxAppid;
+    }
+
+    public void setWxAppid(String wxAppid) {
+        this.wxAppid = wxAppid;
+    }
+
+    public String getWxAppsecret() {
+        return wxAppsecret;
+    }
+
+    public void setWxAppsecret(String wxAppsecret) {
+        this.wxAppsecret = wxAppsecret;
+    }
 
     public String getWxToken() {
         return wxToken;

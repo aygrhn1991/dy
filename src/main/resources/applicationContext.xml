@@ -16,6 +16,8 @@
         <property name="userUploadPath" value="${file.userUploadPath}"/>
         <property name="fileServer" value="${file.fileServer}"/>
         <property name="wxToken" value="${wx.token}"/>
+        <property name="wxAppid" value="${wx.appid}"/>
+        <property name="wxAppsecret" value="${wx.appsecret}"/>
     </bean>
 
 </beans>
