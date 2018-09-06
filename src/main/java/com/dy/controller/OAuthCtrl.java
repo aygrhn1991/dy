@@ -1,6 +1,7 @@
 package com.dy.controller;
 
 import com.dy.model.wx.OAuthUserAccessToken;
+import com.dy.model.wx.OAuthUserInfo;
 import com.dy.util.Global;
 import com.dy.util.HttpUtil;
 import com.dy.util.WxUtil;
@@ -40,22 +41,25 @@ public class OAuthCtrl {
             return null;
         }
     }
-
+    @RequestMapping(value = "/auth", method = RequestMethod.GET)
+    public String auth(HttpServletRequest request) {
+        String currentBaseUrl = HttpUtil.getCurrentBaseUrlWithoutPort(request);
+        //String encodeUrl = URLEncoder.encode(currentBaseUrl + "/c/wxhome/login", "utf-8");
+        //String url = OAuthUtil.getRedirectUrl(encodeUrl, OAuthScopeEnum.snsapi_base, "state");
+        return "redirect:" + currentBaseUrl;
+    }
     @RequestMapping(value = "/getcode", method = RequestMethod.GET)
     public @ResponseBody
     String getcode(HttpServletRequest request) {
         String state = request.getParameter("state");
         String code = request.getParameter("code");
-        String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code",this.global.wxAppid, this.global.wxAppsecret, code);
+        String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", this.global.wxAppid, this.global.wxAppsecret, code);
         String response = HttpUtil.Get(url);
         Gson gson = new Gson();
-        OAuthUserAccessToken model = gson.fromJson(response, OAuthUserAccessToken.class);
-         url = String.format("https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN", model.access_token, model.openid);
+        OAuthUserAccessToken oAuthUserAccessToken = gson.fromJson(response, OAuthUserAccessToken.class);
+        url = String.format("https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN", oAuthUserAccessToken.access_token, oAuthUserAccessToken.openid);
         response = HttpUtil.Get(url);
-        OAuthUserInfoModel infoObj = gson.fromJson(rsp, OAuthUserInfoModel.class);
-
-        OAuthUserInfoModel info1 = OAuthUtil.getUserInfoBy_snsapi_userinfo(model);
-        UserInfoModel info2 = UserUtil.getUserInfoByOpenId(model.openid);
+        OAuthUserInfo oAuthUserInfo = gson.fromJson(response, OAuthUserInfo.class);
         return "result";
     }
 
