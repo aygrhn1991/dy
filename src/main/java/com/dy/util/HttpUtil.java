@@ -45,7 +45,8 @@ public class HttpUtil {
         }
         return null;
     }
-    public static String getCurrentBaseUrlWithPort(HttpServletRequest request) {
+
+    public static String getBaseUrlWithPort(HttpServletRequest request) {
         try {
             return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         } catch (Exception e) {
@@ -53,7 +54,8 @@ public class HttpUtil {
         }
         return null;
     }
-    public static String getCurrentBaseUrlWithoutPort(HttpServletRequest request) {
+
+    public static String getBaseUrlWithoutPort(HttpServletRequest request) {
         try {
             return request.getScheme() + "://" + request.getServerName() + request.getContextPath();
         } catch (Exception e) {

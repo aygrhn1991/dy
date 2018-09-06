@@ -33,6 +33,16 @@ public class HomeCtrl {
         return "index";
     }
 
+    @RequestMapping("/ask")
+    public String ask() {
+        return "ask";
+    }
+
+    @RequestMapping("/askfinish")
+    public String askfinish() {
+        return "askfinish";
+    }
+
     @RequestMapping(value = "/imageUpload")
     public @ResponseBody
     String imageUpload(HttpServletRequest request) throws IOException {

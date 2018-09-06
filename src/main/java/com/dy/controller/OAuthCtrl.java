@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
@@ -41,16 +43,18 @@ public class OAuthCtrl {
             return null;
         }
     }
-    @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    public String auth(HttpServletRequest request) {
-        String currentBaseUrl = HttpUtil.getCurrentBaseUrlWithoutPort(request);
-        //String encodeUrl = URLEncoder.encode(currentBaseUrl + "/c/wxhome/login", "utf-8");
-        //String url = OAuthUtil.getRedirectUrl(encodeUrl, OAuthScopeEnum.snsapi_base, "state");
-        return "redirect:" + currentBaseUrl;
+
+    @RequestMapping(value = "/requestcode", method = RequestMethod.GET)
+    public String auth(HttpServletRequest request) throws UnsupportedEncodingException {
+        String baseUrl = HttpUtil.getBaseUrlWithoutPort(request);
+        String encodeUrl = URLEncoder.encode(baseUrl + "/oauth/getcode", "utf-8");
+        String url = String.format("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect", this.global.wxAppid, encodeUrl, "scope", "state");
+        return "redirect:" + url;
     }
+
     @RequestMapping(value = "/getcode", method = RequestMethod.GET)
-    public @ResponseBody
-    String getcode(HttpServletRequest request) {
+    @ResponseBody
+    public String getcode(HttpServletRequest request) {
         String state = request.getParameter("state");
         String code = request.getParameter("code");
         String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", this.global.wxAppid, this.global.wxAppsecret, code);
