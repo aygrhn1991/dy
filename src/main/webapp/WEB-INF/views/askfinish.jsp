@@ -6,7 +6,7 @@
 <div class="common-wrapper">
     <div class="common-content">
         <div class="question-nav-h">
-            <img src="/static/img/9.png">
+            <img src="/static/img/13.png">
         </div>
         <div class="question-items-b">
             <div class="question-item-b">
