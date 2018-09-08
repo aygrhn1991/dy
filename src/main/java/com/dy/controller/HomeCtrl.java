@@ -47,9 +47,15 @@ public class HomeCtrl {
     public String questions() {
         return "questions";
     }
-    @RequestMapping("/qst")
-    public String qst() {
-        return "questions";
+
+    @RequestMapping("/articles")
+    public String articles() {
+        return "articles";
+    }
+
+    @RequestMapping("/question")
+    public String question() {
+        return "question";
     }
 
     @RequestMapping(value = "/imageUpload")

@@ -16,21 +16,13 @@
                 </div>
             </div>
             <div class="question-item-c">
-                <div class="question-title-c">
+                <div class="question-title-c-tag">
                     这句话可是很长的这句话可是很长的话可是很长的话可是很长的
                 </div>
                 <div class="question-time-c">
                     2019-01-01 12:00:00
                 </div>
-            </div>
-            <div class="question-item-c">
-                <div class="question-title-c">
-                    这句话可是很长的这句话可是很长的话可是很长的话可是很长的
-                </div>
-                <div class="question-time-c">
-                    2019-01-01 12:00:00
-                </div>
-                <img src="/static/img/4.png">
+                <img src="/static/img/4.png" class="question-tag-c">
             </div>
         </div>
     </div>

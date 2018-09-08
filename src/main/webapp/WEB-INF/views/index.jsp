@@ -70,5 +70,4 @@
         </div>
     </div>
 </div>
-<div style="height: 60px;"></div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

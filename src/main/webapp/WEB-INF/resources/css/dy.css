@@ -49,7 +49,7 @@ html, body {
 }
 
 .index-top-img {
-    padding: 3px 5px;
+    padding: 5px;
 }
 
 .index-top-img img {
@@ -87,7 +87,7 @@ html, body {
 
 .question-items-a {
     display: inline-block;
-    width: 83%;
+    width: 84%;
     float: right;
 }
 
@@ -152,7 +152,7 @@ html, body {
 }
 
 .user-wrapper {
-    padding: 5px;
+    padding: 10px;
 }
 
 .user-headimg {
@@ -164,7 +164,7 @@ html, body {
 .user-myquestion {
     height: 20px;
     float: right;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .question-nav-h {
@@ -206,6 +206,7 @@ html, body {
 }
 
 .question-item-c {
+    position: relative;
     border-bottom: 1px solid #f9f8f8;
     line-height: 30px;
     padding: 0 15px;
@@ -213,7 +214,16 @@ html, body {
 
 .question-title-c {
     font-weight: bold;
-    width: 60%;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.question-title-c-tag {
+    display: inline-block;
+    font-weight: bold;
+    width: 80%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -222,5 +232,102 @@ html, body {
 .question-time-c {
     font-size: 10px;
     color: #bbb;
-        display: inline-block;
+}
+
+.question-tag-c {
+    position: absolute;
+    right: 0;
+    top: 15px;
+    width: 20%;
+}
+
+.common-search {
+    position: relative;
+    padding: 10px;
+}
+
+.common-search img {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 15px;
+    left: 20px;
+}
+
+.common-search input {
+    border-radius: 3px;
+    border: 1px solid #f9f8f8;
+    width: 100%;
+    height: 30px;
+    text-indent: 3em;
+}
+
+.common-tabs {
+    border-bottom: 1px solid #f9f8f8;
+    padding: 10px;
+}
+
+.common-tab {
+    display: inline-block;
+    color: #bbb;
+    padding: 0 10px;
+    border-bottom: 2px solid transparent;
+}
+
+.common-tab-active {
+    border-bottom: 2px solid #bbb;
+}
+
+.answer-item {
+    position: relative;
+    background: #f9f8f8;
+    padding: 5px 10px;
+    margin: 20px 5px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: justify;
+    max-width: 80%;
+}
+
+.answer-left {
+    text-align: left;
+}
+
+.answer-right {
+    text-align: right;
+}
+
+.answer-time {
+    text-align: center;
+    color: #bbb;
+    font-size: 10px;
+}
+
+.answer-tag {
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    height: 40px;
+}
+
+.answer-left .answer-content {
+    text-indent: 3em;
+}
+
+.common-ask input {
+    text-indent: 1em;
+    border-radius: 3px;
+    border: 1px solid #f9f8f8;
+    height: 30px;
+    width: 76%;
+}
+
+.common-ask button {
+    border-radius: 3px;
+    background: #70dff8;
+    color: white;
+    border: none;
+    float: right;
+    height: 30px;
+    width: 20%;
 }

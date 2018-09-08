@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div style="height: 60px;"></div>
 <div class="footer-wrapper">
     <div class="footer-tab">
         <img src="/static/img/12.png">
