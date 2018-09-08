@@ -192,9 +192,11 @@ html, body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.ask-finish{
+
+.ask-finish {
     padding: 60px;
 }
+
 .ask-finish img {
     width: 100%;
 }
@@ -205,17 +207,20 @@ html, body {
 
 .question-item-c {
     border-bottom: 1px solid #f9f8f8;
-    line-height: 40px;
+    line-height: 30px;
     padding: 0 15px;
 }
 
 .question-title-c {
     font-weight: bold;
-    width: 100%;
+    width: 60%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.question-time-c{
 
+.question-time-c {
+    font-size: 10px;
+    color: #bbb;
+        display: inline-block;
 }

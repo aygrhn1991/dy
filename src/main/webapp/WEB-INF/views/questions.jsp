@@ -5,13 +5,7 @@
     <span class="user-nickname">&nbsp;&nbsp;嘻嘻哈哈</span>
 </div>
 <div class="common-wrapper">
-    <textarea class="question-textarea" placeholder="输入您想咨询的问题试试？" rows="8"></textarea>
-</div>
-<div class="common-wrapper">
     <div class="common-content">
-        <div class="question-nav-h">
-            <img src="/static/img/9.png">
-        </div>
         <div class="question-items-c">
             <div class="question-item-c">
                 <div class="question-title-c">
@@ -36,6 +30,7 @@
                 <div class="question-time-c">
                     2019-01-01 12:00:00
                 </div>
+                <img src="/static/img/4.png">
             </div>
         </div>
     </div>
