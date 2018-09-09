@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div class="user-wrapper">
-    <img src="/static/img/6.png" class="user-headimg">
+    <img src="/dy/static/img/6.png" class="user-headimg">
     <span class="user-nickname">&nbsp;&nbsp;嘻嘻哈哈</span>
-    <img src="/static/img/1.png" class="user-myquestion">
+    <img src="/dy/static/img/1.png" class="user-myquestion">
 </div>
 <div class="common-wrapper">
     <div class="common-content">
@@ -24,7 +24,7 @@
         <div class="answer-left">
             <div class="answer-time">2019-11-23 12:32:45</div>
             <div class="answer-item">
-                <img src="/static/img/6.png" class="answer-tag">
+                <img src="/dy/static/img/6.png" class="answer-tag">
                 <div class="answer-content">这句话可是很长的这句话可是很长的话可是很长的话可是很长的
                     这句话可是很长的这句话可是很长的话可是很长的话可是很长的
                     这句话可是很长的这句话可是很长的话可是很长的话可是很长的
@@ -42,7 +42,7 @@
         <div class="answer-left">
             <div class="answer-time">2019-11-23 12:32:45</div>
             <div class="answer-item">
-                <img src="/static/img/6.png" class="answer-tag">
+                <img src="/dy/static/img/6.png" class="answer-tag">
                 <div class="answer-content">这句话可</div>
             </div>
         </div>
@@ -55,7 +55,7 @@
         <div class="answer-left">
             <div class="answer-time">2019-11-23 12:32:45</div>
             <div class="answer-item">
-                <img src="/static/img/6.png" class="answer-tag">
+                <img src="/dy/static/img/6.png" class="answer-tag">
                 <div class="answer-content">这句话可是很长的这句话可是很长的话可是很长的话可是很长的
                     这句话可是很长的这句话可是很长的话可是很长的话可是很长的
                     这句话可是很长的这句话可是很长的话可是很长的话可是很长的
@@ -73,7 +73,7 @@
         <div class="answer-left">
             <div class="answer-time">2019-11-23 12:32:45</div>
             <div class="answer-item">
-                <img src="/static/img/6.png" class="answer-tag">
+                <img src="/dy/static/img/6.png" class="answer-tag">
                 <div class="answer-content">这句话可是很这句话可是很这句话可是很这句话可是很</div>
             </div>
         </div>

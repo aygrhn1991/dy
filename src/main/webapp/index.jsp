@@ -4,6 +4,6 @@
     <title>Title</title>
 </head>
 <body>
-<% response.sendRedirect("/home/index"); %>
+<% response.sendRedirect("/dy/home/index"); %>
 </body>
 </html>
