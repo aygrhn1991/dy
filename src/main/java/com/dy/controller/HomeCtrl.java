@@ -1,18 +1,25 @@
 package com.dy.controller;
 
+import com.dy.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -23,6 +30,7 @@ public class HomeCtrl {
     @Qualifier("jdbcTemplate")
     JdbcTemplate jdbcTemplate;
 
+    //<editor-fold desc="页面">
     @RequestMapping("/index")
     public String index() {
         return "index";
@@ -58,79 +66,26 @@ public class HomeCtrl {
         return "article";
     }
 
-    @RequestMapping(value = "/imageUpload")
-    public @ResponseBody
-    String imageUpload(HttpServletRequest request) throws IOException {
-        String CKEditorFuncNum = request.getParameter("CKEditorFuncNum");
-        String urll = request.getQueryString();
-        boolean uploadFlag = false;
-        // 创建一个通用的多部分解析器
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession()
-                .getServletContext());
-        // 图片名称
-        String fileName = null;
-        // 判断 request 是否有文件上传,即多部分请求
-        if (multipartResolver.isMultipart(request)) {
-            // 转换成多部分request
-            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-            // 取得request中的所有文件名
-            Iterator<String> iter = multiRequest.getFileNames();
-            //    定义存库相对路径名称
-            String relativeName = "";
-            //    功能文件夹,注意：代码只能创建一级文件夹，需先在服务器创建文件夹目录
-            //String tmpPath = AdminConstant.ADMIN_FILE_PATH;
-            //    时间文件夹
-            //String folderYMD = new DateTime().toString("yyyyMMdd") + "/";
+    //</editor-fold>
 
-            while (iter.hasNext()) {
-                // 取得上传文件
-                MultipartFile file = multiRequest.getFile(iter.next());
-                if (file != null) {
-                    // 取得当前上传文件的文件名称
-                    String myFileName = file.getOriginalFilename();
-                    int i = 0;
-//                    // 如果名称不为“”,说明该文件存在，否则说明该文件不存在
-//                    if (myFileName.trim() != "") {
-//                        // 获得图片的原始名称
-//                        String originalFilename = file.getOriginalFilename();
-//                        // 获得图片后缀名称,如果后缀不为图片格式，则不上传
-//                        String suffix = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
-//                        if (!fileTypes.contains(suffix)) {
-//                            continue;
-//                        }
-//                        InputStream is = file.getInputStream();
-//                        byte[] picData = IOUtils.toByteArray(is);
-//                        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(picData);
-//
-//                        if (picData != null && picData.length > 0) {
-//                            try {
-//                                //    真实文件名,DigestUtils.md5Hex方法可以根据文件byte[]生成唯一哈希!!!(节省服务器内存)
-//                                String realName = DigestUtils.md5Hex(picData) + suffix;
-//                                //    存库相对文件路径
-//                                relativeName = tmpPath + folderYMD + realName;
-//                                //    文件在图片服务器的路径前缀
-//                                String directory = UPLOAD_PATH + tmpPath + folderYMD;
-//                                String imageContextPath = FILE_PATH + UPLOAD_PATH + relativeName;
-//                                //  ftp上传文件
-//                                uploadFlag = ftpUtil.uploadInputStreamFile(byteArrayInputStream, realName, directory);
-//                                if (uploadFlag) {
-//                                    return "{\"uploaded\":1,\"fileName\":\""+relativeName+"\",\"url\":\"" + imageContextPath + "\"}";
-//                                } else {
-//                                    return "{\"uploaded\":0,\"error\":{\"message\":\"upload file is not success!\"}}";
-//                                }
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-                }
+    //<editor-fold desc="首页">
+    @RequestMapping("/addquestion")
+    @ResponseBody
+    public boolean addquestion(@RequestBody Question question) {
+        String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (0,?,?,?,0,0,0,0)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_title, this.getUserId(), new Date().getTime()});
+        return count == 1;
+    }
+    //</editor-fold>
+
+    private int getUserId() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("userid")) {
+                return Integer.parseInt(cookie.getValue());
             }
         }
-        return "{\"uploaded\":1,\"fileName\":\"" + "qq.png" + "\",\"url\":\"" + "http://localhost:8080/static/img/qq.png" + "\"}";
-        //return "{\"uploaded\":0,\"error\":{\"message\":\"upload file is not success!\"}}";
-
+        return 0;
     }
-
-
-
 }

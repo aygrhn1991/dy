@@ -7,6 +7,7 @@
 </div>
 <div class="common-wrapper">
     <textarea class="question-textarea" placeholder="输入您想咨询的问题试试？" rows="8"></textarea>
+    <button class="question-button">提问</button>
 </div>
 <div class="common-wrapper">
     <div class="common-content">

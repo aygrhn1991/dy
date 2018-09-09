@@ -1,12 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html ng-app="app">
 <head>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
     <title>Title</title>
-    <link href="/dy/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/dy/static/layui/css/layui.css" rel="stylesheet">
     <link href="/dy/static/css/dy.css" rel="stylesheet">
-    <script src="/dy/static/js/jquery.js"></script>
-    <script src="/dy/static/js/bootstrap.js"></script>
+    <script src="/dy/static/layui/layui.all.js"></script>
     <script src="/dy/static/js/angular.js"></script>
     <script src="/dy/static/js/dy.js"></script>
 </head>

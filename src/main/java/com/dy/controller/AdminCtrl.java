@@ -194,7 +194,7 @@ public class AdminCtrl {
     @RequestMapping("/addquestion")
     @ResponseBody
     public boolean addquestion(@RequestBody Question question) {
-        String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (?,?,null,?,0,0,0,0)";
+        String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (?,?,0,?,0,0,0,0)";
         int count = this.jdbcTemplate.update(sql, new Object[]{question.t_type_id, question.t_title, new Date().getTime()});
         return count == 1;
     }
@@ -252,7 +252,7 @@ public class AdminCtrl {
     @RequestMapping("/addanswer")
     @ResponseBody
     public boolean addanswer(@RequestBody Answer answer) {
-        String sql = "insert into t_answer(t_question_id, t_user_id, t_time, t_content) values (?,null,?,?)";
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_time, t_content) values (?,0,?,?)";
         int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, new Date().getTime(), answer.t_content});
         if (count == 1) {
             sql = "update t_question set t_solved=1 where t_id=" + answer.t_question_id;
