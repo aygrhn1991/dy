@@ -3,7 +3,6 @@ package com.dy.model.wx;
 import java.util.List;
 
 public class UserInfoModel {
-
     public String subscribe;
     public String openid;
     public String nickname;

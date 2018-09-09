@@ -1,16 +1,30 @@
 package com.dy.util;
 
+import com.dy.model.wx.AccessToken;
+import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import java.security.MessageDigest;
 import java.util.Arrays;
 
 public class WxUtil {
+    @Autowired
+    @Qualifier("global")
+    private static Global global;
     public static boolean checkConfig(String token, String timestamp, String nonce, String signature) {
         String[] strArray = new String[]{token, timestamp, nonce};
         Arrays.sort(strArray);
         String strResult = getSha1(strArray[0] + strArray[1] + strArray[2]);
         return strResult.equals(signature);
     }
-
+    public static String getAccesstToken(String appid,String appsecret) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", appid, appsecret);
+        String response = HttpUtil.Get(url);
+        Gson gson = new Gson();
+        AccessToken accessToken = gson.fromJson(response, AccessToken.class);
+        return accessToken.access_token;
+    }
     private static String getSha1(String str) {
         if (str == null || str.length() == 0) {
             return null;
