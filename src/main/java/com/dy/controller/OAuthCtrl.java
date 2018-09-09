@@ -48,7 +48,7 @@ public class OAuthCtrl {
     public String auth(HttpServletRequest request) throws UnsupportedEncodingException {
         String baseUrl = HttpUtil.getBaseUrlWithoutPort(request);
         String encodeUrl = URLEncoder.encode(baseUrl + "/oauth/getcode", "utf-8");
-        String url = String.format("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect", this.global.wxAppid, encodeUrl, "scope", "state");
+        String url = String.format("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect", this.global.wxAppid, encodeUrl, "snsapi_userinfo", "dy");
         return "redirect:" + url;
     }
 
