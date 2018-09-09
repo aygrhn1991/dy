@@ -132,29 +132,5 @@ public class HomeCtrl {
     }
 
 
-    //        List<Type> list = this.jdbcTemplate.query(sql, new RowMapper<Type>() {
-//            @Override
-//            public Type mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                Type type = new Type(
-//                        rs.getInt("t_id"),
-//                        rs.getString("t_type_name")
-//                );
-//                return type;
-//            }
-//        });
 
-
-//    class AnswerRowMapper implements RowMapper<Answer> {
-//        @Override
-//        public Answer mapRow(ResultSet rs, int rowNum) throws SQLException {
-//            Answer user = new Answer(
-//                    rs.getInt("t_id"),
-//                    rs.getInt("t_question_id"),
-//                    rs.getInt("t_by_user"),
-//                    rs.getLong("t_time"),
-//                    rs.getString("t_content")
-//            );
-//            return user;
-//        }
-//    }
 }

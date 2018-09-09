@@ -91,5 +91,12 @@ public class OAuthCtrl {
         }
     }
 
-
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookie = new Cookie("userid", "10");
+        cookie.setDomain(request.getServerName());
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:/home/index";
+    }
 }
