@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
@@ -75,6 +74,25 @@ public class HomeCtrl {
         String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (0,?,?,?,0,0,0,0)";
         int count = this.jdbcTemplate.update(sql, new Object[]{question.t_title, this.getUserId(), new Date().getTime()});
         return count == 1;
+    }
+
+    @RequestMapping("/queryquestionsbytop")
+    @ResponseBody
+    public List<Map<String, Object>> queryquestionsbytop() {
+        String sql = "select * from t_question ";
+        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        sql += " limit 0,5";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
+    }
+    @RequestMapping("/queryarticlesbytop")
+    @ResponseBody
+    public List<Map<String, Object>> queryarticlesbytop() {
+        String sql = "select * from t_article ";
+        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        sql += " limit 0,4";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
     }
     //</editor-fold>
 

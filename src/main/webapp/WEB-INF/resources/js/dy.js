@@ -1,3 +1,4 @@
+window.fileServer = 'http://localhost:8000';
 var app = angular.module('app', []);
 app.controller('indexCtrl', function ($scope, $http) {
     $scope.ask = function () {
@@ -15,4 +16,20 @@ app.controller('indexCtrl', function ($scope, $http) {
             layer.msg('提交失败', {time: 500});
         });
     }
+    $scope.queryquestionsbytop = function () {
+        $http.post('/dy/home/queryquestionsbytop', null).success(function (d) {
+            $scope.questions = d;
+        });
+    }
+    $scope.queryarticlesbytop = function () {
+        $http.post('/dy/home/queryarticlesbytop', null).success(function (d) {
+            $scope.articles = d;
+        });
+    }
+    $scope.init = function () {
+        $scope.fileServer = window.fileServer;
+        $scope.queryquestionsbytop();
+        $scope.queryarticlesbytop();
+    }
+    $scope.init();
 });

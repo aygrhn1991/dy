@@ -14,36 +14,12 @@
                 <img src="/dy/static/img/10.png">
             </a>
             <div class="question-items-a">
-                <div class="question-item-a">
+                <a href="/dy/home/question?id={{d.t_id}}" class="question-item-a" ng-repeat="d in questions">
                     <div class="question-title-a">
                         <span class="question-tag-a">精华</span>
-                        这句话可是很长的这句话可是很长的话可是很长的话可是很长的
+                        {{d.t_title}}
                     </div>
-                </div>
-                <div class="question-item-a">
-                    <div class="question-title-a">
-                        <span class="question-tag-a">精华</span>
-                        这句话可是很长的这句话可是很长的话可是很长的话可是很长的
-                    </div>
-                </div>
-                <div class="question-item-a">
-                    <div class="question-title-a">
-                        <span class="question-tag-a">精华</span>
-                        这句话可是很长的这句话可是很长的话可是很长的话可是很长的
-                    </div>
-                </div>
-                <div class="question-item-a">
-                    <div class="question-title-a">
-                        <span class="question-tag-a">精华</span>
-                        这句话可是很长的这句话可是很长的话可是很长的话可是很长的
-                    </div>
-                </div>
-                <div class="question-item-a">
-                    <div class="question-title-a">
-                        <span class="question-tag-a">精华</span>
-                        这句话可是很长的这句话可是很长的话可是很长的话可是很长的
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -53,22 +29,10 @@
                 <img src="/dy/static/img/2.png">
             </div>
             <div class="article-items">
-                <div class="article-item">
-                    <img src="/dy/static/img/0.png">
-                    <div class="article-title">这句话可是很长的这句话可是很长的话可是很长的话可是很长的</div>
-                </div>
-                <div class="article-item">
-                    <img src="/dy/static/img/0.png">
-                    <div class="article-title">这句话可是很长的这句话可是很长的话可是很长的话可是很长的</div>
-                </div>
-                <div class="article-item">
-                    <img src="/dy/static/img/0.png">
-                    <div class="article-title">这句话可是很长的这句话可是很长的话可是很长的话可是很长的</div>
-                </div>
-                <div class="article-item">
-                    <img src="/dy/static/img/0.png">
-                    <div class="article-title">这句话可是很长的这句话可是很长的话可是很长的话可是很长的</div>
-                </div>
+                <a href="/dy/home/article?id={{d.t_id}}" class="article-item" ng-repeat="d in articles">
+                    <img src="{{fileServer}}/article/{{d.t_cover}}">
+                    <div class="article-title" ng-bind="d.t_title"></div>
+                </a>
             </div>
         </div>
     </div>
