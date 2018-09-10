@@ -1,6 +1,7 @@
 package com.dy.controller;
 
 import com.dy.model.Question;
+import com.dy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -85,6 +86,7 @@ public class HomeCtrl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
     }
+
     @RequestMapping("/queryarticlesbytop")
     @ResponseBody
     public List<Map<String, Object>> queryarticlesbytop() {
@@ -94,6 +96,41 @@ public class HomeCtrl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
     }
+    //</editor-fold>
+
+    //<editor-fold desc="用户,文章详细，问题，问题详细">
+    @RequestMapping("/queryuser/{id}")
+    @ResponseBody
+    public Map<String, Object> queryuser(@PathVariable("id") int id) {
+        String sql = "select * from t_user where t_id=?";
+        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return userList.get(0);
+    }
+
+    @RequestMapping("/queryarticle/{id}")
+    @ResponseBody
+    public Map<String, Object> queryarticle(@PathVariable("id") int id) {
+        String sql = "select * from t_article where t_id=?";
+        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return userList.get(0);
+    }
+
+    @RequestMapping("/queryquestion/{id}")
+    @ResponseBody
+    public Map<String, Object> queryquestion(@PathVariable("id") int id) {
+        String sql = "select * from t_question where t_id=?";
+        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return userList.get(0);
+    }
+
+    @RequestMapping("/queryallanswers/{id}")
+    @ResponseBody
+    public Map<String, Object> queryallanswers(@PathVariable("id") int id) {
+        String sql = "select * from t_answer where t_question_id=?";
+        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return userList.get(0);
+    }
+
     //</editor-fold>
 
     private int getUserId() {

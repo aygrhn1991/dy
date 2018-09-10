@@ -77,6 +77,10 @@ a:active {
     border-radius: 5px;
 }
 
+.common-content img {
+    max-width: 100%;
+}
+
 .question-textarea {
     display: block;
     padding: 5px;

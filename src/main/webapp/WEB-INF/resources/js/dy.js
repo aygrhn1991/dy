@@ -1,4 +1,11 @@
 window.fileServer = 'http://localhost:8000';
+window.getUrlParam = function (name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null)
+        return unescape(r[2]);
+    return null;
+}
 var app = angular.module('app', []);
 app.controller('indexCtrl', function ($scope, $http) {
     $scope.ask = function () {
@@ -30,6 +37,38 @@ app.controller('indexCtrl', function ($scope, $http) {
         $scope.fileServer = window.fileServer;
         $scope.queryquestionsbytop();
         $scope.queryarticlesbytop();
+    }
+    $scope.init();
+});
+app.controller('articleCtrl', function ($scope, $http, $sce) {
+    $scope.queryarticle = function () {
+        $http.post('/dy/home/queryarticle/' + $scope.id, null).success(function (d) {
+            $scope.article = d;
+            $scope.article.t_content = $sce.trustAsHtml(d.t_content);
+        });
+    }
+    $scope.init = function () {
+        $scope.id = window.getUrlParam('id');
+        $scope.queryarticle();
+    }
+    $scope.init();
+});
+app.controller('questionCtrl', function ($scope, $http) {
+    $scope.queryuser=function(){
+        $http.post('/dy/home/queryarticle/' + $scope.id, null).success(function (d) {
+            $scope.article = d;
+            $scope.article.t_content = $sce.trustAsHtml(d.t_content);
+        });
+    }
+    $scope.queryanswer = function () {
+        $http.post('/dy/home/queryarticle/' + $scope.id, null).success(function (d) {
+            $scope.article = d;
+            $scope.article.t_content = $sce.trustAsHtml(d.t_content);
+        });
+    }
+    $scope.init = function () {
+        $scope.id = window.getUrlParam('id');
+        $scope.queryarticle();
     }
     $scope.init();
 });
