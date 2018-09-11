@@ -149,7 +149,6 @@ a:active {
 }
 
 .article-items {
-    text-align: center;
 }
 
 .article-item {
@@ -166,6 +165,7 @@ a:active {
 }
 
 .article-title {
+    text-align: center;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -175,6 +175,12 @@ a:active {
     white-space: nowrap;
     color: white;
     background: rgba(0, 0, 0, 0.2);
+}
+
+.article-more {
+    text-align: center;
+    padding: 10px;
+    color: #bbb;
 }
 
 .user-wrapper {
@@ -188,9 +194,13 @@ a:active {
 }
 
 .user-myquestion {
-    height: 20px;
+    display: inline-block;
     float: right;
     margin-top: 10px;
+}
+
+.user-myquestion img {
+    height: 20px;
 }
 
 .question-nav-h {
@@ -338,6 +348,13 @@ a:active {
 
 .answer-left .answer-content {
     text-indent: 3em;
+}
+
+.common-ask {
+    position: fixed;
+    bottom: 60px;
+    width: 94%;
+    left: 3%;
 }
 
 .common-ask input {

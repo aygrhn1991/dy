@@ -1,7 +1,7 @@
 package com.dy.controller;
 
+import com.dy.model.Answer;
 import com.dy.model.Question;
-import com.dy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,16 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +67,7 @@ public class HomeCtrl {
     @ResponseBody
     public boolean addquestion(@RequestBody Question question) {
         String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (0,?,?,?,0,0,0,0)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_title, this.getUserId(), new Date().getTime()});
+        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_title, question.t_user_id, new Date().getTime()});
         return count == 1;
     }
 
@@ -98,39 +92,85 @@ public class HomeCtrl {
     }
     //</editor-fold>
 
-    //<editor-fold desc="用户,文章详细，问题，问题详细">
+    //<editor-fold desc="图文内容">
+    @RequestMapping("/queryarticle/{id}")
+    @ResponseBody
+    public Map<String, Object> queryarticle(@PathVariable("id") int id) {
+        String sql = "update t_article set t_scan=t_scan+1 where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        sql = "select * from t_article where t_id=?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list.get(0);
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="问提回答">
     @RequestMapping("/queryuser/{id}")
     @ResponseBody
     public Map<String, Object> queryuser(@PathVariable("id") int id) {
         String sql = "select * from t_user where t_id=?";
-        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return userList.get(0);
-    }
-
-    @RequestMapping("/queryarticle/{id}")
-    @ResponseBody
-    public Map<String, Object> queryarticle(@PathVariable("id") int id) {
-        String sql = "select * from t_article where t_id=?";
-        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return userList.get(0);
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list.get(0);
     }
 
     @RequestMapping("/queryquestion/{id}")
     @ResponseBody
     public Map<String, Object> queryquestion(@PathVariable("id") int id) {
         String sql = "select * from t_question where t_id=?";
-        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return userList.get(0);
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list.get(0);
     }
 
     @RequestMapping("/queryallanswers/{id}")
     @ResponseBody
-    public Map<String, Object> queryallanswers(@PathVariable("id") int id) {
+    public List<Map<String, Object>> queryallanswers(@PathVariable("id") int id) {
         String sql = "select * from t_answer where t_question_id=?";
-        List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return userList.get(0);
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list;
     }
 
+    @RequestMapping("/addanswer")
+    @ResponseBody
+    public boolean addanswer(@RequestBody Answer answer) {
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_time, t_content) values (?,?,?,?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, answer.t_user_id, new Date().getTime(), answer.t_content});
+        if (count == 1) {
+            sql = "update t_question set t_solved=0 where t_id=" + answer.t_question_id;
+            count = this.jdbcTemplate.update(sql);
+            return count == 1;
+        }
+        return false;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="图文列表">
+    @RequestMapping(value = {"/queryarticles/{pageIndex}/{pageSize}/{orderby}/{id}/{keyword}",
+            "/queryarticles/{pageIndex}/{pageSize}/{orderby}/{id}"})
+    @ResponseBody
+    public List<Map<String, Object>> queryarticles(
+            @PathVariable("pageIndex") int pageIndex,
+            @PathVariable("pageSize") int pageSize,
+            @PathVariable("orderby") int orderby,//1.最新 2.热门
+            @PathVariable("id") int id,
+            @PathVariable(value = "keyword", required = false) String keyword) {
+        List<Map<String, Object>> list;
+        String sql = "select t_id,t_title,t_cover from t_article ";
+        if (keyword == null || keyword.equals("")) {
+            sql += " where t_type_id=? ";
+            if (orderby == 1) {
+                sql += " order by t_time desc ";
+            } else {
+                sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+            }
+            sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+            list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        } else {
+            sql += " where t_title like '%" + keyword + "%' ";
+            sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+            list = this.jdbcTemplate.queryForList(sql);
+        }
+        return list;
+    }
     //</editor-fold>
 
     private int getUserId() {
