@@ -4,9 +4,9 @@
     <div class="article-head">
         <div class="article-head-title" ng-bind="article.t_title"></div>
         <div class="article-head-time">
-            作者：<span ng-bind="article.t_author">测试</span>
+            作者：<span ng-bind="article.t_author"></span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span ng-bind="article.t_time|date:'yyyy-MM-dd HH:mm:ss'">测试</span>
+            <span ng-bind="article.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>
         </div>
     </div>
     <div class="common-wrapper">

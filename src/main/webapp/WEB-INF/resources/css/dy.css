@@ -219,6 +219,7 @@ a:active {
     border-bottom: 1px solid #f9f8f8;
     line-height: 40px;
     padding: 0 15px;
+    display: block;
 }
 
 .question-title-b {
@@ -246,6 +247,7 @@ a:active {
     border-bottom: 1px solid #f9f8f8;
     line-height: 30px;
     padding: 0 15px;
+    display: block;
 }
 
 .question-title-c {

@@ -173,6 +173,16 @@ public class HomeCtrl {
     }
     //</editor-fold>
 
+    //<editor-fold desc="问题列表">
+    @RequestMapping("/queryallquestions/{id}")
+    @ResponseBody
+    public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
+        String sql = "select * from t_question where t_user_id=?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list;
+    }
+    //</editor-fold>
+
     private int getUserId() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Cookie[] cookies = request.getCookies();

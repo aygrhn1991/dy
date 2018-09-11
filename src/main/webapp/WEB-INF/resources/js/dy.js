@@ -55,6 +55,42 @@ app.controller('indexCtrl', function ($scope, $http) {
     };
     $scope.init();
 });
+app.controller('askCtrl', function ($scope, $http) {
+    $scope.queryuser = function () {
+        $http.post('/dy/home/queryuser/' + $scope.userid, null).success(function (d) {
+            $scope.user = d;
+        });
+    };
+    $scope.ask = function () {
+        if ($scope.t_title == null || $scope.t_title == 'undefined' || $scope.t_title == '') {
+            layer.msg('您还没有输入内容', {time: 500});
+            return;
+        }
+        $http.post('/dy/home/addquestion', {
+            t_title: $scope.t_title,
+            t_user_id: $scope.userid
+        }).success(function (d) {
+            if (d == true) {
+                window.location.href = '/dy/home/askfinish';
+            } else {
+                layer.msg('提交失败', {time: 500});
+            }
+        }).error(function (e) {
+            layer.msg('提交失败', {time: 500});
+        });
+    };
+    $scope.queryquestionsbytop = function () {
+        $http.post('/dy/home/queryquestionsbytop', null).success(function (d) {
+            $scope.questions = d;
+        });
+    };
+    $scope.init = function () {
+        $scope.userid = window.getUserId('userid');
+        $scope.queryuser();
+        $scope.queryquestionsbytop();
+    };
+    $scope.init();
+});
 app.controller('articleCtrl', function ($scope, $http, $sce) {
     $scope.queryarticle = function () {
         $http.post('/dy/home/queryarticle/' + $scope.id, null).success(function (d) {
@@ -163,6 +199,24 @@ app.controller('questionCtrl', function ($scope, $http) {
         $scope.queryuser();
         $scope.queryquestion();
         $scope.queryallanswers();
+    };
+    $scope.init();
+});
+app.controller('questionsCtrl', function ($scope, $http) {
+    $scope.queryuser = function () {
+        $http.post('/dy/home/queryuser/' + $scope.userid, null).success(function (d) {
+            $scope.user = d;
+        });
+    };
+    $scope.queryallquestions = function () {
+        $http.post('/dy/home/queryallquestions/' + $scope.userid, null).success(function (d) {
+            $scope.questions = d;
+        });
+    };
+    $scope.init = function () {
+        $scope.userid = window.getUserId('userid');
+        $scope.queryuser();
+        $scope.queryallquestions();
     };
     $scope.init();
 });

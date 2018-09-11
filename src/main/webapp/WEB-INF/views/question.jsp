@@ -4,7 +4,7 @@
     <div class="user-wrapper" ng-if="question.t_user_id==userid">
         <img src="{{user.w_headimgurl}}" class="user-headimg">
         <span class="user-nickname">&nbsp;&nbsp;<span ng-bind="user.w_nickname"></span></span>
-        <a href="/dy/home/questions?id={{userid}}" class="user-myquestion">
+        <a href="/dy/home/questions" class="user-myquestion">
             <img src="/dy/static/img/1.png">
         </a>
     </div>
