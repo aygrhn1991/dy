@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mysql
+ Source Server         : local-mysql
  Source Server Type    : MySQL
- Source Server Version : 80012
- Source Host           : localhost:3306
+ Source Server Version : 50722
+ Source Host           : 127.0.0.1:3306
  Source Schema         : dy
 
  Target Server Type    : MySQL
- Target Server Version : 80012
+ Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 09/09/2018 20:33:45
+ Date: 12/09/2018 12:34:16
 */
 
 SET NAMES utf8mb4;
@@ -109,6 +109,26 @@ INSERT INTO `t_question` VALUES (13, 7, 'eee1', NULL, 1536060714307, 0, 0, 1, 0)
 INSERT INTO `t_question` VALUES (14, 14, '骨折了！！！', NULL, 1536071454242, 0, 3, 1, 1);
 
 -- ----------------------------
+-- Table structure for t_question_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `t_question_tag`;
+CREATE TABLE `t_question_tag`  (
+  `t_question_id` int(11) NOT NULL,
+  `t_tag_id` int(11) NOT NULL,
+  PRIMARY KEY (`t_question_id`, `t_tag_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `t_tag`;
+CREATE TABLE `t_tag`  (
+  `t_id` int(11) NOT NULL AUTO_INCREMENT,
+  `t_tag_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`t_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_type
 -- ----------------------------
 DROP TABLE IF EXISTS `t_type`;
@@ -144,7 +164,7 @@ CREATE TABLE `t_user`  (
   `t_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `t_time` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_user
