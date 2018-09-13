@@ -173,7 +173,7 @@ public class AdminCtrl {
                                                    @PathVariable("pageSize") int pageSize,
                                                    @PathVariable(value = "id") int id,
                                                    @PathVariable(value = "keyword", required = false) String keyword) {
-        String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top from t_article left join t_type on t_type.t_id=t_article.t_type_id";
+        String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top,t_scan_origin from t_article left join t_type on t_type.t_id=t_article.t_type_id";
         sql += " where 1=1 ";
         if (keyword != null && !keyword.equals("")) {
             sql += " and t_title like '%" + keyword + "%'";
@@ -198,7 +198,7 @@ public class AdminCtrl {
     @RequestMapping("/addarticle")
     @ResponseBody
     public boolean addarticle(@RequestBody Article article) {
-        String sql = "insert into t_article(t_type_id, t_title, t_author, t_time, t_cover, t_content, t_scan, t_sort, t_top) values (?,?,?,?,?,?,0,0,0)";
+        String sql = "insert into t_article(t_type_id, t_title, t_author, t_time, t_cover, t_content, t_scan, t_sort, t_top, t_scan_origin) values (?,?,?,?,?,?,0,0,0,0)";
         int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content});
         return count == 1;
     }
@@ -300,7 +300,7 @@ public class AdminCtrl {
     @RequestMapping("/addquestion")
     @ResponseBody
     public boolean addquestion(@RequestBody final Question question) {
-        final String sql = "insert into t_question( t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (?,0,?,0,0,0,0)";
+        final String sql = "insert into t_question( t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved, t_scan_origin) values (?,0,?,0,0,0,0,0)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         this.jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -448,6 +448,21 @@ public class AdminCtrl {
         return count == 1;
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="个人中心">
+    @RequestMapping("/changepassword/{oldpassword}/{newpassword}")
+    @ResponseBody
+    public boolean changepassword(@PathVariable("oldpassword") String oldpassword, @PathVariable("newpassword") String newpassword) {
+        String sql = "select * from t_setting where t_key='password'";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        if (list.get(0).get("t_value").equals(oldpassword)) {
+            sql = "update t_setting set t_value=? where t_key='password'";
+            int count = this.jdbcTemplate.update(sql, new Object[]{newpassword});
+            return count == 1;
+        }
+        return false;
+    }
     //</editor-fold>
 
     //<editor-fold desc="上传文件处理">

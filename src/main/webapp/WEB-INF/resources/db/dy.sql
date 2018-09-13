@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 13/09/2018 21:50:54
+ Date: 13/09/2018 23:50:38
 */
 
 SET NAMES utf8mb4;
@@ -66,16 +66,17 @@ CREATE TABLE `t_article`  (
   `t_scan` int(11) NULL DEFAULT NULL,
   `t_sort` int(11) NULL DEFAULT NULL,
   `t_top` int(11) NULL DEFAULT NULL,
+  `t_scan_origin` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_article
 -- ----------------------------
-INSERT INTO `t_article` VALUES (1, 14, '流行感冒吃什么药', '医学图解', 1535883229563, 'af7385f4-d706-40a6-b10c-8603ce5aa4db.jpg', '<p>123</p>\n', 0, 0, 1);
-INSERT INTO `t_article` VALUES (2, 7, '333', '33', 1536067552321, '31ecd0ec-34f6-4772-841d-e4c86c1dd4b9.jpg', '<p style=\"text-align:center\"><img alt=\"\" src=\"http://localhost:8000/article/65eee5d2-5d07-40eb-b5a6-0ada25badf8e.jpg\" style=\"height:146px; width:111px\" /></p>\n\n<p>123123123</p>\n', 0, 1, 0);
-INSERT INTO `t_article` VALUES (4, 13, '测试', '测试狗', 1538317690774, 'c6d26e0d-422a-490f-9ed3-78e4e385895a.jpg', '<p>正确时返回的JSON数据包如下：</p>\n\n<pre>\n<code>{ &quot;access_token&quot;:&quot;ACCESS_TOKEN&quot;,\n&quot;expires_in&quot;:7200,\n&quot;refresh_token&quot;:&quot;REFRESH_TOKEN&quot;,\n&quot;openid&quot;:&quot;OPENID&quot;,\n&quot;scope&quot;:&quot;SCOPE&quot; }\n</code></pre>\n\n<table>\n	<thead>\n		<tr>\n			<th>参数</th>\n			<th>描述</th>\n		</tr>\n	</thead>\n	<tbody>\n		<tr>\n			<td>access_token</td>\n			<td>网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</td>\n		</tr>\n		<tr>\n			<td>expires_in</td>\n			<td>access_token接口调用凭证超时时间，单位（秒）</td>\n		</tr>\n		<tr>\n			<td>refresh_token</td>\n			<td>用户刷新access_token</td>\n		</tr>\n		<tr>\n			<td>openid</td>\n			<td>用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID</td>\n		</tr>\n		<tr>\n			<td>scope</td>\n			<td>用户授权的作用域，使用逗号（,）分隔</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>错误时微信会返回JSON数据包如下（示例为Code无效错误）:</p>\n\n<pre>\n<code>{&quot;errcode&quot;:40029,&quot;errmsg&quot;:&quot;invalid code&quot;}\n</code></pre>\n\n<p>&nbsp;</p>\n\n<p><strong>第三步：刷新access_token（如果需要）</strong></p>\n\n<p>由于access_token拥有较短的有效期，当access_token超时后，可以使用refresh_token进行刷新，refresh_token有效期为30天，当refresh_token失效之后，需要用户重新授权。</p>\n\n<p><strong>请求方法</strong></p>\n\n<pre>\n<code>获取第二步的refresh_token后，请求以下链接获取access_token：\nhttps://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&amp;grant_type=refresh_token&amp;refresh_token=REFRESH_TOKEN\n</code></pre>\n\n<table>\n	<thead>\n		<tr>\n			<th>参数</th>\n			<th>是否必须</th>\n			<th>说明</th>\n		</tr>\n	</thead>\n	<tbody>\n		<tr>\n			<td>appid</td>\n			<td>是</td>\n			<td>公众号的唯一标识</td>\n		</tr>\n		<tr>\n			<td>grant_type</td>\n			<td>是</td>\n			<td>填写为refresh_token</td>\n		</tr>\n		<tr>\n			<td>refresh_token</td>\n			<td>是</td>\n			<td>填写通过access_token获取到的refresh_token参数</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>返回说明</p>\n\n<p>正确时返回的JSON数据包如下：</p>\n\n<pre>\n<code>{ &quot;access_token&quot;:&quot;ACCESS_TOKEN&quot;,\n&quot;expires_in&quot;:7200,\n&quot;refresh_token&quot;:&quot;REFRESH_TOKEN&quot;,\n&quot;openid&quot;:&quot;OPENID&quot;,\n&quot;scope&quot;:&quot;SCOPE&quot; }\n</code></pre>\n\n<table>\n	<thead>\n		<tr>\n			<th>参数</th>\n			<th>描述</th>\n		</tr>\n	</thead>\n	<tbody>\n		<tr>\n			<td>access_token</td>\n			<td>网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</td>\n		</tr>\n		<tr>\n			<td>expires_in</td>\n			<td>access_token接口调用凭证超时时间，单位（秒）</td>\n		</tr>\n		<tr>\n			<td>refresh_token</td>\n			<td>用户刷新access_token</td>\n		</tr>\n		<tr>\n			<td>openid</td>\n			<td>用户唯一标识</td>\n		</tr>\n		<tr>\n			<td>scope</td>\n			<td>用户授权的作用域，使用逗号（,）分隔</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>错误时微信会返回JSON数据包如下（示例为code无效错误）:</p>\n\n<p>&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><img alt=\"\" src=\"http://localhost:8000/article/29abb70a-1a07-41e1-843b-01172696da72.jpg\" style=\"height:750px; width:530px\" /></p>\n', 0, 0, 0);
-INSERT INTO `t_article` VALUES (5, 14, '阿', '阿', 1536489800992, 'c2a2bdb1-5337-405b-a30b-f8367e8bd033.jpg', '<p>恶趣味</p>\n\n<p><img alt=\"\" src=\"http://localhost:8000/article/7ee1eac8-b0ba-4c12-8ca1-76d92fb3ba71.jpeg\" style=\"height:1280px; width:720px\" /></p>\n', 0, 0, 0);
+INSERT INTO `t_article` VALUES (1, 14, '流行感冒吃什么药', '医学图解', 1535883229563, 'af7385f4-d706-40a6-b10c-8603ce5aa4db.jpg', '<p>123</p>\n', 0, 0, 1, 0);
+INSERT INTO `t_article` VALUES (2, 7, '333', '33', 1536067552321, '31ecd0ec-34f6-4772-841d-e4c86c1dd4b9.jpg', '<p style=\"text-align:center\"><img alt=\"\" src=\"http://localhost:8000/article/65eee5d2-5d07-40eb-b5a6-0ada25badf8e.jpg\" style=\"height:146px; width:111px\" /></p>\n\n<p>123123123</p>\n', 0, 1, 0, 0);
+INSERT INTO `t_article` VALUES (4, 13, '测试', '测试狗', 1538317690774, 'c6d26e0d-422a-490f-9ed3-78e4e385895a.jpg', '<p>正确时返回的JSON数据包如下：</p>\n\n<pre>\n<code>{ &quot;access_token&quot;:&quot;ACCESS_TOKEN&quot;,\n&quot;expires_in&quot;:7200,\n&quot;refresh_token&quot;:&quot;REFRESH_TOKEN&quot;,\n&quot;openid&quot;:&quot;OPENID&quot;,\n&quot;scope&quot;:&quot;SCOPE&quot; }\n</code></pre>\n\n<table>\n	<thead>\n		<tr>\n			<th>参数</th>\n			<th>描述</th>\n		</tr>\n	</thead>\n	<tbody>\n		<tr>\n			<td>access_token</td>\n			<td>网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</td>\n		</tr>\n		<tr>\n			<td>expires_in</td>\n			<td>access_token接口调用凭证超时时间，单位（秒）</td>\n		</tr>\n		<tr>\n			<td>refresh_token</td>\n			<td>用户刷新access_token</td>\n		</tr>\n		<tr>\n			<td>openid</td>\n			<td>用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID</td>\n		</tr>\n		<tr>\n			<td>scope</td>\n			<td>用户授权的作用域，使用逗号（,）分隔</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>错误时微信会返回JSON数据包如下（示例为Code无效错误）:</p>\n\n<pre>\n<code>{&quot;errcode&quot;:40029,&quot;errmsg&quot;:&quot;invalid code&quot;}\n</code></pre>\n\n<p>&nbsp;</p>\n\n<p><strong>第三步：刷新access_token（如果需要）</strong></p>\n\n<p>由于access_token拥有较短的有效期，当access_token超时后，可以使用refresh_token进行刷新，refresh_token有效期为30天，当refresh_token失效之后，需要用户重新授权。</p>\n\n<p><strong>请求方法</strong></p>\n\n<pre>\n<code>获取第二步的refresh_token后，请求以下链接获取access_token：\nhttps://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&amp;grant_type=refresh_token&amp;refresh_token=REFRESH_TOKEN\n</code></pre>\n\n<table>\n	<thead>\n		<tr>\n			<th>参数</th>\n			<th>是否必须</th>\n			<th>说明</th>\n		</tr>\n	</thead>\n	<tbody>\n		<tr>\n			<td>appid</td>\n			<td>是</td>\n			<td>公众号的唯一标识</td>\n		</tr>\n		<tr>\n			<td>grant_type</td>\n			<td>是</td>\n			<td>填写为refresh_token</td>\n		</tr>\n		<tr>\n			<td>refresh_token</td>\n			<td>是</td>\n			<td>填写通过access_token获取到的refresh_token参数</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>返回说明</p>\n\n<p>正确时返回的JSON数据包如下：</p>\n\n<pre>\n<code>{ &quot;access_token&quot;:&quot;ACCESS_TOKEN&quot;,\n&quot;expires_in&quot;:7200,\n&quot;refresh_token&quot;:&quot;REFRESH_TOKEN&quot;,\n&quot;openid&quot;:&quot;OPENID&quot;,\n&quot;scope&quot;:&quot;SCOPE&quot; }\n</code></pre>\n\n<table>\n	<thead>\n		<tr>\n			<th>参数</th>\n			<th>描述</th>\n		</tr>\n	</thead>\n	<tbody>\n		<tr>\n			<td>access_token</td>\n			<td>网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</td>\n		</tr>\n		<tr>\n			<td>expires_in</td>\n			<td>access_token接口调用凭证超时时间，单位（秒）</td>\n		</tr>\n		<tr>\n			<td>refresh_token</td>\n			<td>用户刷新access_token</td>\n		</tr>\n		<tr>\n			<td>openid</td>\n			<td>用户唯一标识</td>\n		</tr>\n		<tr>\n			<td>scope</td>\n			<td>用户授权的作用域，使用逗号（,）分隔</td>\n		</tr>\n	</tbody>\n</table>\n\n<p>错误时微信会返回JSON数据包如下（示例为code无效错误）:</p>\n\n<p>&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p><img alt=\"\" src=\"http://localhost:8000/article/29abb70a-1a07-41e1-843b-01172696da72.jpg\" style=\"height:750px; width:530px\" /></p>\n', 0, 0, 0, 1);
+INSERT INTO `t_article` VALUES (5, 14, '阿', '阿', 1536489800992, 'c2a2bdb1-5337-405b-a30b-f8367e8bd033.jpg', '<p>恶趣味</p>\n\n<p><img alt=\"\" src=\"http://localhost:8000/article/7ee1eac8-b0ba-4c12-8ca1-76d92fb3ba71.jpeg\" style=\"height:1280px; width:720px\" /></p>\n', 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for t_question
@@ -90,27 +91,27 @@ CREATE TABLE `t_question`  (
   `t_sort` int(11) NULL DEFAULT NULL,
   `t_top` int(11) NULL DEFAULT NULL,
   `t_solved` tinyint(1) NULL DEFAULT NULL,
+  `t_scan_origin` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_question
 -- ----------------------------
-INSERT INTO `t_question` VALUES (1, '大姨夫来了吃什么？', 5, 1535883229563, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (3, '小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？', 5, 0, 3, 0, 1, 1);
-INSERT INTO `t_question` VALUES (10, '测试', 0, 1535989001223, 3, 1, 0, 0);
-INSERT INTO `t_question` VALUES (11, '测userid', 0, 1536058556415, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (14, '骨折了！！！', 0, 1536071454242, 0, 3, 1, 1);
-INSERT INTO `t_question` VALUES (15, '感冒发烧流鼻涕怎么办', 0, 1536836138967, 0, 0, 1, 1);
-INSERT INTO `t_question` VALUES (16, 'ddd', 0, 1536841175734, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (17, '腰间盘突出怎么办', 0, 1536841234551, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (18, '腰间盘突出怎么办', 0, 1536841501555, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (19, '腰间盘突出怎么办', 0, 1536841639847, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (20, '腰间盘突出怎么办', 0, 1536841709382, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (21, '感冒了哟', 0, 1536843402889, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (22, '腰间盘突出发烧了', 0, 1536844531246, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (23, '腰间盘突出发烧了2', 0, 1536844787538, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (24, '这句没有关键字', 0, 1536844859367, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (1, '大姨夫来了吃什么？', 5, 1535883229563, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (3, '小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？', 5, 0, 3, 0, 1, 1, 0);
+INSERT INTO `t_question` VALUES (10, '测试', 0, 1535989001223, 3, 1, 0, 0, 0);
+INSERT INTO `t_question` VALUES (11, '测userid', 0, 1536058556415, 0, 0, 1, 0, 0);
+INSERT INTO `t_question` VALUES (14, '骨折了！！！', 0, 1536071454242, 0, 3, 1, 1, 0);
+INSERT INTO `t_question` VALUES (15, '感冒发烧流鼻涕怎么办', 0, 1536836138967, 0, 0, 1, 1, 0);
+INSERT INTO `t_question` VALUES (17, '腰间盘突出怎么办', 0, 1536841234551, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (18, '腰间盘突出怎么办', 0, 1536841501555, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (19, '腰间盘突出怎么办', 0, 1536841639847, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (20, '腰间盘突出怎么办', 0, 1536841709382, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (21, '感冒了哟', 0, 1536843402889, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (22, '腰间盘突出发烧了', 0, 1536844531246, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (23, '腰间盘突出发烧了2', 0, 1536844787538, 0, 0, 1, 0, 0);
+INSERT INTO `t_question` VALUES (24, '这句没有关键字', 0, 1536844859367, 0, 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for t_question_tag
@@ -134,6 +135,21 @@ INSERT INTO `t_question_tag` VALUES (15, 6);
 INSERT INTO `t_question_tag` VALUES (15, 7);
 INSERT INTO `t_question_tag` VALUES (23, 2);
 INSERT INTO `t_question_tag` VALUES (23, 6);
+
+-- ----------------------------
+-- Table structure for t_setting
+-- ----------------------------
+DROP TABLE IF EXISTS `t_setting`;
+CREATE TABLE `t_setting`  (
+  `t_key` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `t_value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`t_key`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_setting
+-- ----------------------------
+INSERT INTO `t_setting` VALUES ('password', '3');
 
 -- ----------------------------
 -- Table structure for t_tag

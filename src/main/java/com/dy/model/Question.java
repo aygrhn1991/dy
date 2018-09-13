@@ -11,5 +11,6 @@ public class Question {
     public int t_sort;
     public boolean t_top;
     public boolean t_solved;
+    public int t_scan_origin;
     public List<Integer> tags;
 }

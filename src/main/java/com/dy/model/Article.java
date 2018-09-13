@@ -11,4 +11,5 @@ public class Article {
     public int t_scan;
     public int t_sort;
     public boolean t_top;
+    public int t_scan_origin;
 }
