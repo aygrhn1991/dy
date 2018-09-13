@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 13/09/2018 18:26:17
+ Date: 13/09/2018 21:50:54
 */
 
 SET NAMES utf8mb4;
@@ -34,21 +34,22 @@ CREATE TABLE `t_answer`  (
 -- Records of t_answer
 -- ----------------------------
 INSERT INTO `t_answer` VALUES (1, 1, 1, 1535775869331, '百年大计，教育为本。教育大计，教师为本。”党的十八大以来，以习近平同志为核心的党中央高度重视教师队伍建设问题，在不同场合多次强调教师工作的重要意义。今天，新时代学习工作室带您回顾习近平总书记对于教师的期望和寄语');
-INSERT INTO `t_answer` VALUES (2, 1, NULL, 1535775869332, '发展教育事业，广大教师责任重大、使命光荣。希望你们牢记使命、不忘初衷，扎根西部、服务学生，努力做教育改革的奋进者、教育扶贫的先行者、学生成长的引导者，为贫困地区教育事业发展、为祖国下一代健康成长继续作出自己的贡献。');
+INSERT INTO `t_answer` VALUES (2, 1, 0, 1535775869332, '发展教育事业，广大教师责任重大、使命光荣。希望你们牢记使命、不忘初衷，扎根西部、服务学生，努力做教育改革的奋进者、教育扶贫的先行者、学生成长的引导者，为贫困地区教育事业发展、为祖国下一代健康成长继续作出自己的贡献。');
 INSERT INTO `t_answer` VALUES (3, 1, 1, 1535775869333, '我是提问者，嘿嘿');
-INSERT INTO `t_answer` VALUES (4, 1, NULL, 1535775869334, '我是医生bbb我是医生bbb我是医生bbb我是医生bbb我是医生bbb');
+INSERT INTO `t_answer` VALUES (4, 1, 0, 1535775869334, '我是医生bbb我是医生bbb我是医生bbb我是医生bbb我是医生bbb');
 INSERT INTO `t_answer` VALUES (6, 3, 1, 1536058378220, 'hi');
-INSERT INTO `t_answer` VALUES (7, 3, NULL, 1536058390140, 'hi1');
-INSERT INTO `t_answer` VALUES (9, 10, NULL, 1536059087650, 'ww\n');
-INSERT INTO `t_answer` VALUES (10, 5, NULL, 1536069557411, '2');
-INSERT INTO `t_answer` VALUES (13, 3, NULL, 1536070152392, 'ook');
-INSERT INTO `t_answer` VALUES (14, 3, NULL, 1536070161576, 'ook');
-INSERT INTO `t_answer` VALUES (15, 3, NULL, 1536070258378, 'ok');
-INSERT INTO `t_answer` VALUES (16, 4, NULL, 1536070373315, 'hahah');
-INSERT INTO `t_answer` VALUES (17, 4, NULL, 1536070378096, 'hahah3');
-INSERT INTO `t_answer` VALUES (18, 7, NULL, 1536070386225, 'hahah3');
-INSERT INTO `t_answer` VALUES (19, 14, NULL, 1536071509857, '接上');
-INSERT INTO `t_answer` VALUES (20, 3, NULL, 1536487974778, '55');
+INSERT INTO `t_answer` VALUES (9, 10, 0, 1536059087650, 'ww\n');
+INSERT INTO `t_answer` VALUES (10, 5, 0, 1536069557411, '2');
+INSERT INTO `t_answer` VALUES (13, 3, 0, 1536070152392, 'ook');
+INSERT INTO `t_answer` VALUES (14, 3, 0, 1536070161576, 'ook');
+INSERT INTO `t_answer` VALUES (15, 3, 0, 1536070258378, 'ok');
+INSERT INTO `t_answer` VALUES (16, 4, 0, 1536070373315, 'hahah');
+INSERT INTO `t_answer` VALUES (17, 4, 0, 1536070378096, 'hahah3');
+INSERT INTO `t_answer` VALUES (18, 7, 0, 1536070386225, 'hahah3');
+INSERT INTO `t_answer` VALUES (19, 14, 0, 1536071509857, '接上');
+INSERT INTO `t_answer` VALUES (20, 3, 0, 1536487974778, '55');
+INSERT INTO `t_answer` VALUES (21, 15, 0, 1536836162109, '喝点酒');
+INSERT INTO `t_answer` VALUES (22, 15, 0, 1536839942772, 'l');
 
 -- ----------------------------
 -- Table structure for t_article
@@ -97,15 +98,19 @@ CREATE TABLE `t_question`  (
 -- ----------------------------
 INSERT INTO `t_question` VALUES (1, '大姨夫来了吃什么？', 5, 1535883229563, 0, 0, 0, 0);
 INSERT INTO `t_question` VALUES (3, '小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？', 5, 0, 3, 0, 1, 1);
-INSERT INTO `t_question` VALUES (4, '发', 5, 0, 0, 0, 0, 1);
-INSERT INTO `t_question` VALUES (6, '发4', NULL, 0, 0, 0, 0, 1);
-INSERT INTO `t_question` VALUES (7, '发5', NULL, 0, 0, 0, 0, 1);
-INSERT INTO `t_question` VALUES (8, '发7', NULL, 0, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (10, '测试', NULL, 1535989001223, 3, 1, 0, 0);
-INSERT INTO `t_question` VALUES (11, '测userid', NULL, 1536058556415, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (12, 'ee', NULL, 1536060709695, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (13, 'eee1', NULL, 1536060714307, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (14, '骨折了！！！', NULL, 1536071454242, 0, 3, 1, 1);
+INSERT INTO `t_question` VALUES (10, '测试', 0, 1535989001223, 3, 1, 0, 0);
+INSERT INTO `t_question` VALUES (11, '测userid', 0, 1536058556415, 0, 0, 1, 0);
+INSERT INTO `t_question` VALUES (14, '骨折了！！！', 0, 1536071454242, 0, 3, 1, 1);
+INSERT INTO `t_question` VALUES (15, '感冒发烧流鼻涕怎么办', 0, 1536836138967, 0, 0, 1, 1);
+INSERT INTO `t_question` VALUES (16, 'ddd', 0, 1536841175734, 0, 0, 1, 0);
+INSERT INTO `t_question` VALUES (17, '腰间盘突出怎么办', 0, 1536841234551, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (18, '腰间盘突出怎么办', 0, 1536841501555, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (19, '腰间盘突出怎么办', 0, 1536841639847, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (20, '腰间盘突出怎么办', 0, 1536841709382, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (21, '感冒了哟', 0, 1536843402889, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (22, '腰间盘突出发烧了', 0, 1536844531246, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (23, '腰间盘突出发烧了2', 0, 1536844787538, 0, 0, 1, 0);
+INSERT INTO `t_question` VALUES (24, '这句没有关键字', 0, 1536844859367, 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for t_question_tag
@@ -118,6 +123,19 @@ CREATE TABLE `t_question_tag`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of t_question_tag
+-- ----------------------------
+INSERT INTO `t_question_tag` VALUES (14, 1);
+INSERT INTO `t_question_tag` VALUES (15, 1);
+INSERT INTO `t_question_tag` VALUES (15, 2);
+INSERT INTO `t_question_tag` VALUES (15, 4);
+INSERT INTO `t_question_tag` VALUES (15, 5);
+INSERT INTO `t_question_tag` VALUES (15, 6);
+INSERT INTO `t_question_tag` VALUES (15, 7);
+INSERT INTO `t_question_tag` VALUES (23, 2);
+INSERT INTO `t_question_tag` VALUES (23, 6);
+
+-- ----------------------------
 -- Table structure for t_tag
 -- ----------------------------
 DROP TABLE IF EXISTS `t_tag`;
@@ -126,6 +144,17 @@ CREATE TABLE `t_tag`  (
   `t_tag_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_tag
+-- ----------------------------
+INSERT INTO `t_tag` VALUES (1, '感冒');
+INSERT INTO `t_tag` VALUES (2, '发烧');
+INSERT INTO `t_tag` VALUES (3, '腹泻');
+INSERT INTO `t_tag` VALUES (4, '便秘');
+INSERT INTO `t_tag` VALUES (5, '痛风');
+INSERT INTO `t_tag` VALUES (6, '腰间盘突出');
+INSERT INTO `t_tag` VALUES (7, '颈椎病');
 
 -- ----------------------------
 -- Table structure for t_type
@@ -140,10 +169,10 @@ CREATE TABLE `t_type`  (
 -- ----------------------------
 -- Records of t_type
 -- ----------------------------
-INSERT INTO `t_type` VALUES (7, '妇科');
-INSERT INTO `t_type` VALUES (13, '儿科');
-INSERT INTO `t_type` VALUES (14, '骨科');
-INSERT INTO `t_type` VALUES (15, '消化科');
+INSERT INTO `t_type` VALUES (1, '妇产科');
+INSERT INTO `t_type` VALUES (2, '儿科');
+INSERT INTO `t_type` VALUES (3, '骨外科');
+INSERT INTO `t_type` VALUES (4, '消化科');
 
 -- ----------------------------
 -- Table structure for t_user
