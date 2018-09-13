@@ -87,6 +87,60 @@ public class AdminCtrl {
 
     //</editor-fold>
 
+    //<editor-fold desc="标签">
+    @RequestMapping("/querytagscount")
+    @ResponseBody
+    public int querytagscount() {
+        String sql = "select count(*) from t_tag";
+        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
+        return count;
+    }
+
+    @RequestMapping("/queryalltags")
+    @ResponseBody
+    public List<Map<String, Object>> queryalltags() {
+        String sql = "select * from t_tag";
+        sql += " order by t_id desc ";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @RequestMapping("/querytags/{pageIndex}/{pageSize}")
+    @ResponseBody
+    public List<Map<String, Object>> querytags(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+        String sql = "select * from t_tag";
+        sql += " order by t_id desc ";
+        sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    @RequestMapping("/addtag")
+    @ResponseBody
+    public boolean addtag(@RequestBody Tag tag) {
+        String sql = "insert into t_tag(t_tag_name) values(?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{tag.t_tag_name});
+        return count == 1;
+    }
+
+    @RequestMapping("/edittag")
+    @ResponseBody
+    public boolean edittag(@RequestBody Tag tag) {
+        String sql = "update t_tag set t_tag_name=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{tag.t_tag_name, tag.t_id});
+        return count == 1;
+    }
+
+    @RequestMapping("/deletetag/{id}")
+    @ResponseBody
+    public boolean deletetag(@PathVariable("id") int id) {
+        String sql = "delete from t_tag where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        return count == 1;
+    }
+
+    //</editor-fold>
+
     //<editor-fold desc="图文">
     @RequestMapping("/queryarticlescount")
     @ResponseBody
