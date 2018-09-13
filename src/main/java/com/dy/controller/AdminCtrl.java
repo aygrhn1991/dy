@@ -6,6 +6,9 @@ import com.dy.util.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +18,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -238,7 +245,7 @@ public class AdminCtrl {
     //</editor-fold>
 
     //<editor-fold desc="问题">
-    @RequestMapping(value = {"/queryquestionscount",
+    @RequestMapping(value = {"/queryquestionscount/{state}",
             "/queryquestionscount/{state}/{keyword}"})
     @ResponseBody
     public int queryquestionscount(@PathVariable(value = "state") int state,
@@ -258,13 +265,13 @@ public class AdminCtrl {
     @RequestMapping("/queryallquestions/{id}")
     @ResponseBody
     public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
-        String sql = "select t_title,t_type_name,t_time from t_question left join t_type on t_type.t_id=t_question.t_type_id where t_user_id=?";
+        String sql = "select t_title,t_time from t_question where t_user_id=?";
         sql += " order by t_time desc ";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
         return list;
     }
 
-    @RequestMapping(value = {"/queryquestions/{pageIndex}/{pageSize}",
+    @RequestMapping(value = {"/queryquestions/{pageIndex}/{pageSize}/{state}",
             "/queryquestions/{pageIndex}/{pageSize}/{state}/{keyword}"})
     @ResponseBody
     public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex,
@@ -292,17 +299,53 @@ public class AdminCtrl {
 
     @RequestMapping("/addquestion")
     @ResponseBody
-    public boolean addquestion(@RequestBody Question question) {
-        String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (?,?,0,?,0,0,0,0)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_type_id, question.t_title, new Date().getTime()});
-        return count == 1;
+    public boolean addquestion(@RequestBody final Question question) {
+        final String sql = "insert into t_question( t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (?,0,?,0,0,0,0)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        this.jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+                PreparedStatement ps = ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, question.t_title);
+                ps.setLong(2, new Date().getTime());
+                return ps;
+            }
+        }, keyHolder);
+        int id = keyHolder.getKey().intValue();
+        String sql2 = "select * from t_tag";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql2);
+        List<Object[]> objs = new ArrayList<>();
+        int counter = 0;
+        for (Map<String, Object> m : list) {
+            if (question.t_title.contains(String.valueOf(m.get("t_tag_name")))) {
+                objs.add(new Object[]{id, m.get("t_id")});
+                counter++;
+            }
+        }
+        sql2 = "insert into t_question_tag (t_question_id,t_tag_id) values(?,?)";
+        if (counter != 0) {
+            int[] counts = this.jdbcTemplate.batchUpdate(sql2, objs);
+            return counts.length == counter;
+        }
+        return id > 0;
     }
 
     @RequestMapping("/editquestion")
     @ResponseBody
     public boolean editquestion(@RequestBody Question question) {
-        String sql = "update t_question set t_type_id=?,t_title=? where t_id=?";
-        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_type_id, question.t_title, question.t_id});
+        String sql = "update t_question set t_title=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_title, question.t_id});
+        sql = "delete from t_question_tag where t_question_id=?";
+        this.jdbcTemplate.update(sql, new Object[]{question.t_id});
+        if (question.tags.size() != 0) {
+            List<Object[]> objs = new ArrayList<>();
+            for (int i : question.tags) {
+                objs.add(new Object[]{question.t_id, i});
+            }
+            sql = "insert into t_question_tag (t_question_id,t_tag_id) values(?,?)";
+            int[] counts = this.jdbcTemplate.batchUpdate(sql, objs);
+            return counts.length == question.tags.size();
+        }
         return count == 1;
     }
 

@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local-mysql
+ Source Server         : mysql
  Source Server Type    : MySQL
- Source Server Version : 50722
- Source Host           : 127.0.0.1:3306
+ Source Server Version : 80012
+ Source Host           : localhost:3306
  Source Schema         : dy
 
  Target Server Type    : MySQL
- Target Server Version : 50722
+ Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 12/09/2018 12:34:16
+ Date: 13/09/2018 18:26:17
 */
 
 SET NAMES utf8mb4;
@@ -82,7 +82,6 @@ INSERT INTO `t_article` VALUES (5, 14, '阿', '阿', 1536489800992, 'c2a2bdb1-53
 DROP TABLE IF EXISTS `t_question`;
 CREATE TABLE `t_question`  (
   `t_id` int(11) NOT NULL AUTO_INCREMENT,
-  `t_type_id` int(11) NULL DEFAULT NULL,
   `t_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `t_user_id` int(11) NULL DEFAULT NULL,
   `t_time` bigint(20) NULL DEFAULT NULL,
@@ -96,17 +95,17 @@ CREATE TABLE `t_question`  (
 -- ----------------------------
 -- Records of t_question
 -- ----------------------------
-INSERT INTO `t_question` VALUES (1, 13, '大姨夫来了吃什么？', 5, 1535883229563, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (3, 13, '小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？', 5, 0, 3, 0, 1, 1);
-INSERT INTO `t_question` VALUES (4, 14, '发', 5, 0, 0, 0, 0, 1);
-INSERT INTO `t_question` VALUES (6, 14, '发4', NULL, 0, 0, 0, 0, 1);
-INSERT INTO `t_question` VALUES (7, 14, '发5', NULL, 0, 0, 0, 0, 1);
-INSERT INTO `t_question` VALUES (8, 14, '发7', NULL, 0, 0, 0, 0, 0);
-INSERT INTO `t_question` VALUES (10, 13, '测试', NULL, 1535989001223, 3, 1, 0, 0);
-INSERT INTO `t_question` VALUES (11, 13, '测userid', NULL, 1536058556415, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (12, 7, 'ee', NULL, 1536060709695, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (13, 7, 'eee1', NULL, 1536060714307, 0, 0, 1, 0);
-INSERT INTO `t_question` VALUES (14, 14, '骨折了！！！', NULL, 1536071454242, 0, 3, 1, 1);
+INSERT INTO `t_question` VALUES (1, '大姨夫来了吃什么？', 5, 1535883229563, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (3, '小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？小姨夫来了肿么办？', 5, 0, 3, 0, 1, 1);
+INSERT INTO `t_question` VALUES (4, '发', 5, 0, 0, 0, 0, 1);
+INSERT INTO `t_question` VALUES (6, '发4', NULL, 0, 0, 0, 0, 1);
+INSERT INTO `t_question` VALUES (7, '发5', NULL, 0, 0, 0, 0, 1);
+INSERT INTO `t_question` VALUES (8, '发7', NULL, 0, 0, 0, 0, 0);
+INSERT INTO `t_question` VALUES (10, '测试', NULL, 1535989001223, 3, 1, 0, 0);
+INSERT INTO `t_question` VALUES (11, '测userid', NULL, 1536058556415, 0, 0, 1, 0);
+INSERT INTO `t_question` VALUES (12, 'ee', NULL, 1536060709695, 0, 0, 1, 0);
+INSERT INTO `t_question` VALUES (13, 'eee1', NULL, 1536060714307, 0, 0, 1, 0);
+INSERT INTO `t_question` VALUES (14, '骨折了！！！', NULL, 1536071454242, 0, 3, 1, 1);
 
 -- ----------------------------
 -- Table structure for t_question_tag
