@@ -142,18 +142,38 @@ public class AdminCtrl {
     //</editor-fold>
 
     //<editor-fold desc="图文">
-    @RequestMapping("/queryarticlescount")
+    @RequestMapping(value = {"/queryarticlescount/{id}",
+            "/queryarticlescount/{id}/{keyword}"})
     @ResponseBody
-    public int queryarticlescount() {
+    public int queryarticlescount(@PathVariable(value = "id") int id,
+                                  @PathVariable(value = "keyword", required = false) String keyword) {
         String sql = "select count(*) from t_article";
+        sql += " where 1=1 ";
+        if (keyword != null && !keyword.equals("")) {
+            sql += " and t_title like '%" + keyword + "%'";
+        }
+        if (id != 0) {
+            sql += " and t_type_id=" + id;
+        }
         int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
         return count;
     }
 
-    @RequestMapping("/queryarticles/{pageIndex}/{pageSize}")
+    @RequestMapping(value = {"/queryarticles/{pageIndex}/{pageSize}/{id}",
+            "/queryarticles/{pageIndex}/{pageSize}/{id}/{keyword}"})
     @ResponseBody
-    public List<Map<String, Object>> queryarticles(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+    public List<Map<String, Object>> queryarticles(@PathVariable("pageIndex") int pageIndex,
+                                                   @PathVariable("pageSize") int pageSize,
+                                                   @PathVariable(value = "id") int id,
+                                                   @PathVariable(value = "keyword", required = false) String keyword) {
         String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top from t_article left join t_type on t_type.t_id=t_article.t_type_id";
+        sql += " where 1=1 ";
+        if (keyword != null && !keyword.equals("")) {
+            sql += " and t_title like '%" + keyword + "%'";
+        }
+        if (id != 0) {
+            sql += " and t_type_id=" + id;
+        }
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);

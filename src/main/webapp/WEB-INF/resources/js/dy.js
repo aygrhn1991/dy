@@ -137,6 +137,7 @@ app.controller('articlesCtrl', function ($scope, $http) {
     };
     $scope.queryorderby = function (e) {
         $scope.reset();
+        $scope.keyword = '';
         $scope.orderby = e;
         $scope.queryarticles();
     };

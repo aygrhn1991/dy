@@ -166,6 +166,7 @@ public class HomeCtrl {
             list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
         } else {
             sql += " where t_title like '%" + keyword + "%' ";
+            sql += " order by t_id desc ";
             sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
             list = this.jdbcTemplate.queryForList(sql);
         }
