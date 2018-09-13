@@ -152,7 +152,7 @@ public class AdminCtrl {
         if (keyword != null && !keyword.equals("")) {
             sql += " and t_title like '%" + keyword + "%'";
         }
-        if (id != 0) {
+        if (id != -1) {
             sql += " and t_type_id=" + id;
         }
         int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
@@ -171,7 +171,7 @@ public class AdminCtrl {
         if (keyword != null && !keyword.equals("")) {
             sql += " and t_title like '%" + keyword + "%'";
         }
-        if (id != 0) {
+        if (id != -1) {
             sql += " and t_type_id=" + id;
         }
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
@@ -238,10 +238,19 @@ public class AdminCtrl {
     //</editor-fold>
 
     //<editor-fold desc="问题">
-    @RequestMapping("/queryquestionscount")
+    @RequestMapping(value = {"/queryquestionscount",
+            "/queryquestionscount/{state}/{keyword}"})
     @ResponseBody
-    public int queryquestionscount() {
+    public int queryquestionscount(@PathVariable(value = "state") int state,
+                                   @PathVariable(value = "keyword", required = false) String keyword) {
         String sql = "select count(*) from t_question";
+        sql += " where 1=1 ";
+        if (keyword != null && !keyword.equals("")) {
+            sql += " and t_title like '%" + keyword + "%'";
+        }
+        if (state != -1) {
+            sql += " and t_solved=" + state;
+        }
         int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
         return count;
     }
@@ -255,13 +264,29 @@ public class AdminCtrl {
         return list;
     }
 
-    @RequestMapping("/queryquestions/{pageIndex}/{pageSize}")
+    @RequestMapping(value = {"/queryquestions/{pageIndex}/{pageSize}",
+            "/queryquestions/{pageIndex}/{pageSize}/{state}/{keyword}"})
     @ResponseBody
-    public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
-        String sql = "select t_question.*,t_type_name,t_user.w_nickname from t_question left join t_type on t_type.t_id=t_question.t_type_id left join t_user on t_user.t_id=t_question.t_user_id";
+    public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex,
+                                                    @PathVariable("pageSize") int pageSize,
+                                                    @PathVariable(value = "state") int state,
+                                                    @PathVariable(value = "keyword", required = false) String keyword) {
+        String sql = "select t_question.*,t_user.w_nickname from t_question left join t_user on t_user.t_id=t_question.t_user_id";
+        sql += " where 1=1 ";
+        if (keyword != null && !keyword.equals("")) {
+            sql += " and t_title like '%" + keyword + "%'";
+        }
+        if (state != -1) {
+            sql += " and t_solved=" + state;
+        }
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        for (Map<String, Object> m : list) {
+            sql = "select t_tag.* from t_question_tag left join t_tag on t_tag.t_id=t_tag_id where t_question_id=?";
+            List<Map<String, Object>> l = this.jdbcTemplate.queryForList(sql, new Object[]{m.get("t_id")});
+            m.put("tags", l);
+        }
         return list;
     }
 
