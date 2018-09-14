@@ -418,7 +418,7 @@ public class AdminCtrl {
     @RequestMapping("/queryuserscount")
     @ResponseBody
     public int queryuserscount() {
-        String sql = "select count(*) from t_user";
+        String sql = "select count(*) from t_user order by t_id desc";
         int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
         return count;
     }
@@ -435,6 +435,7 @@ public class AdminCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryusers(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
         String sql = "select * from t_user";
+        sql+=" order by t_id ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list;
