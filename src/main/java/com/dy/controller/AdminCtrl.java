@@ -28,9 +28,11 @@ import java.util.*;
 @Controller
 @RequestMapping("/admin")
 public class AdminCtrl {
+
     @Autowired
     @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
+
     @Autowired
     @Qualifier("global")
     private Global global;
@@ -45,8 +47,7 @@ public class AdminCtrl {
     @ResponseBody
     public int querytypescount() {
         String sql = "select count(*) from t_type";
-        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
-        return count;
+        return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     @RequestMapping("/queryalltypes")
@@ -54,8 +55,7 @@ public class AdminCtrl {
     public List<Map<String, Object>> queryalltypes() {
         String sql = "select * from t_type";
         sql += " order by t_id desc ";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
 
     @RequestMapping("/querytypes/{pageIndex}/{pageSize}")
@@ -64,8 +64,7 @@ public class AdminCtrl {
         String sql = "select * from t_type";
         sql += " order by t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
 
     @RequestMapping("/addtype")
@@ -99,8 +98,7 @@ public class AdminCtrl {
     @ResponseBody
     public int querytagscount() {
         String sql = "select count(*) from t_tag";
-        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
-        return count;
+        return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     @RequestMapping("/queryalltags")
@@ -108,8 +106,7 @@ public class AdminCtrl {
     public List<Map<String, Object>> queryalltags() {
         String sql = "select * from t_tag";
         sql += " order by t_id desc ";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
 
     @RequestMapping("/querytags/{pageIndex}/{pageSize}")
@@ -118,8 +115,7 @@ public class AdminCtrl {
         String sql = "select * from t_tag";
         sql += " order by t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
 
     @RequestMapping("/addtag")
@@ -162,8 +158,7 @@ public class AdminCtrl {
         if (id != -1) {
             sql += " and t_type_id=" + id;
         }
-        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
-        return count;
+        return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     @RequestMapping(value = {"/queryarticles/{pageIndex}/{pageSize}/{id}",
@@ -183,8 +178,7 @@ public class AdminCtrl {
         }
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
 
     @RequestMapping("/queryarticle/{id}")
@@ -258,8 +252,7 @@ public class AdminCtrl {
         if (state != -1) {
             sql += " and t_solved=" + state;
         }
-        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
-        return count;
+        return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     @RequestMapping("/queryallquestions/{id}")
@@ -267,8 +260,7 @@ public class AdminCtrl {
     public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
         String sql = "select t_title,t_time from t_question where t_user_id=?";
         sql += " order by t_time desc ";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return list;
+        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
 
     @RequestMapping(value = {"/queryquestions/{pageIndex}/{pageSize}/{state}",
@@ -305,7 +297,7 @@ public class AdminCtrl {
         this.jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
-                PreparedStatement ps = ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, question.t_title);
                 ps.setLong(2, new Date().getTime());
                 return ps;
@@ -387,14 +379,13 @@ public class AdminCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryallanswers(@PathVariable("id") int id) {
         String sql = "select t_answer.* from t_answer where t_question_id=? order by t_time asc";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return list;
+        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
 
     @RequestMapping("/addanswer")
     @ResponseBody
     public boolean addanswer(@RequestBody Answer answer) {
-        String sql = "insert into t_answer(t_question_id, t_user_id, t_time, t_content) values (?,0,?,?)";
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,0,0,?,?)";
         int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, new Date().getTime(), answer.t_content});
         if (count == 1) {
             sql = "update t_question set t_solved=1 where t_id=" + answer.t_question_id;
@@ -419,8 +410,7 @@ public class AdminCtrl {
     @ResponseBody
     public int queryuserscount() {
         String sql = "select count(*) from t_user order by t_id desc";
-        int count = this.jdbcTemplate.queryForObject(sql, Integer.class);
-        return count;
+        return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     @RequestMapping("/queryuser/{id}")
@@ -437,8 +427,7 @@ public class AdminCtrl {
         String sql = "select * from t_user";
         sql += " order by t_id ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
 
     @RequestMapping("/deleteuser/{id}")
@@ -463,6 +452,16 @@ public class AdminCtrl {
             return count == 1;
         }
         return false;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="登陆">
+    @RequestMapping("/login/{password}")
+    @ResponseBody
+    public boolean login(@PathVariable("password") String password) {
+        String sql = "select * from t_setting where t_key='password'";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        return list.get(0).get("t_value").equals(password);
     }
     //</editor-fold>
 
