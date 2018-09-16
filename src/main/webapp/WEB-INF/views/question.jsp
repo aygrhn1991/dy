@@ -20,9 +20,10 @@
             </div>
         </div>
     </div>
-    <div class="common-wrapper" style="margin-bottom: 50px;">
+    <div class="common-wrapper" style="{{'margin-bottom:'+(question.t_user_id==userid?50:0)+'px'}}">
         <div class="common-content">
-            <div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers">
+            <div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers"
+                 ng-if="!(d.t_isimg==true&&d.t_user_id!=userid)">
                 <div class="answer-time" ng-bind="d.t_time|date:'yyyy-MM-dd HH:mm:ss'"></div>
                 <div class="answer-item">
                     <img src="/dy/static/img/6.png" class="answer-tag" ng-if="d.t_user_id==0">
@@ -34,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="common-ask-wrapper">
+    <div class="common-ask-wrapper" ng-show="question.t_user_id==userid">
         <div class="common-ask">
             <input type="text" placeholder="点击此处回复..." ng-model="t_content">
             <button ng-click="answer()">发送</button>
