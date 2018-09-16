@@ -116,6 +116,31 @@ public class HomeCtrl {
         return this.jdbcTemplate.queryForList(sql);
     }
 
+    @RequestMapping("/queryquestionsbytag/{t_title}")
+    @ResponseBody
+    public List<Map<String, Object>> queryquestionsbytag(@PathVariable("t_title") String t_title) {
+        String sql = "select * from t_tag";
+        List<Map<String, Object>> tagList = this.jdbcTemplate.queryForList(sql);
+        List<Integer> tagIds = new ArrayList<>();
+        for (Map<String, Object> m : tagList) {
+            if (t_title.contains(String.valueOf(m.get("t_tag_name")))) {
+                tagIds.add((int) m.get("t_id"));
+            }
+        }
+        List<Map<String, Object>> questionList = new ArrayList<>();
+        if (tagIds.size() != 0) {
+            String tags = "";
+            for (int i : tagIds) {
+                tags += i + ",";
+            }
+            tags = tags.substring(0, tags.length() - 1);
+            sql = "select * from t_question_tag left join t_question on t_id=t_question_id where t_tag_id in (" + tags + ") and t_question.t_solved=1 group by t_id";
+            sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc limit 0,10 ";
+            questionList = this.jdbcTemplate.queryForList(sql);
+        }
+        return questionList;
+    }
+
     @RequestMapping("/queryarticlesbytop")
     @ResponseBody
     public List<Map<String, Object>> queryarticlesbytop() {

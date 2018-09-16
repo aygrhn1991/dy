@@ -11,7 +11,7 @@
         <div>儿科</div>
     </a>
     <div class="footer-line"></div>
-    <a class="footer-tab" href="/dy/home/articles?id=2">
+    <a class="footer-tab" href="/dy/home/questions">
         <img src="/dy/static/img/14.png">
         <div>我的</div>
     </a>

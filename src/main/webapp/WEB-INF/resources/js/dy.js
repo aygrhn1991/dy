@@ -84,6 +84,17 @@ app.controller('askCtrl', function ($scope, $http) {
             $scope.questions = d;
         });
     };
+    $scope.queryquestionsbytag = function () {
+        if ($scope.t_title == null || $scope.t_title === '' || $scope.t_title === 'undefined' || $scope.t_title === undefined) {
+            return;
+        }
+        $http.post('/dy/home/queryquestionsbytag/' + $scope.t_title, null).success(function (d) {
+            if (d.length !== 0) {
+                $scope.questions = [];
+                $scope.questions = d;
+            }
+        });
+    };
     $scope.init = function () {
         $scope.userid = window.getUserId('userid');
         $scope.queryuser();

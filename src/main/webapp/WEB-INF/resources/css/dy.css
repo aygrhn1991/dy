@@ -237,6 +237,7 @@ a:active {
 
 .ask-finish {
     padding: 60px;
+    display: block;
 }
 
 .ask-finish img {
