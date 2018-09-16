@@ -26,7 +26,7 @@
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="defaultEncoding" value="UTF-8"/>
         <!-- 指定所上传文件的总大小,单位字节(B)。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
-        <property name="maxUploadSize" value="1000000"/><!--1M左右-->
+        <property name="maxUploadSize" value="1000000"/><!--1M左右 1000*1000-->
     </bean>
     <!--6.静态资源文件放行 -->
     <mvc:resources location="/WEB-INF/resources/" mapping="/static/**"/>

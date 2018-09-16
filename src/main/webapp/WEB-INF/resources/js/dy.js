@@ -189,6 +189,39 @@ app.controller('questionCtrl', function ($scope, $http) {
             t_user_id: $scope.userid
         }).success(function (d) {
             if (d === true) {
+                $scope.t_content = '';
+                $scope.queryallanswers();
+            } else {
+                layer.msg('提交失败', {time: 500, offset: '50%'});
+            }
+        }).error(function () {
+            layer.msg('提交失败', {time: 500, offset: '50%'});
+        });
+    };
+    $scope.onFileChange = function (files) {
+        var file = files[0];
+        var extensionName = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length);
+        if ('PNG,JPG,JPEG'.indexOf(extensionName.toUpperCase()) === -1) {
+            layer.msg('请上传png,jpg,jpeg格式的图片', {time: 500, offset: '50%'});
+            return;
+        }
+        var fileSize = file.size; //这里读到的是字节数
+        if (fileSize > 1000 * 1000) {
+            layer.msg('请上传1M以内的图片', {time: 500, offset: '50%'});
+            return;
+        }
+        var formData = new FormData();
+        formData.append('file', file);
+        formData.append('t_question_id', $scope.id);
+        formData.append('t_user_id', $scope.userid);
+        $http({
+            method: 'post',
+            url: '/dy/home/addimg',
+            data: formData,
+            headers: {'Content-Type': undefined},
+            transformRequest: angular.identity
+        }).success(function (d) {
+            if (d === true) {
                 $scope.queryallanswers();
             } else {
                 layer.msg('提交失败', {time: 500, offset: '50%'});

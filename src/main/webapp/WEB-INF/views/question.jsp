@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-    <div class="common-wrapper" style="margin-bottom: 40px;">
+    <div class="common-wrapper" style="margin-bottom: 50px;">
         <div class="common-content">
             <div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers">
                 <div class="answer-time" ng-bind="d.t_time|date:'yyyy-MM-dd HH:mm:ss'"></div>
@@ -38,7 +38,9 @@
         <div class="common-ask">
             <input type="text" placeholder="点击此处回复..." ng-model="t_content">
             <button ng-click="answer()">发送</button>
-            <button>附件</button>
+            <button onclick="document.getElementById('img').click()">附件</button>
+            <input type="file" id="img" hidden onchange="angular.element(this).scope().onFileChange(this.files)"
+                   ng-model="img">
         </div>
     </div>
 </div>

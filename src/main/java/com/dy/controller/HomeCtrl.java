@@ -2,6 +2,8 @@ package com.dy.controller;
 
 import com.dy.model.Answer;
 import com.dy.model.Question;
+import com.dy.util.FileUtil;
+import com.dy.util.Global;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,19 +12,15 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
@@ -31,6 +29,10 @@ public class HomeCtrl {
     @Autowired
     @Qualifier("jdbcTemplate")
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    @Qualifier("global")
+    private Global global;
 
     //<editor-fold desc="页面">
     @RequestMapping("/index")
@@ -165,10 +167,29 @@ public class HomeCtrl {
     @RequestMapping("/addanswer")
     @ResponseBody
     public boolean addanswer(@RequestBody Answer answer) {
-        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,?,?,?)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, answer.t_user_id, 0,new Date().getTime(), answer.t_content});
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,0,?,?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, answer.t_user_id, new Date().getTime(), answer.t_content});
         if (count == 1) {
             sql = "update t_question set t_solved=0 where t_id=" + answer.t_question_id;
+            count = this.jdbcTemplate.update(sql);
+            return count == 1;
+        }
+        return false;
+    }
+
+    @RequestMapping(value = {"/addimg"}, method = RequestMethod.POST)
+    @ResponseBody
+    public boolean addimg(@RequestParam("file") MultipartFile file,
+                          @RequestParam("t_question_id") int t_question_id,
+                          @RequestParam("t_user_id") int t_user_id) throws IOException {
+        String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
+        String savePath = this.global.userUploadPath + fileName;
+        File localFile = new File(savePath);
+        file.transferTo(localFile);
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,1,?,?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{t_question_id, t_user_id, new Date().getTime(), fileName});
+        if (count == 1) {
+            sql = "update t_question set t_solved=0 where t_id=" + t_question_id;
             count = this.jdbcTemplate.update(sql);
             return count == 1;
         }

@@ -12,10 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -468,47 +465,27 @@ public class AdminCtrl {
     //<editor-fold desc="上传文件处理">
     @RequestMapping("/articleCoverUpload")
     @ResponseBody
-    public Map<String, String> articleUpload(HttpServletRequest request) throws IOException {
+    public Map<String, String> articleUpload(@RequestParam("img") MultipartFile file) throws IOException {
         Map<String, String> result = new HashMap<>();
-        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getServletContext());
-        if (commonsMultipartResolver.isMultipart(request)) {
-            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-            Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
-            while (iterator.hasNext()) {
-                MultipartFile multipartFile = multipartHttpServletRequest.getFile(iterator.next());
-                if (multipartFile != null) {
-                    String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(multipartFile.getOriginalFilename());
-                    String savePath = this.global.articleUploadPath + fileName;
-                    File localFile = new File(savePath);
-                    multipartFile.transferTo(localFile);
-                    result.put("path", fileName);
-                }
-            }
-        }
+        String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
+        String savePath = this.global.articleUploadPath + fileName;
+        File localFile = new File(savePath);
+        file.transferTo(localFile);
+        result.put("path", fileName);
         return result;
     }
 
     @RequestMapping("/articleContentUpload")
     @ResponseBody
-    public Map<String, Object> articleContentUpload(HttpServletRequest request) throws IOException {
+    public Map<String, Object> articleContentUpload(@RequestParam("upload") MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<>();
-        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getServletContext());
-        if (commonsMultipartResolver.isMultipart(request)) {
-            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-            Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
-            while (iterator.hasNext()) {
-                MultipartFile multipartFile = multipartHttpServletRequest.getFile(iterator.next());
-                if (multipartFile != null) {
-                    String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(multipartFile.getOriginalFilename());
-                    String savePath = this.global.articleUploadPath + fileName;
-                    File localFile = new File(savePath);
-                    multipartFile.transferTo(localFile);
-                    result.put("uploaded", 1);
-                    result.put("fileName", multipartFile.getOriginalFilename());
-                    result.put("url", this.global.fileServer + "article/" + fileName);
-                }
-            }
-        }
+        String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
+        String savePath = this.global.articleUploadPath + fileName;
+        File localFile = new File(savePath);
+        file.transferTo(localFile);
+        result.put("uploaded", 1);
+        result.put("fileName", file.getOriginalFilename());
+        result.put("url", this.global.fileServer + "article/" + fileName);
         return result;
     }
     //</editor-fold>
