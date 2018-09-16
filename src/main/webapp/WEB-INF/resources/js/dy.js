@@ -84,15 +84,40 @@ app.controller('askCtrl', function ($scope, $http) {
             $scope.questions = d;
         });
     };
-    $scope.queryquestionsbytag = function () {
+    $scope.init = function () {
+        $scope.userid = window.getUserId('userid');
+        $scope.queryuser();
+        $scope.queryquestionsbytop();
+    };
+    $scope.init();
+});
+app.controller('askfinishCtrl', function ($scope, $http) {
+    $scope.queryuser = function () {
+        $http.post('/dy/home/queryuser/' + $scope.userid, null).success(function (d) {
+            $scope.user = d;
+        });
+    };
+    $scope.ask = function () {
         if ($scope.t_title == null || $scope.t_title === '' || $scope.t_title === 'undefined' || $scope.t_title === undefined) {
+            layer.msg('您还没有输入内容', {time: 500, offset: '50%'});
             return;
         }
-        $http.post('/dy/home/queryquestionsbytag/' + $scope.t_title, null).success(function (d) {
-            if (d.length !== 0) {
-                $scope.questions = [];
-                $scope.questions = d;
+        $http.post('/dy/home/addquestion', {
+            t_title: $scope.t_title,
+            t_user_id: $scope.userid
+        }).success(function (d) {
+            if (d === true) {
+                window.location.href = '/dy/home/askfinish';
+            } else {
+                layer.msg('提交失败', {time: 500, offset: '50%'});
             }
+        }).error(function () {
+            layer.msg('提交失败', {time: 500, offset: '50%'});
+        });
+    };
+    $scope.queryquestionsbytop = function () {
+        $http.post('/dy/home/queryquestionsbytop', null).success(function (d) {
+            $scope.questions = d;
         });
     };
     $scope.init = function () {
@@ -101,6 +126,17 @@ app.controller('askCtrl', function ($scope, $http) {
         $scope.queryquestionsbytop();
     };
     $scope.init();
+    // $scope.queryquestionsbytag = function () {
+//     if ($scope.t_title == null || $scope.t_title === '' || $scope.t_title === 'undefined' || $scope.t_title === undefined) {
+//         return;
+//     }
+//     $http.post('/dy/home/queryquestionsbytag/' + $scope.t_title, null).success(function (d) {
+//         if (d.length !== 0) {
+//             $scope.questions = [];
+//             $scope.questions = d;
+//         }
+//     });
+// };
 });
 app.controller('articleCtrl', function ($scope, $http, $sce) {
     $scope.queryarticle = function () {
