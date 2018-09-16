@@ -134,7 +134,7 @@ public class HomeCtrl {
                 tags.append(i).append(",");
             }
             tags = new StringBuilder(tags.substring(0, tags.length() - 1));
-            sql = "select * from t_question_tag left join t_question on t_id=t_question_id where t_tag_id in (" + tags + ") and t_question.t_solved=1 group by t_id";
+            sql = "select t_title from t_question_tag left join t_question on t_id=t_question_id where t_tag_id in (" + tags + ") and t_question.t_solved=1 group by t_id";
             sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc limit 0,10 ";
             questionList = this.jdbcTemplate.queryForList(sql);
         }
