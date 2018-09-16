@@ -291,7 +291,7 @@ public class HomeCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
         String sql = "select * from t_question where t_user_id=?";
-        sql +=" order by t_time desc ";
+        sql += " order by t_time desc ";
         return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
     //</editor-fold>
