@@ -62,7 +62,7 @@ app.controller('askCtrl', function ($scope, $http) {
         });
     };
     $scope.ask = function () {
-        if ($scope.t_title == null || $scope.t_title == 'undefined' || $scope.t_title == '') {
+        if ($scope.t_title == null || $scope.t_title == '' || $scope.t_title == 'undefined' || $scope.t_title == undefined) {
             layer.msg('您还没有输入内容', {time: 500});
             return;
         }

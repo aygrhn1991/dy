@@ -5,6 +5,9 @@ import com.dy.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -12,6 +15,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -65,16 +73,42 @@ public class HomeCtrl {
     //<editor-fold desc="首页">
     @RequestMapping("/addquestion")
     @ResponseBody
-    public boolean addquestion(@RequestBody Question question) {
-        String sql = "insert into t_question(t_type_id, t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved) values (0,?,?,?,0,0,0,0)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{question.t_title, question.t_user_id, new Date().getTime()});
-        return count == 1;
+    public boolean addquestion(@RequestBody final Question question) {
+        final String sql = "insert into t_question(t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved, t_scan_origin) values (?,?,?,0,0,0,0,0)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        this.jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, question.t_title);
+                ps.setInt(2, question.t_user_id);
+                ps.setLong(3, new Date().getTime());
+                return ps;
+            }
+        }, keyHolder);
+        int id = keyHolder.getKey().intValue();
+        String sql2 = "select * from t_tag";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql2);
+        List<Object[]> objs = new ArrayList<>();
+        int counter = 0;
+        for (Map<String, Object> m : list) {
+            if (question.t_title.contains(String.valueOf(m.get("t_tag_name")))) {
+                objs.add(new Object[]{id, m.get("t_id")});
+                counter++;
+            }
+        }
+        sql2 = "insert into t_question_tag (t_question_id,t_tag_id) values(?,?)";
+        if (counter != 0) {
+            int[] counts = this.jdbcTemplate.batchUpdate(sql2, objs);
+            return counts.length == counter;
+        }
+        return id > 0;
     }
 
     @RequestMapping("/queryquestionsbytop")
     @ResponseBody
     public List<Map<String, Object>> queryquestionsbytop() {
-        String sql = "select * from t_question ";
+        String sql = "select * from t_question where t_solved=1";
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit 0,5";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
