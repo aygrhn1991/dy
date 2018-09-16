@@ -11,7 +11,7 @@ window.getUserId = function (name) {
     var cookieArray = cookies.split(";");
     for (var i = 0; i < cookieArray.length; i++) {
         var arr = cookieArray[i].split("=");
-        if (arr[0] == name) {
+        if (arr[0] === name) {
             return arr[1];
         }
     }
@@ -20,21 +20,21 @@ window.getUserId = function (name) {
 var app = angular.module('app', []);
 app.controller('indexCtrl', function ($scope, $http) {
     $scope.ask = function () {
-        if ($scope.t_title == null || $scope.t_title == 'undefined' || $scope.t_title == '') {
-            layer.msg('您还没有输入内容', {time: 500});
+        if ($scope.t_title == null || $scope.t_title === '' || $scope.t_title === 'undefined' || $scope.t_title === undefined) {
+            layer.msg('您还没有输入内容', {time: 500, offset: '50%'});
             return;
         }
         $http.post('/dy/home/addquestion', {
             t_title: $scope.t_title,
             t_user_id: $scope.userid
         }).success(function (d) {
-            if (d == true) {
+            if (d === true) {
                 window.location.href = '/dy/home/askfinish';
             } else {
-                layer.msg('提交失败', {time: 500});
+                layer.msg('提交失败', {time: 500, offset: '50%'});
             }
-        }).error(function (e) {
-            layer.msg('提交失败', {time: 500});
+        }).error(function () {
+            layer.msg('提交失败', {time: 500, offset: '50%'});
         });
     };
     $scope.queryquestionsbytop = function () {
@@ -62,21 +62,21 @@ app.controller('askCtrl', function ($scope, $http) {
         });
     };
     $scope.ask = function () {
-        if ($scope.t_title == null || $scope.t_title == '' || $scope.t_title == 'undefined' || $scope.t_title == undefined) {
-            layer.msg('您还没有输入内容', {time: 500});
+        if ($scope.t_title == null || $scope.t_title === '' || $scope.t_title === 'undefined' || $scope.t_title === undefined) {
+            layer.msg('您还没有输入内容', {time: 500, offset: '50%'});
             return;
         }
         $http.post('/dy/home/addquestion', {
             t_title: $scope.t_title,
             t_user_id: $scope.userid
         }).success(function (d) {
-            if (d == true) {
+            if (d === true) {
                 window.location.href = '/dy/home/askfinish';
             } else {
-                layer.msg('提交失败', {time: 500});
+                layer.msg('提交失败', {time: 500, offset: '50%'});
             }
-        }).error(function (e) {
-            layer.msg('提交失败', {time: 500});
+        }).error(function () {
+            layer.msg('提交失败', {time: 500, offset: '50%'});
         });
     };
     $scope.queryquestionsbytop = function () {
@@ -114,7 +114,7 @@ app.controller('articlesCtrl', function ($scope, $http) {
             $scope.id + '/' +
             $scope.keyword, null).success(function (d) {
             $scope.global_count = d.length;
-            if (d.length == 0) {
+            if (d.length === 0) {
                 $scope.global_text = '没有更多了';
             } else {
                 $scope.global_text = '点击加载更多';
@@ -125,7 +125,7 @@ app.controller('articlesCtrl', function ($scope, $http) {
         });
     };
     $scope.querymore = function () {
-        if ($scope.global_count == 0) {
+        if ($scope.global_count === 0) {
             return;
         }
         $scope.pageIndex++;
@@ -172,12 +172,15 @@ app.controller('questionCtrl', function ($scope, $http) {
     $scope.queryallanswers = function () {
         $http.post('/dy/home/queryallanswers/' + $scope.id, null).success(function (d) {
             $scope.answers = d;
+            setTimeout(function () {
+                var ele = document.getElementsByTagName('body')[0];
+                window.scrollTo(0, ele.scrollHeight)
+            }, 200);
         });
     };
     $scope.answer = function () {
-        console.log($scope.t_content);
-        if ($scope.t_content == null || $scope.t_content == 'undefined' || $scope.t_content == '') {
-            layer.msg('您还没有输入内容', {time: 500});
+        if ($scope.t_content == null || $scope.t_content === '' || $scope.t_content === 'undefined' || $scope.t_content === undefined) {
+            layer.msg('您还没有输入内容', {time: 500, offset: '50%'});
             return;
         }
         $http.post('/dy/home/addanswer', {
@@ -185,16 +188,17 @@ app.controller('questionCtrl', function ($scope, $http) {
             t_content: $scope.t_content,
             t_user_id: $scope.userid
         }).success(function (d) {
-            if (d == true) {
+            if (d === true) {
                 $scope.queryallanswers();
             } else {
-                layer.msg('提交失败', {time: 500});
+                layer.msg('提交失败', {time: 500, offset: '50%'});
             }
-        }).error(function (e) {
-            layer.msg('提交失败', {time: 500});
+        }).error(function () {
+            layer.msg('提交失败', {time: 500, offset: '50%'});
         });
     };
     $scope.init = function () {
+        $scope.fileServer = window.fileServer;
         $scope.id = window.getUrlParam('id');
         $scope.userid = window.getUserId('userid');
         $scope.queryuser();

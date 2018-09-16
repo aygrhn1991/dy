@@ -7,6 +7,8 @@
             作者：<span ng-bind="article.t_author"></span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span ng-bind="article.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            浏览：<span ng-bind="article.t_scan"></span>
         </div>
     </div>
     <div class="common-wrapper">

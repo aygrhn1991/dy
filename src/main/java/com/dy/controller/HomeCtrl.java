@@ -111,8 +111,7 @@ public class HomeCtrl {
         String sql = "select * from t_question where t_solved=1";
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit 0,5";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
 
     @RequestMapping("/queryarticlesbytop")
@@ -121,8 +120,7 @@ public class HomeCtrl {
         String sql = "select * from t_article ";
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit 0,4";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
-        return list;
+        return this.jdbcTemplate.queryForList(sql);
     }
     //</editor-fold>
 
@@ -130,8 +128,8 @@ public class HomeCtrl {
     @RequestMapping("/queryarticle/{id}")
     @ResponseBody
     public Map<String, Object> queryarticle(@PathVariable("id") int id) {
-        String sql = "update t_article set t_scan=t_scan+1 where t_id=?";
-        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        String sql = "update t_article set t_scan=t_scan+1,t_scan_origin=t_scan_origin+1 where t_id=?";
+        this.jdbcTemplate.update(sql, new Object[]{id});
         sql = "select * from t_article where t_id=?";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
         return list.get(0);
@@ -150,7 +148,9 @@ public class HomeCtrl {
     @RequestMapping("/queryquestion/{id}")
     @ResponseBody
     public Map<String, Object> queryquestion(@PathVariable("id") int id) {
-        String sql = "select * from t_question where t_id=?";
+        String sql = "update t_question set t_scan=t_scan+1,t_scan_origin=t_scan_origin+1 where t_id=?";
+        this.jdbcTemplate.update(sql, new Object[]{id});
+        sql = "select * from t_question where t_id=?";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
         return list.get(0);
     }
@@ -159,15 +159,14 @@ public class HomeCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryallanswers(@PathVariable("id") int id) {
         String sql = "select * from t_answer where t_question_id=?";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return list;
+        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
 
     @RequestMapping("/addanswer")
     @ResponseBody
     public boolean addanswer(@RequestBody Answer answer) {
-        String sql = "insert into t_answer(t_question_id, t_user_id, t_time, t_content) values (?,?,?,?)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, answer.t_user_id, new Date().getTime(), answer.t_content});
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,?,?,?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, answer.t_user_id, 0,new Date().getTime(), answer.t_content});
         if (count == 1) {
             sql = "update t_question set t_solved=0 where t_id=" + answer.t_question_id;
             count = this.jdbcTemplate.update(sql);
@@ -213,19 +212,9 @@ public class HomeCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
         String sql = "select * from t_question where t_user_id=?";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return list;
+        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
     //</editor-fold>
 
-    private int getUserId() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("userid")) {
-                return Integer.parseInt(cookie.getValue());
-            }
-        }
-        return 0;
-    }
+
 }

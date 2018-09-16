@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div style="height: 60px;"></div>
+<div style="height: 50px;"></div>
 <div class="footer-wrapper">
     <a class="footer-tab" href="/dy/home/articles?id=1">
         <img src="/dy/static/img/12.png">
