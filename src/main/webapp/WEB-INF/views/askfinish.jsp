@@ -10,16 +10,16 @@
                 <img src="/dy/static/img/13.png">
             </div>
             <div class="question-items-b">
-                <div class="question-item-b" ng-repeat="d in questions">
+                <a href="/dy/home/question?id={{d.t_id}}" class="question-item-b" ng-repeat="d in questions">
                     <div class="question-title-b" ng-bind="d.t_title"></div>
-                </div>
+                </a>
             </div>
             <br>
             <div class="article-items">
-                <div class="article-item" ng-repeat="d in articles">
+                <a href="/dy/home/article?id={{d.t_id}}" class="article-item" ng-repeat="d in articles">
                     <img src="{{fileServer}}/article/{{d.t_cover}}">
                     <div class="article-title" ng-bind="d.t_title"></div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
