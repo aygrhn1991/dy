@@ -72,7 +72,7 @@ public class HomeCtrl {
 
     //</editor-fold>
 
-    //<editor-fold desc="首页">
+    //<editor-fold desc="提问">
     @RequestMapping("/addquestion")
     @ResponseBody
     public boolean addquestion(@RequestBody final Question question) {
@@ -107,38 +107,78 @@ public class HomeCtrl {
         return id > 0;
     }
 
-    @RequestMapping("/queryquestionsbytop")
+    //</editor-fold>
+
+    //<editor-fold desc="追问">
+    @RequestMapping("/queryallanswers/{id}")
     @ResponseBody
-    public List<Map<String, Object>> queryquestionsbytop() {
-        String sql = "select * from t_question where t_solved=1";
-        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
-        sql += " limit 0,5";
-        return this.jdbcTemplate.queryForList(sql);
+    public List<Map<String, Object>> queryallanswers(@PathVariable("id") int id) {
+        String sql = "select * from t_answer where t_question_id=?";
+        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
 
-    @RequestMapping("/queryquestionsbytag/{t_title}")
+    @RequestMapping("/addanswer")
     @ResponseBody
-    public List<Map<String, Object>> queryquestionsbytag(@PathVariable("t_title") String t_title) {
-        String sql = "select * from t_tag";
-        List<Map<String, Object>> tagList = this.jdbcTemplate.queryForList(sql);
-        List<Integer> tagIds = new ArrayList<>();
-        for (Map<String, Object> m : tagList) {
-            if (t_title.contains(String.valueOf(m.get("t_tag_name")))) {
-                tagIds.add((int) m.get("t_id"));
-            }
+    public boolean addanswer(@RequestBody Answer answer) {
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,0,?,?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, answer.t_user_id, new Date().getTime(), answer.t_content});
+        if (count == 1) {
+            sql = "update t_question set t_solved=0 where t_id=" + answer.t_question_id;
+            count = this.jdbcTemplate.update(sql);
+            return count == 1;
         }
-        List<Map<String, Object>> questionList = new ArrayList<>();
-        if (tagIds.size() != 0) {
-            StringBuilder tags = new StringBuilder();
-            for (int i : tagIds) {
-                tags.append(i).append(",");
-            }
-            tags = new StringBuilder(tags.substring(0, tags.length() - 1));
-            sql = "select t_title from t_question_tag left join t_question on t_id=t_question_id where t_tag_id in (" + tags + ") and t_question.t_solved=1 group by t_id";
-            sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc limit 0,10 ";
-            questionList = this.jdbcTemplate.queryForList(sql);
+        return false;
+    }
+
+    @RequestMapping(value = {"/addimg"}, method = RequestMethod.POST)
+    @ResponseBody
+    public boolean addimg(@RequestParam("file") MultipartFile file,
+                          @RequestParam("t_question_id") int t_question_id,
+                          @RequestParam("t_user_id") int t_user_id) throws IOException {
+        String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
+        String savePath = this.global.userUploadPath + fileName;
+        File localFile = new File(savePath);
+        file.transferTo(localFile);
+        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,1,?,?)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{t_question_id, t_user_id, new Date().getTime(), fileName});
+        if (count == 1) {
+            sql = "update t_question set t_solved=0 where t_id=" + t_question_id;
+            count = this.jdbcTemplate.update(sql);
+            return count == 1;
         }
-        return questionList;
+        return false;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="图文">
+    @RequestMapping(value = {"/queryarticles/{pageIndex}/{pageSize}/{orderby}/{id}/{keyword}",
+            "/queryarticles/{pageIndex}/{pageSize}/{orderby}/{id}"})
+    @ResponseBody
+    public List<Map<String, Object>> queryarticles(
+            @PathVariable("pageIndex") int pageIndex,
+            @PathVariable("pageSize") int pageSize,
+            @PathVariable("orderby") int orderby,//1.最新 2.热门
+            @PathVariable("id") int id,
+            @PathVariable(value = "keyword", required = false) String keyword) {
+        List<Map<String, Object>> list;
+        String sql = "select t_id,t_title,t_cover from t_article ";
+        if (keyword == null || keyword.equals("")) {
+            sql += " where t_type_id=? ";
+            if (orderby == 1) {
+                sql += " order by t_time desc ";
+            } else {
+                sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+            }
+            sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+            list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        } else {
+            sql += " where t_title like '%" + keyword + "%' ";
+            sql += " order by t_id desc ";
+            sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+            list = this.jdbcTemplate.queryForList(sql);
+        }
+        return list;
     }
 
     @RequestMapping("/queryarticlesbytop")
@@ -182,9 +222,7 @@ public class HomeCtrl {
         }
         return result;
     }
-    //</editor-fold>
 
-    //<editor-fold desc="图文内容">
     @RequestMapping("/queryarticle/{id}")
     @ResponseBody
     public Map<String, Object> queryarticle(@PathVariable("id") int id) {
@@ -194,15 +232,50 @@ public class HomeCtrl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
         return list.get(0);
     }
+
     //</editor-fold>
 
-    //<editor-fold desc="问提回答">
-    @RequestMapping("/queryuser/{id}")
+    //<editor-fold desc="问题">
+    @RequestMapping("/queryallquestions/{id}")
     @ResponseBody
-    public Map<String, Object> queryuser(@PathVariable("id") int id) {
-        String sql = "select * from t_user where t_id=?";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        return list.get(0);
+    public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
+        String sql = "select * from t_question where t_user_id=?";
+        sql += " order by t_time desc ";
+        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
+    }
+
+    @RequestMapping("/queryquestionsbytop")
+    @ResponseBody
+    public List<Map<String, Object>> queryquestionsbytop() {
+        String sql = "select * from t_question where t_solved=1";
+        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        sql += " limit 0,5";
+        return this.jdbcTemplate.queryForList(sql);
+    }
+
+    @RequestMapping("/queryquestionsbytag/{t_title}")
+    @ResponseBody
+    public List<Map<String, Object>> queryquestionsbytag(@PathVariable("t_title") String t_title) {
+        String sql = "select * from t_tag";
+        List<Map<String, Object>> tagList = this.jdbcTemplate.queryForList(sql);
+        List<Integer> tagIds = new ArrayList<>();
+        for (Map<String, Object> m : tagList) {
+            if (t_title.contains(String.valueOf(m.get("t_tag_name")))) {
+                tagIds.add((int) m.get("t_id"));
+            }
+        }
+        List<Map<String, Object>> questionList = new ArrayList<>();
+        if (tagIds.size() != 0) {
+            StringBuilder tags = new StringBuilder();
+            for (int i : tagIds) {
+                tags.append(i).append(",");
+            }
+            tags = new StringBuilder(tags.substring(0, tags.length() - 1));
+            sql = "select t_title from t_question_tag left join t_question on t_id=t_question_id where t_tag_id in (" + tags + ") and t_question.t_solved=1 group by t_id";
+            sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc limit 0,10 ";
+            questionList = this.jdbcTemplate.queryForList(sql);
+        }
+        return questionList;
     }
 
     @RequestMapping("/queryquestion/{id}")
@@ -215,85 +288,17 @@ public class HomeCtrl {
         return list.get(0);
     }
 
-    @RequestMapping("/queryallanswers/{id}")
-    @ResponseBody
-    public List<Map<String, Object>> queryallanswers(@PathVariable("id") int id) {
-        String sql = "select * from t_answer where t_question_id=?";
-        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
-    }
-
-    @RequestMapping("/addanswer")
-    @ResponseBody
-    public boolean addanswer(@RequestBody Answer answer) {
-        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,0,?,?)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, answer.t_user_id, new Date().getTime(), answer.t_content});
-        if (count == 1) {
-            sql = "update t_question set t_solved=0 where t_id=" + answer.t_question_id;
-            count = this.jdbcTemplate.update(sql);
-            return count == 1;
-        }
-        return false;
-    }
-
-    @RequestMapping(value = {"/addimg"}, method = RequestMethod.POST)
-    @ResponseBody
-    public boolean addimg(@RequestParam("file") MultipartFile file,
-                          @RequestParam("t_question_id") int t_question_id,
-                          @RequestParam("t_user_id") int t_user_id) throws IOException {
-        String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
-        String savePath = this.global.userUploadPath + fileName;
-        File localFile = new File(savePath);
-        file.transferTo(localFile);
-        String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,1,?,?)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{t_question_id, t_user_id, new Date().getTime(), fileName});
-        if (count == 1) {
-            sql = "update t_question set t_solved=0 where t_id=" + t_question_id;
-            count = this.jdbcTemplate.update(sql);
-            return count == 1;
-        }
-        return false;
-    }
     //</editor-fold>
 
-    //<editor-fold desc="图文列表">
-    @RequestMapping(value = {"/queryarticles/{pageIndex}/{pageSize}/{orderby}/{id}/{keyword}",
-            "/queryarticles/{pageIndex}/{pageSize}/{orderby}/{id}"})
+    //<editor-fold desc="用户">
+    @RequestMapping("/queryuser/{id}")
     @ResponseBody
-    public List<Map<String, Object>> queryarticles(
-            @PathVariable("pageIndex") int pageIndex,
-            @PathVariable("pageSize") int pageSize,
-            @PathVariable("orderby") int orderby,//1.最新 2.热门
-            @PathVariable("id") int id,
-            @PathVariable(value = "keyword", required = false) String keyword) {
-        List<Map<String, Object>> list;
-        String sql = "select t_id,t_title,t_cover from t_article ";
-        if (keyword == null || keyword.equals("")) {
-            sql += " where t_type_id=? ";
-            if (orderby == 1) {
-                sql += " order by t_time desc ";
-            } else {
-                sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
-            }
-            sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
-            list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
-        } else {
-            sql += " where t_title like '%" + keyword + "%' ";
-            sql += " order by t_id desc ";
-            sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
-            list = this.jdbcTemplate.queryForList(sql);
-        }
-        return list;
+    public Map<String, Object> queryuser(@PathVariable("id") int id) {
+        String sql = "select * from t_user where t_id=?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        return list.get(0);
     }
-    //</editor-fold>
 
-    //<editor-fold desc="问题列表">
-    @RequestMapping("/queryallquestions/{id}")
-    @ResponseBody
-    public List<Map<String, Object>> queryallquestions(@PathVariable("id") int id) {
-        String sql = "select * from t_question where t_user_id=?";
-        sql += " order by t_time desc ";
-        return this.jdbcTemplate.queryForList(sql, new Object[]{id});
-    }
     //</editor-fold>
 
 

@@ -233,6 +233,7 @@ public class AdminCtrl {
         int count = this.jdbcTemplate.update(sql, new Object[]{top, id});
         return count == 1;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="问题">
@@ -369,6 +370,7 @@ public class AdminCtrl {
         int count = this.jdbcTemplate.update(sql, new Object[]{top, id});
         return count == 1;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="回答">
@@ -450,6 +452,7 @@ public class AdminCtrl {
         }
         return false;
     }
+
     //</editor-fold>
 
     //<editor-fold desc="登陆">
@@ -460,6 +463,7 @@ public class AdminCtrl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         return list.get(0).get("t_value").equals(password);
     }
+
     //</editor-fold>
 
     //<editor-fold desc="上传文件处理">
@@ -488,5 +492,6 @@ public class AdminCtrl {
         result.put("url", this.global.fileServer + "article/" + fileName);
         return result;
     }
+
     //</editor-fold>
 }
