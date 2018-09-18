@@ -7,6 +7,8 @@ import com.dy.util.Global;
 import com.dy.util.HttpUtil;
 import com.dy.util.WxUtil;
 import com.google.gson.Gson;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,12 +31,16 @@ import java.util.Map;
 @Controller
 @RequestMapping("/oauth")
 public class OAuthCtrl {
+
     @Autowired
     @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
+
     @Autowired
     @Qualifier("global")
     private Global global;
+
+    private static final Logger logger = LogManager.getLogger(OAuthCtrl.class.getName());
 
     @RequestMapping("/config")
     @ResponseBody
@@ -64,6 +70,7 @@ public class OAuthCtrl {
         String code = request.getParameter("code");
         String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", this.global.wxAppid, this.global.wxAppsecret, code);
         String rsp = HttpUtil.Get(url);
+        logger.info(rsp);
         Gson gson = new Gson();
         OAuthUserAccessToken oAuthUserAccessToken = gson.fromJson(rsp, OAuthUserAccessToken.class);
         String sql = "select * from t_user where w_openid=?";
@@ -75,9 +82,9 @@ public class OAuthCtrl {
             response.addCookie(cookie);
             return "redirect:/home/index";
         } else {
-
             url = String.format("https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN", oAuthUserAccessToken.access_token, oAuthUserAccessToken.openid);
             rsp = HttpUtil.Get(url);
+            logger.info(rsp);
             OAuthUserInfo oAuthUserInfo = gson.fromJson(rsp, OAuthUserInfo.class);
             sql = "insert into t_user(w_openid,w_nickname,w_sex,w_province,w_city,w_country,w_headimgurl,t_time) values (?,?,?,?,?,?,?,?)";
             int count = this.jdbcTemplate.update(sql, new Object[]{oAuthUserInfo.openid,
@@ -98,6 +105,7 @@ public class OAuthCtrl {
         String code = request.getParameter("code");
         String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", this.global.wxAppid, this.global.wxAppsecret, code);
         String rsp = HttpUtil.Get(url);
+        logger.info(rsp);
         Gson gson = new Gson();
         OAuthUserAccessToken oAuthUserAccessToken = gson.fromJson(rsp, OAuthUserAccessToken.class);
         String sql = "select * from t_user where w_openid=?";
@@ -112,6 +120,7 @@ public class OAuthCtrl {
             String accessToken = WxUtil.getAccesstToken(this.global.wxAppid, this.global.wxAppsecret);
             url = String.format("https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN", accessToken, oAuthUserAccessToken.openid);
             rsp = HttpUtil.Get(url);
+            logger.info(rsp);
             UserInfoModel userInfoModel = gson.fromJson(rsp, UserInfoModel.class);
             sql = "insert into t_user(w_openid,w_nickname,w_sex,w_province,w_city,w_country,w_headimgurl,t_time) values (?,?,?,?,?,?,?,?)";
             int count = this.jdbcTemplate.update(sql, new Object[]{userInfoModel.openid,
@@ -134,4 +143,16 @@ public class OAuthCtrl {
         response.addCookie(cookie);
         return "redirect:/home/index";
     }
+
+    @RequestMapping(value = "/log", method = RequestMethod.GET)
+    public String log() {
+        logger.trace("trace-msg");
+        logger.debug("debug-msg");
+        logger.info("info-msg");
+        logger.warn("warn-msg");
+        logger.error("erorr-msg");
+        logger.fatal("fatal-msg");
+        return null;
+    }
+
 }

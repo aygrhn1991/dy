@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<Configuration status="INFO" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_HOME">E:/dyfile/log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+        </Console>
+        <File name="Log" fileName="${LOG_HOME}/log.log" append="false">
+            <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%-5level] - %l - %m%n"/>
+        </File>
+        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/info.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM-dd}/info-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="all">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="Log"/>
+            <appender-ref ref="RollingFileInfo"/>
+        </Root>
+    </Loggers>
+</Configuration>

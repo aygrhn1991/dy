@@ -26,6 +26,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/home")
 public class HomeCtrl {
+
     @Autowired
     @Qualifier("jdbcTemplate")
     JdbcTemplate jdbcTemplate;
