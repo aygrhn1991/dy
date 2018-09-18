@@ -9,7 +9,7 @@
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
         </Console>
         <File name="Log" fileName="${LOG_HOME}/log.log" append="false">
-            <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%-5level] - %l - %m%n"/>
+            <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%-5level] - %class{36} %L %M - %msg%n"/>
         </File>
         <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/info.log"
                      filePattern="${LOG_HOME}/$${date:yyyy-MM-dd}/info-%d{yyyy-MM-dd}-%i.log">
