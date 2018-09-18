@@ -80,7 +80,7 @@ public class OAuthCtrl {
             UserInfoModel userInfoModel = gson.fromJson(rsp, UserInfoModel.class);
             sql = "insert into t_user(w_openid,w_nickname,w_sex,w_province,w_city,w_country,w_headimgurl,t_time) values (?,?,?,?,?,?,?,?)";
             int count = this.jdbcTemplate.update(sql, new Object[]{userInfoModel.openid,
-                    userInfoModel.nickname,
+                    userInfoModel.nickname.replaceAll("[\ue000-\uefff]", ""),
                     userInfoModel.sex,
                     userInfoModel.province,
                     userInfoModel.city,
