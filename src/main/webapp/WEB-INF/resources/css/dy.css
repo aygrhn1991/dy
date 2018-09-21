@@ -403,3 +403,18 @@ a:active {
     font-size: 10px;
     color: #bbb;
 }
+
+.login-form {
+    padding: 20px 30px;
+}
+
+.login-form-item {
+    padding: 10px 0;
+}
+
+.login-form input {
+    border-radius: 3px;
+    border: 1px solid #f9f8f8;
+    height: 30px;
+    width: 100%;
+}

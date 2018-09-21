@@ -256,6 +256,21 @@ app.controller('questionCtrl', function ($scope, $http) {
         $scope.queryuser();
         $scope.queryquestion();
         $scope.queryallanswers();
+        layer.open({
+            type: 1,
+            title:'注册',
+            area: ['100px', '240px'],
+            content:
+                '<div class="login-form">\n' +
+                '    <div class="login-form-item">\n' +
+                '        <input type="text" placeholder="电话号码">\n' +
+                '    </div>\n' +
+                '    <div class="login-form-item">\n' +
+                '        <input type="text" class="login-code-input" placeholder="验证码">\n' +
+                '        <button class="login-code-button" value="发送验证码"></button>\n' +
+                '    </div>\n' +
+                '</div>'
+        });
     };
     $scope.init();
 });
