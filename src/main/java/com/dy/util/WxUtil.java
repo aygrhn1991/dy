@@ -2,16 +2,12 @@ package com.dy.util;
 
 import com.dy.model.wx.AccessToken;
 import com.google.gson.Gson;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
 
 public class WxUtil {
-    @Autowired
-    @Qualifier("global")
-    private static Global global;
+
     public static boolean checkConfig(String token, String timestamp, String nonce, String signature) {
         String[] strArray = new String[]{token, timestamp, nonce};
         Arrays.sort(strArray);
