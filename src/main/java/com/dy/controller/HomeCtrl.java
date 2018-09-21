@@ -71,6 +71,11 @@ public class HomeCtrl {
         return "article";
     }
 
+    @RequestMapping("/test")
+    public String test() {
+        return "test";
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="提问">

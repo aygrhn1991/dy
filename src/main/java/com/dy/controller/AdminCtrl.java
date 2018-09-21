@@ -34,11 +34,6 @@ public class AdminCtrl {
     @Qualifier("global")
     private Global global;
 
-    @RequestMapping("/index")
-    public String index() {
-        return "index";
-    }
-
     //<editor-fold desc="科室">
     @RequestMapping("/querytypescount")
     @ResponseBody

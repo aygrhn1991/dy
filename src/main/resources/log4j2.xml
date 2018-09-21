@@ -8,11 +8,11 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
         </Console>
-        <File name="Log" fileName="${LOG_HOME}/log.log" append="false">
+        <File name="Debug" fileName="${LOG_HOME}/debug.log" append="false">
             <PatternLayout pattern="[%d{HH:mm:ss.SSS}] [%-5level] - %class{36} %L %M - %msg%n"/>
         </File>
-        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/info.log"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM-dd}/info-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="RollingFile" fileName="${LOG_HOME}/log.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM-dd}/log-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
@@ -23,8 +23,8 @@
     <Loggers>
         <Root level="all">
             <appender-ref ref="Console"/>
-            <appender-ref ref="Log"/>
-            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="Debug"/>
+            <appender-ref ref="RollingFile"/>
         </Root>
     </Loggers>
 </Configuration>
