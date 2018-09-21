@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <div ng-controller="articleCtrl">
-    <div class="article-head">
-        <div class="article-head-title" ng-bind="article.t_title"></div>
-        <div class="article-head-time">
+    <div class="common-head">
+        <div class="common-head-title" ng-bind="article.t_title"></div>
+        <div class="common-head-time">
             作者：<span ng-bind="article.t_author"></span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span ng-bind="article.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>

@@ -8,16 +8,10 @@
             <img src="/dy/static/img/1.png">
         </a>
     </div>
-    <div class="common-wrapper">
-        <div class="common-content">
-            <div class="question-items-c">
-                <div class="question-item-c" style="border: none">
-                    <div class="question-title-c" ng-bind="question.t_title"></div>
-                    <div class="question-time-c">
-                        <span ng-bind="question.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>
-                    </div>
-                </div>
-            </div>
+    <div class="common-head">
+        <div class="common-head-title" ng-bind="question.t_title"></div>
+        <div class="common-head-time">
+            <span ng-bind="question.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>
         </div>
     </div>
     <div class="common-wrapper" style="{{'margin-bottom:'+(question.t_user_id==userid?50:0)+'px'}}">

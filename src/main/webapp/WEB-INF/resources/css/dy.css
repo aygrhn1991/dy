@@ -389,16 +389,16 @@ a:active {
     margin-left: 2px;
 }
 
-.article-head {
+.common-head {
     padding: 10px;
 }
 
-.article-head-title {
+.common-head-title {
     text-align: justify;
     font-weight: bold;
 }
 
-.article-head-time {
+.common-head-time {
     padding-top: 10px;
     font-size: 10px;
     color: #bbb;
