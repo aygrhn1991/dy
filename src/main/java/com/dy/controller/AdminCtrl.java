@@ -494,15 +494,16 @@ public class AdminCtrl {
     @RequestMapping("/question_count_by_day/{begin}/{end}")
     @ResponseBody
     public List<Map<String, Object>> question_count_by_day(@PathVariable("begin") long begin, @PathVariable("end") long end) {
-        String sql = "select t_time from t_question where t_time>=? and t_time<?";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql,new Object[]{begin,end});
+        String sql = "select t_time,t_solved from t_question where t_time>=? and t_time<?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{begin, end});
         return list;
     }
+
     @RequestMapping("/question_count_by_tag/{begin}/{end}")
     @ResponseBody
     public List<Map<String, Object>> question_count_by_tag(@PathVariable("begin") long begin, @PathVariable("end") long end) {
-        String sql = "select t_time from t_question where t_time>=? and t_time<?";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql,new Object[]{begin,end});
+        String sql = "select t_tag_name,count(*) count from t_question_tag left join t_tag on t_tag_id=t_tag.t_id left join t_question on t_question_id=t_question.t_id where t_time>? and t_time<? group by t_tag_id";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{begin, end});
         return list;
     }
     //</editor-fold>
