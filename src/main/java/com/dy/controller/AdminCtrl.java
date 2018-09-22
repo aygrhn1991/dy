@@ -489,4 +489,21 @@ public class AdminCtrl {
     }
 
     //</editor-fold>
+
+    //<editor-fold desc="统计">
+    @RequestMapping("/question_count_by_day/{begin}/{end}")
+    @ResponseBody
+    public List<Map<String, Object>> question_count_by_day(@PathVariable("begin") long begin, @PathVariable("end") long end) {
+        String sql = "select t_time from t_question where t_time>=? and t_time<?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql,new Object[]{begin,end});
+        return list;
+    }
+    @RequestMapping("/question_count_by_tag/{begin}/{end}")
+    @ResponseBody
+    public List<Map<String, Object>> question_count_by_tag(@PathVariable("begin") long begin, @PathVariable("end") long end) {
+        String sql = "select t_time from t_question where t_time>=? and t_time<?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql,new Object[]{begin,end});
+        return list;
+    }
+    //</editor-fold>
 }
