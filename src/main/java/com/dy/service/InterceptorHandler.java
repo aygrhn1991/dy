@@ -29,7 +29,7 @@ public class InterceptorHandler extends HandlerInterceptorAdapter {
             }
             return false;
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("拦截器异常："+e.getMessage());
         }
         return false;
     }

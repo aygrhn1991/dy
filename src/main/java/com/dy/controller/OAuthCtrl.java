@@ -70,7 +70,7 @@ public class OAuthCtrl {
         String code = request.getParameter("code");
         String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", this.global.wxAppid, this.global.wxAppsecret, code);
         String rsp = HttpUtil.Get(url);
-        logger.info(rsp);
+        logger.info("微信授权，code换取accesstoken：" + rsp);
         Gson gson = new Gson();
         OAuthUserAccessToken oAuthUserAccessToken = gson.fromJson(rsp, OAuthUserAccessToken.class);
         String sql = "select * from t_user where w_openid=?";
@@ -84,7 +84,7 @@ public class OAuthCtrl {
         } else {
             url = String.format("https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN", oAuthUserAccessToken.access_token, oAuthUserAccessToken.openid);
             rsp = HttpUtil.Get(url);
-            logger.info(rsp);
+            logger.info("微信授权，accesstoken换取userinfo（授权专用accesstoken）：" + rsp);
             OAuthUserInfo oAuthUserInfo = gson.fromJson(rsp, OAuthUserInfo.class);
             sql = "insert into t_user(w_openid,w_nickname,w_sex,w_province,w_city,w_country,w_headimgurl,t_time) values (?,?,?,?,?,?,?,?)";
             int count = this.jdbcTemplate.update(sql, new Object[]{oAuthUserInfo.openid,
@@ -105,7 +105,7 @@ public class OAuthCtrl {
         String code = request.getParameter("code");
         String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", this.global.wxAppid, this.global.wxAppsecret, code);
         String rsp = HttpUtil.Get(url);
-        logger.info(rsp);
+        logger.info("微信授权，code换取accesstoken：" + rsp);
         Gson gson = new Gson();
         OAuthUserAccessToken oAuthUserAccessToken = gson.fromJson(rsp, OAuthUserAccessToken.class);
         String sql = "select * from t_user where w_openid=?";
@@ -120,7 +120,7 @@ public class OAuthCtrl {
             String accessToken = WxUtil.getAccesstToken(this.global.wxAppid, this.global.wxAppsecret);
             url = String.format("https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN", accessToken, oAuthUserAccessToken.openid);
             rsp = HttpUtil.Get(url);
-            logger.info(rsp);
+            logger.info("微信授权，accesstoken换取userinfo（通用accesstoken）：" + rsp);
             UserInfoModel userInfoModel = gson.fromJson(rsp, UserInfoModel.class);
             sql = "insert into t_user(w_openid,w_nickname,w_sex,w_province,w_city,w_country,w_headimgurl,t_time) values (?,?,?,?,?,?,?,?)";
             int count = this.jdbcTemplate.update(sql, new Object[]{userInfoModel.openid,

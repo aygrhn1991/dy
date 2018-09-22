@@ -316,6 +316,10 @@ public class HomeCtrl {
             count = this.jdbcTemplate.update(sql, new Object[]{phone, code, new Date().getTime()});
         }
         return count == 1;
+//        if (count == 1) {
+//            return SmsHandler.sendSms(phone, String.valueOf(code));
+//        }
+//        return false;
     }
 
     @RequestMapping("/register/{id}")
