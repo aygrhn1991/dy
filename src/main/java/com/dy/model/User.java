@@ -12,5 +12,5 @@ public class User {
     public String t_name;
     public String t_phone;
     public String t_email;
-    public String t_time;
+    public long t_time;
 }

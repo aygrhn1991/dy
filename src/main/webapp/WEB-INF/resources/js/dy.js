@@ -177,7 +177,7 @@ app.controller('articlesCtrl', function ($scope, $http) {
     };
     $scope.init();
 });
-app.controller('questionCtrl', function ($scope, $http) {
+app.controller('questionCtrl', function ($scope, $http, $timeout) {
     $scope.queryuser = function () {
         $http.post('/dy/home/queryuser/' + $scope.userid, null).success(function (d) {
             $scope.user = d;
@@ -198,6 +198,12 @@ app.controller('questionCtrl', function ($scope, $http) {
         });
     };
     $scope.answer = function () {
+        if (($scope.answers.filter(function (e) {
+            return e.t_user_id === parseInt($scope.userid)
+        }).length >= 3) && ($scope.user.t_phone == null)) {
+            $scope.showLoginForm = true;
+            return;
+        }
         if ($scope.t_content == null || $scope.t_content === '' || $scope.t_content === 'undefined' || $scope.t_content === undefined) {
             layer.msg('您还没有输入内容', {time: 500, offset: '50%'});
             return;
@@ -218,6 +224,12 @@ app.controller('questionCtrl', function ($scope, $http) {
         });
     };
     $scope.onFileChange = function (files) {
+        if (($scope.answers.filter(function (e) {
+            return e.t_user_id === parseInt($scope.userid)
+        }).length >= 3) && ($scope.user.t_phone == null)) {
+            $scope.showLoginForm = true;
+            return;
+        }
         var file = files[0];
         var extensionName = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length);
         if ('PNG,JPG,JPEG'.indexOf(extensionName.toUpperCase()) === -1) {
@@ -249,28 +261,72 @@ app.controller('questionCtrl', function ($scope, $http) {
             layer.msg('提交失败', {time: 500, offset: '50%'});
         });
     };
+    $scope.sendcode = function () {
+        if ($scope.phone == null || $scope.phone === '' || $scope.phone === 'undefined' || $scope.phone === undefined || $scope.phone.length !== 11) {
+            layer.msg('请填写正确的手机号码', {time: 500, offset: '50%'});
+            return;
+        }
+        $scope.countdown();
+        $http.post('/dy/home/sendcode/' + $scope.phone, null).success(function (d) {
+            if (d !== true) {
+                layer.msg('验证码发送失败,请稍后重试', {time: 500, offset: '50%'});
+            }
+        }).error(function () {
+            layer.msg('提交失败', {time: 500, offset: '50%'});
+        });
+    };
+    $scope.countdown = function () {
+        if ($scope.countNum === 0) {
+            $scope.codebtn.disabled = false;
+            $scope.codebtn.text = '发送验证码';
+            $scope.countNum = 30;
+            return;
+        } else {
+            $scope.codebtn.disabled = true;
+            $scope.codebtn.text = '重新发送(' + $scope.countNum + ')';
+            $scope.countNum--;
+        }
+        $timeout(function () {
+            $scope.countdown();
+        }, 1000);
+    };
+    $scope.register = function () {
+        if ($scope.phone == null || $scope.phone === '' || $scope.phone === 'undefined' || $scope.phone === undefined || $scope.phone.length !== 11) {
+            layer.msg('请填写正确的手机号码', {time: 500, offset: '50%'});
+            return;
+        }
+        if ($scope.code == null || $scope.code === '' || $scope.code === 'undefined' || $scope.code === undefined || $scope.code.length !== 4) {
+            layer.msg('请填写正确的验证码', {time: 500, offset: '50%'});
+            return;
+        }
+        $http.post('/dy/home/register/' + $scope.userid, {
+            t_phone: $scope.phone,
+            t_code: $scope.code
+        }).success(function (d) {
+            if (d.result === true) {
+                $scope.queryuser();
+                layer.msg('注册成功', {time: 500, offset: '50%'});
+                $scope.showLoginForm = false;
+            } else {
+                layer.msg(d.result, {time: 500, offset: '50%'});
+            }
+        }).error(function () {
+            layer.msg('提交失败', {time: 500, offset: '50%'});
+        });
+    };
     $scope.init = function () {
+        $scope.countNum = 30;
+        $scope.codebtn = {
+            disabled: false,
+            text: '发送验证码'
+        };
+        $scope.showLoginForm = false;
         $scope.fileServer = window.fileServer;
         $scope.id = window.getUrlParam('id');
         $scope.userid = window.getUserId('userid');
         $scope.queryuser();
         $scope.queryquestion();
         $scope.queryallanswers();
-        layer.open({
-            type: 1,
-            title:'注册',
-            area: ['100px', '240px'],
-            content:
-                '<div class="login-form">\n' +
-                '    <div class="login-form-item">\n' +
-                '        <input type="text" placeholder="电话号码">\n' +
-                '    </div>\n' +
-                '    <div class="login-form-item">\n' +
-                '        <input type="text" class="login-code-input" placeholder="验证码">\n' +
-                '        <button class="login-code-button" value="发送验证码"></button>\n' +
-                '    </div>\n' +
-                '</div>'
-        });
     };
     $scope.init();
 });

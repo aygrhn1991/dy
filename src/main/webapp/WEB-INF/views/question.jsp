@@ -38,5 +38,22 @@
                    ng-model="img">
         </div>
     </div>
+    <div class="login-form-wrapper" ng-show="showLoginForm">
+        <div class="login-form">
+            <div class="login-form-close" ng-click="showLoginForm=false">x</div>
+            <div class="login-form-tip">提问数量超过3次，请注册后继续提问</div>
+            <div class="login-form-item">
+                <input type="text" placeholder="电话号码" ng-model="phone">
+            </div>
+            <div class="login-form-item">
+                <input type="text" class="login-code-input" placeholder="验证码" ng-model="code">
+                <button class="login-code-button" ng-click="sendcode()" ng-disabled="codebtn.disabled">{{codebtn.text}}
+                </button>
+                <div class="login-form-item">
+                    <button ng-click="register()">注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -1,9 +1,11 @@
 package com.dy.controller;
 
 import com.dy.model.Answer;
+import com.dy.model.Code;
 import com.dy.model.Question;
 import com.dy.util.FileUtil;
 import com.dy.util.Global;
+import com.dy.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -69,11 +71,6 @@ public class HomeCtrl {
     @RequestMapping("/article")
     public String article() {
         return "article";
-    }
-
-    @RequestMapping("/test")
-    public String test() {
-        return "test";
     }
 
     //</editor-fold>
@@ -305,6 +302,51 @@ public class HomeCtrl {
         return list.get(0);
     }
 
+    @RequestMapping("/sendcode/{phone}")
+    @ResponseBody
+    public boolean sendcode(@PathVariable("phone") String phone) {
+        String sql = "select count(*) from t_code where t_phone=?";
+        int count = this.jdbcTemplate.queryForObject(sql, Integer.class, new Object[]{phone});
+        int code = Util.getRandomNum(1000, 9999);
+        if (count != 0) {
+            sql = "update t_code set t_code=?,t_time=? where t_phone=?";
+            count = this.jdbcTemplate.update(sql, new Object[]{code, new Date().getTime(), phone});
+        } else {
+            sql = "insert into t_code(t_phone,t_code,t_time) values(?,?,?)";
+            count = this.jdbcTemplate.update(sql, new Object[]{phone, code, new Date().getTime()});
+        }
+        return count == 1;
+    }
+
+    @RequestMapping("/register/{id}")
+    @ResponseBody
+    public Map<String, Object> register(@RequestBody Code code, @PathVariable("id") int id) {
+        Map<String, Object> map = new HashMap<>();
+        String sql = "select * from t_code where t_phone=?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{code.t_phone});
+        if (list.size() == 0) {
+            map.put("result", "手机号码不存在");
+            return map;
+        }
+        if ((new Date().getTime() - (long) list.get(0).get("t_time")) > 10 * 60 * 1000) {//验证码十分钟有效
+            map.put("result", "验证码过期");
+            return map;
+        }
+        if (!code.t_code.equals(list.get(0).get("t_code"))) {
+            map.put("result", "验证码错误");
+            return map;
+        }
+        sql = "select count(*) from t_user where t_phone=?";
+        int count = this.jdbcTemplate.queryForObject(sql, Integer.class, new Object[]{code.t_phone});
+        if (count != 0) {
+            map.put("result", "该手机号码已注册");
+            return map;
+        }
+        sql = "update t_user set t_phone=? where t_id=?";
+        count = this.jdbcTemplate.update(sql, new Object[]{code.t_phone, id});
+        map.put("result", count == 1);
+        return map;
+    }
     //</editor-fold>
 
 
