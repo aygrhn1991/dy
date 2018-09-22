@@ -181,6 +181,11 @@ public class HomeCtrl {
             sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
             list = this.jdbcTemplate.queryForList(sql);
         }
+        //处理搜索次数
+        for (Map<String, Object> m : list) {
+            sql = "update t_article set t_search=t_search+1 where t_id=?";
+            this.jdbcTemplate.update(sql, new Object[]{m.get("t_id")});
+        }
         return list;
     }
 
@@ -229,6 +234,7 @@ public class HomeCtrl {
     @RequestMapping("/queryarticle/{id}")
     @ResponseBody
     public Map<String, Object> queryarticle(@PathVariable("id") int id) {
+        //处理浏览量
         String sql = "update t_article set t_scan=t_scan+1,t_scan_origin=t_scan_origin+1 where t_id=?";
         this.jdbcTemplate.update(sql, new Object[]{id});
         sql = "select * from t_article where t_id=?";

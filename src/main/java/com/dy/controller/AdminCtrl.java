@@ -160,7 +160,7 @@ public class AdminCtrl {
                                                    @PathVariable("pageSize") int pageSize,
                                                    @PathVariable(value = "id") int id,
                                                    @PathVariable(value = "keyword", required = false) String keyword) {
-        String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top,t_scan_origin from t_article left join t_type on t_type.t_id=t_article.t_type_id";
+        String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top,t_scan_origin,t_search from t_article left join t_type on t_type.t_id=t_article.t_type_id";
         sql += " where 1=1 ";
         if (keyword != null && !keyword.equals("")) {
             sql += " and t_title like '%" + keyword + "%'";
