@@ -1,4 +1,4 @@
-window.fileServer = 'http://dy.ljwenyi.com/dyfile';
+window.fileServer = 'http://dy.ljwenyi.com/dyfile/upload';
 window.getUrlParam = function (name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);

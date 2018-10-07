@@ -184,7 +184,7 @@ public class AdminCtrl {
     @RequestMapping("/addarticle")
     @ResponseBody
     public boolean addarticle(@RequestBody Article article) {
-        String sql = "insert into t_article(t_type_id, t_title, t_author, t_time, t_cover, t_content, t_scan, t_sort, t_top, t_scan_origin) values (?,?,?,?,?,?,0,0,0,0)";
+        String sql = "insert into t_article(t_type_id, t_title, t_author, t_time, t_cover, t_content, t_scan, t_sort, t_top, t_scan_origin, t_search) values (?,?,?,?,?,?,0,0,0,0,0)";
         int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content});
         return count == 1;
     }
