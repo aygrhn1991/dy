@@ -2,7 +2,6 @@ package com.dy.controller;
 
 import com.dy.model.wx.OAuthUserAccessToken;
 import com.dy.model.wx.OAuthUserInfo;
-import com.dy.model.wx.UserInfoModel;
 import com.dy.util.Global;
 import com.dy.util.HttpUtil;
 import com.dy.util.WxUtil;
