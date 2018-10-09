@@ -506,5 +506,21 @@ public class AdminCtrl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{begin, end});
         return list;
     }
+
+    @RequestMapping("/article_question_sort")
+    @ResponseBody
+    public Map<String, Object> article_question_sort() {
+        Map<String, Object> map = new HashMap<>();
+        String sql = "select t_title,t_scan_origin from t_article order by t_scan_origin desc limit 0,10";
+        List<Map<String, Object>> article_scan = this.jdbcTemplate.queryForList(sql);
+        sql = "select t_title,t_search from t_article order by t_search desc limit 0,10";
+        List<Map<String, Object>> article_search = this.jdbcTemplate.queryForList(sql);
+        sql = "select t_title,t_scan_origin from t_question order by t_scan_origin desc limit 0,10";
+        List<Map<String, Object>> question_scan = this.jdbcTemplate.queryForList(sql);
+        map.put("article_scan", article_scan);
+        map.put("article_search", article_search);
+        map.put("question_scan", question_scan);
+        return map;
+    }
     //</editor-fold>
 }

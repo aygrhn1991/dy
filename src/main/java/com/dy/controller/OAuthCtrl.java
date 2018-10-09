@@ -75,6 +75,11 @@ public class OAuthCtrl {
         String sql = "select * from t_user where w_openid=?";
         List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{oAuthUserAccessToken.openid});
         if (userList.size() == 1) {
+            try {
+
+            } catch (Exception e) {
+                logger.error("统计登陆次数异常捕获：" + e.getMessage());
+            }
             Cookie cookie = new Cookie("userid", userList.get(0).get("t_id").toString());
             cookie.setDomain(request.getServerName());
             cookie.setPath("/");
