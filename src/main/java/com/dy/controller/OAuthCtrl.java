@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
@@ -75,8 +76,18 @@ public class OAuthCtrl {
         String sql = "select * from t_user where w_openid=?";
         List<Map<String, Object>> userList = this.jdbcTemplate.queryForList(sql, new Object[]{oAuthUserAccessToken.openid});
         if (userList.size() == 1) {
+            //统计登陆次数
             try {
-
+                long current = System.currentTimeMillis();
+                long zero = current / (1000 * 3600 * 24) * (1000 * 3600 * 24) - TimeZone.getDefault().getRawOffset();
+                sql = "select count(*) from t_scan where t_time=?";
+                int count = this.jdbcTemplate.queryForObject(sql, Integer.class, new Object[]{zero});
+                if (count == 0) {
+                    sql = "insert into t_scan(t_time,t_scan) values(" + zero + ",1)";
+                } else {
+                    sql = "update t_scan set t_scan=t_scan+1 where t_time=" + zero;
+                }
+                count = this.jdbcTemplate.update(sql);
             } catch (Exception e) {
                 logger.error("统计登陆次数异常捕获：" + e.getMessage());
             }
