@@ -91,6 +91,7 @@ public class OAuthCtrl {
             } catch (Exception e) {
                 logger.error("统计登陆次数异常捕获：" + e.getMessage());
             }
+            //登陆
             Cookie cookie = new Cookie("userid", userList.get(0).get("t_id").toString());
             cookie.setDomain(request.getServerName());
             cookie.setPath("/");

@@ -522,5 +522,13 @@ public class AdminCtrl {
         map.put("question_scan", question_scan);
         return map;
     }
+
+    @RequestMapping("/login_scan_by_day/{begin}/{end}")
+    @ResponseBody
+    public List<Map<String, Object>> login_scan_by_day(@PathVariable("begin") long begin, @PathVariable("end") long end) {
+        String sql = "select t_time,t_scan from t_scan where t_time>=? and t_time<?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{begin, end});
+        return list;
+    }
     //</editor-fold>
 }
