@@ -165,7 +165,7 @@ public class HomeCtrl {
             @PathVariable("id") int id,
             @PathVariable(value = "keyword", required = false) String keyword) {
         List<Map<String, Object>> list;
-        String sql = "select t_id,t_title,t_cover from t_article ";
+        String sql = "select t_id,t_title,t_cover,t_url,t_mode from t_article ";
         if (keyword == null || keyword.equals("")) {
             sql += " where t_type_id=? ";
             if (orderby == 1) {
@@ -192,7 +192,7 @@ public class HomeCtrl {
     @RequestMapping("/queryarticlesbytop")
     @ResponseBody
     public List<Map<String, Object>> queryarticlesbytop() {
-        String sql = "select t_id,t_title,t_cover from t_article ";
+        String sql = "select t_id,t_title,t_cover,t_url,t_mode from t_article ";
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit 0,4";
         return this.jdbcTemplate.queryForList(sql);

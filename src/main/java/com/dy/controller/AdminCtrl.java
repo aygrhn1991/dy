@@ -184,16 +184,16 @@ public class AdminCtrl {
     @RequestMapping("/addarticle")
     @ResponseBody
     public boolean addarticle(@RequestBody Article article) {
-        String sql = "insert into t_article(t_type_id, t_title, t_author, t_time, t_cover, t_content, t_scan, t_sort, t_top, t_scan_origin, t_search) values (?,?,?,?,?,?,0,0,0,0,0)";
-        int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content});
+        String sql = "insert into t_article(t_type_id, t_title, t_author, t_time, t_cover, t_content, t_url, t_mode, t_scan, t_sort, t_top, t_scan_origin, t_search) values (?,?,?,?,?,?,?,?,0,0,0,0,0)";
+        int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content, article.t_url, (article.t_url == null || article.t_url.equals("")) ? 0 : 1});
         return count == 1;
     }
 
     @RequestMapping("/editarticle")
     @ResponseBody
     public boolean editarticle(@RequestBody Article article) {
-        String sql = "update t_article set t_type_id=?,t_title=?,t_author=?,t_time=?,t_cover=?,t_content=? where t_id=?";
-        int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content, article.t_id});
+        String sql = "update t_article set t_type_id=?,t_title=?,t_author=?,t_time=?,t_cover=?,t_content=?,t_url=?,t_mode=? where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{article.t_type_id, article.t_title, article.t_author, article.t_time, article.t_cover, article.t_content, article.t_url, (article.t_url == null || article.t_url.equals("")) ? 0 : 1, article.t_id});
         return count == 1;
     }
 

@@ -3,7 +3,8 @@
 <div ng-controller="articlesCtrl">
     <div class="common-search">
         <img src="/dy/static/img/3.png" ng-click="querykeyword()">
-        <input type="text" placeholder="点击此处搜索..." ng-model="keyword" ng-model-options="{debounce : 500}" ng-change="querykeyword()">
+        <input type="text" placeholder="点击此处搜索..." ng-model="keyword" ng-model-options="{debounce : 500}"
+               ng-change="querykeyword()">
     </div>
     <div class="common-tabs">
         <div class="common-tab" ng-class="{'common-tab-active':orderby==1}" ng-click="queryorderby(1)">最新</div>
@@ -12,7 +13,8 @@
     <div class="common-wrapper">
         <div class="common-content">
             <div class="article-items">
-                <a href="/dy/home/article?id={{d.t_id}}" class="article-item" ng-repeat="d in articles">
+                <a href="{{d.t_mode==0?d.t_url:'/dy/home/article?id='+d.t_id}}" class="article-item"
+                   ng-repeat="d in articles">
                     <img src="{{fileServer}}/article/{{d.t_cover}}">
                     <div class="article-title" ng-bind="d.t_title"></div>
                 </a>

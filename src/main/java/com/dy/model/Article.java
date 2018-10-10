@@ -8,6 +8,8 @@ public class Article {
     public long t_time;
     public String t_cover;
     public String t_content;
+    public String t_url;
+    public int t_mode;
     public int t_scan;
     public int t_sort;
     public boolean t_top;

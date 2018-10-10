@@ -29,7 +29,7 @@
                 <img src="/dy/static/img/2.png">
             </div>
             <div class="article-items">
-                <a href="/dy/home/article?id={{d.t_id}}" class="article-item" ng-repeat="d in articles">
+                <a href="{{d.t_mode==0?d.t_url:'/dy/home/article?id='+d.t_id}}" class="article-item" ng-repeat="d in articles">
                     <img src="{{fileServer}}/article/{{d.t_cover}}">
                     <div class="article-title" ng-bind="d.t_title"></div>
                 </a>
