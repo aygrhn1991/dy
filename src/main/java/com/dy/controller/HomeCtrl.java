@@ -182,9 +182,11 @@ public class HomeCtrl {
             list = this.jdbcTemplate.queryForList(sql);
         }
         //处理搜索次数
-        for (Map<String, Object> m : list) {
-            sql = "update t_article set t_search=t_search+1 where t_id=?";
-            this.jdbcTemplate.update(sql, new Object[]{m.get("t_id")});
+        if (keyword != null || !keyword.equals("")) {
+            for (Map<String, Object> m : list) {
+                sql = "update t_article set t_search=t_search+1 where t_id=?";
+                this.jdbcTemplate.update(sql, new Object[]{m.get("t_id")});
+            }
         }
         return list;
     }
