@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mysql
+ Source Server         : dy-mysql
  Source Server Type    : MySQL
  Source Server Version : 80012
- Source Host           : localhost:3306
+ Source Host           : 47.105.141.21:3306
  Source Schema         : dy
 
  Target Server Type    : MySQL
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 07/10/2018 22:42:59
+ Date: 10/10/2018 12:59:41
 */
 
 SET NAMES utf8mb4;
@@ -49,7 +49,7 @@ CREATE TABLE `t_article`  (
   `t_scan_origin` int(11) NULL DEFAULT NULL,
   `t_search` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_code
@@ -90,6 +90,16 @@ CREATE TABLE `t_question_tag`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_scan
+-- ----------------------------
+DROP TABLE IF EXISTS `t_scan`;
+CREATE TABLE `t_scan`  (
+  `t_time` bigint(20) NOT NULL,
+  `t_scan` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`t_time`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_setting
 -- ----------------------------
 DROP TABLE IF EXISTS `t_setting`;
@@ -126,7 +136,7 @@ DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user`  (
   `t_id` int(11) NOT NULL AUTO_INCREMENT,
   `w_openid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `w_nickname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `w_nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `w_sex` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `w_province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `w_city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -137,6 +147,6 @@ CREATE TABLE `t_user`  (
   `t_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `t_time` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`t_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
