@@ -226,7 +226,7 @@ public class HomeCtrl {
                 ids.append(i).append(",");
             }
             ids = new StringBuilder(ids.substring(0, ids.length() - 1));
-            sql = "select t_id,t_title,t_cover from t_article where t_id in (" + ids + ")";
+            sql = "select t_id,t_title,t_cover,t_url,t_mode from t_article where t_id in (" + ids + ")";
             sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc limit 0,10 ";
             result = this.jdbcTemplate.queryForList(sql);
         }
