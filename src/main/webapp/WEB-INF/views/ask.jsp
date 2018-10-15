@@ -22,6 +22,7 @@
                     <div class="question-title-b" ng-bind="d.t_title"></div>
                 </a>
             </div>
+            <div class="article-more" ng-bind="global_text" ng-click="querymore()"></div>
         </div>
     </div>
 </div>

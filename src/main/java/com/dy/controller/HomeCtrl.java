@@ -255,6 +255,16 @@ public class HomeCtrl {
         return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
 
+    @RequestMapping("/queryquestions/{pageIndex}/{pageSize}")
+    @ResponseBody
+    public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex,
+                                                    @PathVariable("pageSize") int pageSize) {
+        String sql = "select * from t_question ";
+        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+        return this.jdbcTemplate.queryForList(sql);
+    }
+
     @RequestMapping("/queryquestionsbytop")
     @ResponseBody
     public List<Map<String, Object>> queryquestionsbytop() {

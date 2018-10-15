@@ -79,15 +79,35 @@ app.controller('askCtrl', function ($scope, $http) {
             layer.msg('提交失败', {time: 500, offset: '50%'});
         });
     };
-    $scope.queryquestionsbytop = function () {
-        $http.post('/dy/home/queryquestionsbytop', null).success(function (d) {
-            $scope.questions = d;
+    $scope.queryquestions = function () {
+        $http.post('/dy/home/queryquestions/' + $scope.pageIndex + '/' + $scope.pageSize, null).success(function (d) {
+            $scope.global_count = d.length;
+            if (d.length === 0) {
+                $scope.global_text = '没有更多了';
+            } else {
+                $scope.global_text = '点击加载更多';
+            }
+            d.forEach(function (e) {
+                $scope.questions.push(e);
+            });
         });
     };
+    $scope.querymore = function () {
+        if ($scope.global_count === 0) {
+            return;
+        }
+        $scope.pageIndex++;
+        $scope.queryquestions();
+    };
     $scope.init = function () {
+        $scope.questions = [];
+        $scope.pageIndex = 1;
+        $scope.pageSize = 10;
+        $scope.global_count = 0;
+        $scope.global_text = '点击加载更多';
         $scope.userid = window.getUserId('userid');
         $scope.queryuser();
-        $scope.queryquestionsbytop();
+        $scope.queryquestions();
     };
     $scope.init();
 });
