@@ -21,7 +21,7 @@
     </bean>
 
     <task:scheduled-tasks>
-        <task:scheduled ref="dbBackupHandler" method="backup" cron="0 0 0 1/1 * ? *"/>
+        <task:scheduled ref="dbBackupHandler" method="backup" cron="0 0 0 * * ?"/>
     </task:scheduled-tasks>
 
     <bean id="dbBackupHandler"
