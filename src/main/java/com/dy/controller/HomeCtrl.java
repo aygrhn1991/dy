@@ -139,7 +139,7 @@ public class HomeCtrl {
                           @RequestParam("t_question_id") int t_question_id,
                           @RequestParam("t_user_id") int t_user_id) throws IOException {
         String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
-        String savePath = this.global.userUploadPath + fileName;
+        String savePath = this.global.fileUserUploadPath + fileName;
         File localFile = new File(savePath);
         file.transferTo(localFile);
         String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,?,1,?,?)";

@@ -12,12 +12,15 @@
 
     <bean id="global"
           class="com.dy.util.Global">
-        <property name="articleUploadPath" value="${file.articleUploadPath}"/>
-        <property name="userUploadPath" value="${file.userUploadPath}"/>
-        <property name="fileServer" value="${file.fileServer}"/>
+        <property name="fileArticleUploadPath" value="${file.articleUploadPath}"/>
+        <property name="fileUserUploadPath" value="${file.userUploadPath}"/>
+        <property name="fileServer" value="${file.server}"/>
         <property name="wxToken" value="${wx.token}"/>
         <property name="wxAppid" value="${wx.appid}"/>
         <property name="wxAppsecret" value="${wx.appsecret}"/>
+        <property name="dbBackupCommand" value="${db.backupCommand}"/>
+        <property name="dbBackupFilePath" value="${db.backupFilePath}"/>
+        <property name="dbBackupFileName" value="${db.backupFileName}"/>
     </bean>
 
 </beans>

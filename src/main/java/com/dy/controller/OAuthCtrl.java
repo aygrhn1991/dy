@@ -89,7 +89,7 @@ public class OAuthCtrl {
                 }
                 count = this.jdbcTemplate.update(sql);
             } catch (Exception e) {
-                logger.error("统计登陆次数异常捕获：" + e.getMessage());
+                logger.error("统计登陆次数异常：" + e.getMessage());
             }
             //登陆
             Cookie cookie = new Cookie("userid", userList.get(0).get("t_id").toString());
@@ -126,12 +126,6 @@ public class OAuthCtrl {
 
     @RequestMapping(value = "/log", method = RequestMethod.GET)
     public String log() {
-        logger.trace("trace-msg");
-        logger.debug("debug-msg");
-        logger.info("info-msg");
-        logger.warn("warn-msg");
-        logger.error("erorr-msg");
-        logger.fatal("fatal-msg");
         return null;
     }
 

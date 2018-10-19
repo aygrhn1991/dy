@@ -467,7 +467,7 @@ public class AdminCtrl {
     public Map<String, String> articleUpload(@RequestParam("img") MultipartFile file) throws IOException {
         Map<String, String> result = new HashMap<>();
         String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
-        String savePath = this.global.articleUploadPath + fileName;
+        String savePath = this.global.fileArticleUploadPath + fileName;
         File localFile = new File(savePath);
         file.transferTo(localFile);
         result.put("path", fileName);
@@ -479,7 +479,7 @@ public class AdminCtrl {
     public Map<String, Object> articleContentUpload(@RequestParam("upload") MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<>();
         String fileName = UUID.randomUUID() + FileUtil.getFileExtensionName(file.getOriginalFilename());
-        String savePath = this.global.articleUploadPath + fileName;
+        String savePath = this.global.fileArticleUploadPath + fileName;
         File localFile = new File(savePath);
         file.transferTo(localFile);
         result.put("uploaded", 1);

@@ -61,7 +61,7 @@ public class SmsHandler {
             }
             return false;
         } catch (Exception e) {
-            logger.info("发送短信异常：" + e.getMessage());
+            logger.error("发送短信异常：" + e.getMessage());
         }
         return false;
     }

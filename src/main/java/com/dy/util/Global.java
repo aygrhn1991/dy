@@ -1,12 +1,39 @@
 package com.dy.util;
 
 public class Global {
-    public String articleUploadPath;
-    public String userUploadPath;
+    public String fileArticleUploadPath;
+    public String fileUserUploadPath;
     public String fileServer;
     public String wxToken;
     public String wxAppid;
     public String wxAppsecret;
+    public String dbBackupCommand;
+    public String dbBackupFilePath;
+    public String dbBackupFileName;
+
+    public String getDbBackupCommand() {
+        return dbBackupCommand;
+    }
+
+    public void setDbBackupCommand(String dbBackupCommand) {
+        this.dbBackupCommand = dbBackupCommand;
+    }
+
+    public String getDbBackupFilePath() {
+        return dbBackupFilePath;
+    }
+
+    public void setDbBackupFilePath(String dbBackupFilePath) {
+        this.dbBackupFilePath = dbBackupFilePath;
+    }
+
+    public String getDbBackupFileName() {
+        return dbBackupFileName;
+    }
+
+    public void setDbBackupFileName(String dbBackupFileName) {
+        this.dbBackupFileName = dbBackupFileName;
+    }
 
     public String getWxAppid() {
         return wxAppid;
@@ -32,20 +59,20 @@ public class Global {
         this.wxToken = wxToken;
     }
 
-    public String getArticleUploadPath() {
-        return articleUploadPath;
+    public String getFileArticleUploadPath() {
+        return fileArticleUploadPath;
     }
 
-    public void setArticleUploadPath(String articleUploadPath) {
-        this.articleUploadPath = articleUploadPath;
+    public void setFileArticleUploadPath(String fileArticleUploadPath) {
+        this.fileArticleUploadPath = fileArticleUploadPath;
     }
 
-    public String getUserUploadPath() {
-        return userUploadPath;
+    public String getFileUserUploadPath() {
+        return fileUserUploadPath;
     }
 
-    public void setUserUploadPath(String userUploadPath) {
-        this.userUploadPath = userUploadPath;
+    public void setFileUserUploadPath(String fileUserUploadPath) {
+        this.fileUserUploadPath = fileUserUploadPath;
     }
 
     public String getFileServer() {
