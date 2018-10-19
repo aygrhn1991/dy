@@ -7,33 +7,6 @@ public class Global {
     public String wxToken;
     public String wxAppid;
     public String wxAppsecret;
-    public String dbBackupCommand;
-    public String dbBackupFilePath;
-    public String dbBackupFileName;
-
-    public String getDbBackupCommand() {
-        return dbBackupCommand;
-    }
-
-    public void setDbBackupCommand(String dbBackupCommand) {
-        this.dbBackupCommand = dbBackupCommand;
-    }
-
-    public String getDbBackupFilePath() {
-        return dbBackupFilePath;
-    }
-
-    public void setDbBackupFilePath(String dbBackupFilePath) {
-        this.dbBackupFilePath = dbBackupFilePath;
-    }
-
-    public String getDbBackupFileName() {
-        return dbBackupFileName;
-    }
-
-    public void setDbBackupFileName(String dbBackupFileName) {
-        this.dbBackupFileName = dbBackupFileName;
-    }
 
     public String getWxAppid() {
         return wxAppid;

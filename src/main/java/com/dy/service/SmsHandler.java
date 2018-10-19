@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 public class SmsHandler {
 
-    private static final Logger logger = LogManager.getLogger(InterceptorHandler.class.getName());
+    private static final Logger logger = LogManager.getLogger(SmsHandler.class.getName());
 
     //产品名称:云通信短信API产品,开发者无需替换
     static final String product = "Dysmsapi";

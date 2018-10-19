@@ -21,10 +21,13 @@
     </bean>
 
     <task:scheduled-tasks>
-        <task:scheduled ref="dbBackupHandler" method="backup" cron="*/3 * * * * ?"/>
+        <task:scheduled ref="dbBackupHandler" method="backup" cron="0 0 0 1/1 * ? *"/>
     </task:scheduled-tasks>
 
     <bean id="dbBackupHandler"
-          class="com.dy.service.DbBackupHandler"/>
+          class="com.dy.service.DbBackupHandler">
+        <property name="dbBackupFilePath" value="${db.backupFilePath}"/>
+        <property name="dbBackupCommand" value="${db.backupCommand}"/>
+    </bean>
 
 </beans>

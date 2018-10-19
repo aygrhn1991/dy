@@ -18,9 +18,6 @@
         <property name="wxToken" value="${wx.token}"/>
         <property name="wxAppid" value="${wx.appid}"/>
         <property name="wxAppsecret" value="${wx.appsecret}"/>
-        <property name="dbBackupCommand" value="${db.backupCommand}"/>
-        <property name="dbBackupFilePath" value="${db.backupFilePath}"/>
-        <property name="dbBackupFileName" value="${db.backupFileName}"/>
     </bean>
 
 </beans>

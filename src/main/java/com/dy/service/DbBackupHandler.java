@@ -1,30 +1,43 @@
 package com.dy.service;
 
-import com.dy.controller.OAuthCtrl;
-import com.dy.util.Global;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-@Service
 public class DbBackupHandler {
 
-    @Autowired
-    @Qualifier("global")
-    private Global global;
+    private String dbBackupFilePath;
+    private String dbBackupCommand;
 
-    private static final Logger logger = LogManager.getLogger(OAuthCtrl.class.getName());
+    private static final Logger logger = LogManager.getLogger(DbBackupHandler.class.getName());
+
+    public String getDbBackupFilePath() {
+        return dbBackupFilePath;
+    }
+
+    public void setDbBackupFilePath(String dbBackupFilePath) {
+        this.dbBackupFilePath = dbBackupFilePath;
+    }
+
+    public String getDbBackupCommand() {
+        return dbBackupCommand;
+    }
+
+    public void setDbBackupCommand(String dbBackupCommand) {
+        this.dbBackupCommand = dbBackupCommand;
+    }
 
     public boolean backup() {
         PrintWriter printWriter = null;
         BufferedReader bufferedReader = null;
         try {
-            printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(global.dbBackupFilePath + global.dbBackupFileName), "utf8"));
-            Process process = Runtime.getRuntime().exec(global.dbBackupCommand);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String time = format.format(new Date());
+            printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(dbBackupFilePath + time + ".sql"), "utf8"));
+            Process process = Runtime.getRuntime().exec(dbBackupCommand);
             InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream(), "utf8");
             bufferedReader = new BufferedReader(inputStreamReader);
             String line;
