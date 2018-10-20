@@ -1,6 +1,7 @@
 package com.dy.util;
 
 import com.dy.model.wx.AccessToken;
+import com.dy.model.wx.JsapiTicket;
 import com.google.gson.Gson;
 
 import java.security.MessageDigest;
@@ -8,19 +9,40 @@ import java.util.Arrays;
 
 public class WxUtil {
 
-    public static boolean checkConfig(String token, String timestamp, String nonce, String signature) {
-        String[] strArray = new String[]{token, timestamp, nonce};
+    public static boolean checkConfig(String token, String timestamp, String noncestr, String signature) {
+        String[] strArray = new String[]{token, timestamp, noncestr};
         Arrays.sort(strArray);
         String strResult = getSha1(strArray[0] + strArray[1] + strArray[2]);
         return strResult.equals(signature);
     }
-    public static String getAccesstToken(String appid,String appsecret) {
+
+    public static String getJsapiSignature(String jsapi_ticket, long timestamp, String noncestr, String url) {
+        String n = "noncestr=" + noncestr;
+        String j = "jsapi_ticket=" + jsapi_ticket;
+        String t = "timestamp=" + timestamp;
+        String u = "url=" + url;
+        String[] strArray = new String[]{n, j, t, u};
+        Arrays.sort(strArray);
+        String str = String.join("&", strArray);
+        return getSha1(str);
+    }
+
+    public static String getAccesstToken(String appid, String appsecret) {
         String url = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", appid, appsecret);
         String response = HttpUtil.Get(url);
         Gson gson = new Gson();
         AccessToken accessToken = gson.fromJson(response, AccessToken.class);
         return accessToken.access_token;
     }
+
+    public static String getJsapiTicket(String accesstoken) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", accesstoken);
+        String response = HttpUtil.Get(url);
+        Gson gson = new Gson();
+        JsapiTicket ticket = gson.fromJson(response, JsapiTicket.class);
+        return ticket.ticket;
+    }
+
     private static String getSha1(String str) {
         if (str == null || str.length() == 0) {
             return null;

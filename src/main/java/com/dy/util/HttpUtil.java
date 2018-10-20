@@ -46,18 +46,18 @@ public class HttpUtil {
         return null;
     }
 
-    public static String getBaseUrlWithPort(HttpServletRequest request) {
+    public static String getBaseUrl(HttpServletRequest request) {
         try {
-            return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+            return request.getScheme() + "://" + request.getServerName() + request.getContextPath();
         } catch (Exception e) {
             System.out.println(e);
         }
         return null;
     }
 
-    public static String getBaseUrlWithoutPort(HttpServletRequest request) {
+    public static String getFullUrl(HttpServletRequest request) {
         try {
-            return request.getScheme() + "://" + request.getServerName() + request.getContextPath();
+            return request.getScheme() + "://" + request.getServerName() + request.getContextPath() + request.getServletPath() + "?" + request.getQueryString();
         } catch (Exception e) {
             System.out.println(e);
         }
