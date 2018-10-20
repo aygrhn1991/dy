@@ -2,9 +2,12 @@ $(function () {
     $.ajax({
         url: '/dy/oauth/jssdkconfig',
         type: 'POST',
+        data: {
+            url: window.location.href
+        },
         success: function (data) {
             wx.config({
-                debug: true,
+                debug: false,
                 appId: data.appId,
                 timestamp: data.timestamp,
                 nonceStr: data.nonceStr,

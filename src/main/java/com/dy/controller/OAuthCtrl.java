@@ -129,7 +129,7 @@ public class OAuthCtrl {
         String nonceStr = global.wxToken;
         String accesstoken = WxUtil.getAccesstToken(global.wxAppid, global.wxAppsecret);
         String jsapiticket = WxUtil.getJsapiTicket(accesstoken);
-        String url = HttpUtil.getFullUrl(request);
+        String url = request.getParameter("url");
         String signature = WxUtil.getJsapiSignature(jsapiticket, timestamp, nonceStr, url);
         Map<String, Object> map = new HashMap<>();
         map.put("appId", appId);
