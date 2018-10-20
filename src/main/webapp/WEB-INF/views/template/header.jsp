@@ -8,7 +8,7 @@
     <script src="/dy/static/layer/layer.js"></script>
     <script src="/dy/static/js/angular.js"></script>
     <script src="/dy/static/js/dy.js"></script>
-    //微信jssdk
+    <%--微信jssdk--%>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
     <script src="/dy/static/js/wx.js"></script>
 </head>
