@@ -319,6 +319,7 @@ input:focus {
 
 .common-search input {
     text-indent: 3em;
+    font-size: 16px;
 }
 
 .common-tabs {
