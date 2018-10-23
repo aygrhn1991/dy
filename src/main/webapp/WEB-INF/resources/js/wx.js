@@ -12,23 +12,40 @@ $(function () {
                 timestamp: data.timestamp,
                 nonceStr: data.nonceStr,
                 signature: data.signature,
-                jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData']
+                jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData','onMenuShareTimeline','onMenuShareAppMessage']
             });
         }
     });
     wx.ready(function () {
-        wx.updateAppMessageShareData({
+        // wx.updateAppMessageShareData({
+        //     title: '龙江问医',
+        //     desc: '龙江问医',
+        //     link: 'http://' + window.location.host + '/dy/oauth/requestcode',
+        //     imgUrl: 'http://' + window.location.host + '/dy/static/img/logo.jpg',
+        // }, function (res) {
+        // });
+        // wx.updateTimelineShareData({
+        //     title: '龙江问医',
+        //     link: 'http://' + window.location.host + '/dy/oauth/requestcode',
+        //     imgUrl: 'http://' + window.location.host + '/dy/static/img/logo.jpg',
+        // }, function (res) {
+        // });
+        wx.onMenuShareTimeline({
             title: '龙江问医',
-            desc: '龙江问医',
-            link: 'http://' + window.location.host + '/dy/home/requestcode',
+            link: 'http://' + window.location.host + '/dy/oauth/requestcode',
             imgUrl: 'http://' + window.location.host + '/dy/static/img/logo.jpg',
-        }, function (res) {
+            success: function () {
+            }
         });
-        wx.updateTimelineShareData({
+        wx.onMenuShareAppMessage({
             title: '龙江问医',
-            link: 'http://' + window.location.host + '/dy/home/requestcode',
+            desc: '欢迎访问龙江问医',
+            link: 'http://' + window.location.host + '/dy/oauth/requestcode',
             imgUrl: 'http://' + window.location.host + '/dy/static/img/logo.jpg',
-        }, function (res) {
+            type: 'link',
+            dataUrl: '',
+            success: function () {
+            }
         });
     });
     wx.error(function (res) {
