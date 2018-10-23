@@ -6,7 +6,7 @@ window.getUrlParam = function (name) {
         return decodeURI(r[2]);
     return null;
 };
-window.getUserId = function (name) {
+window.getCookieParam = function (name) {
     var cookies = document.cookie;
     var cookieArray = cookies.split(";");
     for (var i = 0; i < cookieArray.length; i++) {
@@ -18,6 +18,17 @@ window.getUserId = function (name) {
     return null;
 };
 var app = angular.module('app', []);
+app.controller('mainCtrl', function ($scope) {
+    $scope.menuId = window.getCookieParam('menuid');
+    $scope.changeTab = function (e) {
+        document.cookie = 'menuid=' + e;
+        if (e == 3) {
+            window.location.href = '/dy/home/questions';
+        } else {
+            window.location.href = '/dy/home/articles?id=' + e;
+        }
+    };
+});
 app.controller('indexCtrl', function ($scope, $http) {
     $scope.ask = function () {
         if ($scope.t_title == null || $scope.t_title === '' || $scope.t_title === 'undefined' || $scope.t_title === undefined) {
@@ -47,9 +58,18 @@ app.controller('indexCtrl', function ($scope, $http) {
             $scope.articles = d;
         });
     };
+    $scope.addscan = function (e) {
+        if (e.t_mode == 0) {
+            $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
+            });
+            window.location.href = e.t_url;
+        } else {
+            window.location.href = '/dy/home/article?id=' + e.t_id;
+        }
+    };
     $scope.init = function () {
         $scope.fileServer = window.fileServer;
-        $scope.userid = window.getUserId('userid');
+        $scope.userid = window.getCookieParam('userid');
         $scope.queryquestionsbytop();
         $scope.queryarticlesbytop();
     };
@@ -105,7 +125,7 @@ app.controller('askCtrl', function ($scope, $http) {
         $scope.pageSize = 10;
         $scope.global_count = 0;
         $scope.global_text = '点击加载更多';
-        $scope.userid = window.getUserId('userid');
+        $scope.userid = window.getCookieParam('userid');
         $scope.queryuser();
         $scope.queryquestions();
     };
@@ -121,6 +141,15 @@ app.controller('askfinishCtrl', function ($scope, $http) {
         $http.post('/dy/home/queryarticlesbytag/' + $scope.t_title, null).success(function (d) {
             $scope.articles = d;
         });
+    };
+    $scope.addscan = function (e) {
+        if (e.t_mode == 0) {
+            $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
+            });
+            window.location.href = e.t_url;
+        } else {
+            window.location.href = '/dy/home/article?id=' + e.t_id;
+        }
     };
     $scope.init = function () {
         $scope.fileServer = window.fileServer;
@@ -184,6 +213,15 @@ app.controller('articlesCtrl', function ($scope, $http) {
         $scope.articles = [];
         $scope.pageIndex = 1;
         $scope.pageSize = 10;
+    };
+    $scope.addscan = function (e) {
+        if (e.t_mode == 0) {
+            $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
+            });
+            window.location.href = e.t_url;
+        } else {
+            window.location.href = '/dy/home/article?id=' + e.t_id;
+        }
     };
     $scope.init = function () {
         $scope.reset();
@@ -343,7 +381,7 @@ app.controller('questionCtrl', function ($scope, $http, $timeout) {
         $scope.showLoginForm = false;
         $scope.fileServer = window.fileServer;
         $scope.id = window.getUrlParam('id');
-        $scope.userid = window.getUserId('userid');
+        $scope.userid = window.getCookieParam('userid');
         $scope.queryuser();
         $scope.queryquestion();
         $scope.queryallanswers();
@@ -362,7 +400,7 @@ app.controller('questionsCtrl', function ($scope, $http) {
         });
     };
     $scope.init = function () {
-        $scope.userid = window.getUserId('userid');
+        $scope.userid = window.getCookieParam('userid');
         $scope.queryuser();
         $scope.queryallquestions();
     };

@@ -196,7 +196,7 @@ public class HomeCtrl {
     public List<Map<String, Object>> queryarticlesbytop() {
         String sql = "select t_id,t_title,t_cover,t_url,t_mode from t_article ";
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
-        sql += " limit 0,4";
+        sql += " limit 0,8";
         return this.jdbcTemplate.queryForList(sql);
     }
 

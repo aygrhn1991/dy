@@ -5,8 +5,8 @@
         <img src="/dy/static/img/5.png">
     </a>
     <div class="common-wrapper">
-        <textarea class="question-textarea" placeholder="输入您想咨询的问题试试？" rows="8" ng-model="t_title"></textarea>
-        <button ng-click="ask()">提问</button>
+        <textarea class="question-textarea" placeholder="输入您想咨询的问题试试？" rows="6" ng-model="t_title"></textarea>
+        <button ng-click="ask()">提&nbsp;&nbsp;问</button>
     </div>
     <div class="common-wrapper">
         <div class="common-content">
@@ -25,11 +25,12 @@
     </div>
     <div class="common-wrapper">
         <div class="common-content">
-            <div class="article-nav-h">
+            <a class="article-nav-h" href="/dy/home/articles?id=1">
                 <img src="/dy/static/img/2.png">
-            </div>
+            </a>
             <div class="article-items">
-                <a href="{{d.t_mode==0?d.t_url:'/dy/home/article?id='+d.t_id}}" class="article-item" ng-repeat="d in articles">
+                <%--<a href="{{d.t_mode==0?d.t_url:'/dy/home/article?id='+d.t_id}}" class="article-item" ng-repeat="d in articles">--%>
+                <a class="article-item" ng-repeat="d in articles" ng-click="addscan(d)">
                     <img src="{{fileServer}}/article/{{d.t_cover}}">
                     <div class="article-title" ng-bind="d.t_title"></div>
                 </a>

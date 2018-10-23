@@ -19,6 +19,7 @@ button {
     background: #70dff8;
     border: none;
     border-radius: 3px;
+    font-size: 16px;
 }
 
 button:focus {
@@ -113,6 +114,7 @@ input:focus {
     resize: none;
     border-radius: 5px;
     border: none;
+    font-size: 16px;
 }
 
 .question-nav-v {
@@ -158,10 +160,11 @@ input:focus {
 
 .article-nav-h {
     padding: 5px 0;
+    display: block;
 }
 
 .article-nav-h img {
-    height: 20px;
+    height: 30px;
 }
 
 .article-items {

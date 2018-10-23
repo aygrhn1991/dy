@@ -12,7 +12,7 @@
     <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
     <script src="/dy/static/js/wx.js"></script>
 </head>
-<body>
+<body ng-controller="mainCtrl">
 <div class="header-wrapper">
     <a class="header-back" href="javascript:window.history.back();">
         <img src="/dy/static/img/7.png">

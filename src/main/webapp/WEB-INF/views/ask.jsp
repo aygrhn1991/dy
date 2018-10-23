@@ -9,8 +9,8 @@
         </a>
     </div>
     <div class="common-wrapper">
-        <textarea class="question-textarea" placeholder="输入您想咨询的问题试试？" rows="8" ng-model="t_title"></textarea>
-        <button ng-click="ask()">提问</button>
+        <textarea class="question-textarea" placeholder="输入您想咨询的问题试试？" rows="6" ng-model="t_title"></textarea>
+        <button ng-click="ask()">提&nbsp;&nbsp;问</button>
     </div>
     <div class="common-wrapper">
         <div class="common-content">
