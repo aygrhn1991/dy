@@ -17,6 +17,7 @@
     <a class="header-back" href="javascript:window.history.back();">
         <img src="/dy/static/img/7.png">
     </a>
+    <label>妇科名医，专业解答</label>
     <a class="header-home" href="/dy/home/index">
         <img src="/dy/static/img/8.png">
     </a>

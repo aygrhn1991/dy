@@ -39,7 +39,7 @@ $(function () {
         });
         wx.onMenuShareAppMessage({
             title: '龙江问医',
-            desc: '欢迎访问龙江问医',
+            desc: '口袋里的专属妇科医生',
             link: 'http://' + window.location.host + '/dy/oauth/requestcode',
             imgUrl: 'http://' + window.location.host + '/dy/static/img/logo.jpg',
             type: 'link',

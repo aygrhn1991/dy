@@ -40,9 +40,11 @@ input:focus {
 
 .header-wrapper {
     position: relative;
-    padding: 15px;
+    padding: 15px 10px;
     background: #f9f8f8;
     border-bottom: 1px solid #f9f8f8;
+    font-size: 16px;
+    text-align: center;
 }
 
 .header-wrapper img {
@@ -50,6 +52,7 @@ input:focus {
 }
 
 .header-back {
+    float: left;
 }
 
 .header-home {
