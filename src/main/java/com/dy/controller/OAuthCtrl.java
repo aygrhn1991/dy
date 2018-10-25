@@ -138,5 +138,10 @@ public class OAuthCtrl {
         return map;
     }
 
+    @RequestMapping(value = "/redirect", method = RequestMethod.GET)
+    public String redirect() {
+        String url = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI3ODQ4MzIwNg==&scene=124#wechat_redirect";
+        return "redirect:" + url;
+    }
 
 }
