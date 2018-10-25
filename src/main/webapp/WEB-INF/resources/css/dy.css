@@ -414,6 +414,13 @@ input:focus {
     color: #bbb;
 }
 
+.common-head-time img {
+    position: relative;
+    height: 18px;
+    margin-left: 10px;
+    top: 5px;
+}
+
 .login-form-wrapper {
     position: fixed;
     top: 0;

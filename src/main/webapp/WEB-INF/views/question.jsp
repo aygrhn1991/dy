@@ -11,10 +11,10 @@
     <div class="common-head">
         <div class="common-head-title">
             <label ng-bind="question.t_title"></label>
-            <label ng-click="deletequestion()" style="color:red;">&#10008;</label>
         </div>
         <div class="common-head-time">
             <span ng-bind="question.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>
+            <img src="/dy/static/img/18.png" ng-click="deletequestion()">
         </div>
     </div>
     <div class="common-wrapper" style="{{'margin-bottom:'+(question.t_user_id==userid?50:0)+'px'}}">
