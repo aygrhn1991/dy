@@ -259,7 +259,7 @@ public class HomeCtrl {
     @ResponseBody
     public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex,
                                                     @PathVariable("pageSize") int pageSize) {
-        String sql = "select * from t_question ";
+        String sql = "select * from t_question where t_solved=1";
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         return this.jdbcTemplate.queryForList(sql);
