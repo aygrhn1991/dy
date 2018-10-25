@@ -255,6 +255,22 @@ app.controller('questionCtrl', function ($scope, $http, $timeout) {
             }, 200);
         });
     };
+    $scope.deletequestion = function () {
+        layer.confirm('确定删除？', {
+            btn: ['删除', '取消']
+        }, function () {
+            $http.post('/dy/home/deletequestion/' + $scope.id, null).success(function (d) {
+                if (d === true) {
+                    window.location.href = '/dy/home/questions';
+                } else {
+                    layer.msg('操作失败', {time: 500, offset: '50%'});
+                }
+            }).error(function () {
+                layer.msg('操作失败', {time: 500, offset: '50%'});
+            });
+        }, function () {
+        });
+    };
     $scope.answer = function () {
         if (($scope.answers.filter(function (e) {
             return e.t_user_id === parseInt($scope.userid)

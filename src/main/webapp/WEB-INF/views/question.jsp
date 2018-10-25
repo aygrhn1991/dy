@@ -9,7 +9,10 @@
         </a>
     </div>
     <div class="common-head">
-        <div class="common-head-title" ng-bind="question.t_title"></div>
+        <div class="common-head-title">
+            <img src="/dy/static/img/logo.jpg" style="width: 15px;" ng-click="deletequestion()">
+            <label ng-bind="question.t_title"></label>
+        </div>
         <div class="common-head-time">
             <span ng-bind="question.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>
         </div>
