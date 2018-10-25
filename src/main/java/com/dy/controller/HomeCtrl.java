@@ -309,6 +309,13 @@ public class HomeCtrl {
         return list.get(0);
     }
 
+    @RequestMapping("/deletequestion/{id}")
+    @ResponseBody
+    public boolean deletequestion(@PathVariable("id") int id) {
+        String sql = "delete from t_question where t_id=?";
+        int count = this.jdbcTemplate.update(sql, new Object[]{id});
+        return count == 1;
+    }
     //</editor-fold>
 
     //<editor-fold desc="用户">
