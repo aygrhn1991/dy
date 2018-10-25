@@ -22,7 +22,7 @@ app.controller('mainCtrl', function ($scope) {
     $scope.menuId = window.getCookieParam('menuid');
     $scope.changeTab = function (e) {
         document.cookie = 'menuid=' + e;
-        if (e == 3) {
+        if (e === 3) {
             window.location.href = '/dy/home/questions';
         } else {
             window.location.href = '/dy/home/articles?id=' + e;
@@ -59,7 +59,7 @@ app.controller('indexCtrl', function ($scope, $http) {
         });
     };
     $scope.addscan = function (e) {
-        if (e.t_mode == 0) {
+        if (e.t_mode === 0) {
             $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
             });
             window.location.href = e.t_url;
@@ -143,7 +143,7 @@ app.controller('askfinishCtrl', function ($scope, $http) {
         });
     };
     $scope.addscan = function (e) {
-        if (e.t_mode == 0) {
+        if (e.t_mode === 0) {
             $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
             });
             window.location.href = e.t_url;
@@ -215,7 +215,7 @@ app.controller('articlesCtrl', function ($scope, $http) {
         $scope.pageSize = 10;
     };
     $scope.addscan = function (e) {
-        if (e.t_mode == 0) {
+        if (e.t_mode === 0) {
             $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
             });
             window.location.href = e.t_url;
@@ -257,7 +257,8 @@ app.controller('questionCtrl', function ($scope, $http, $timeout) {
     };
     $scope.deletequestion = function () {
         layer.confirm('确定删除？', {
-            btn: ['删除', '取消']
+            btn: ['删除', '取消'],
+            offset: '40%'
         }, function () {
             $http.post('/dy/home/deletequestion/' + $scope.id, null).success(function (d) {
                 if (d === true) {
