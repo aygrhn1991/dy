@@ -124,7 +124,6 @@ public class OAuthCtrl {
     @RequestMapping("/jssdkconfig")
     @ResponseBody
     public Map<String, Object> jssdkconfig(HttpServletRequest request) {
-        String appId = global.wxAppid;
         long timestamp = new Date().getTime();
         String nonceStr = global.wxToken;
         String accesstoken = WxUtil.getAccesstToken(global.wxAppid, global.wxAppsecret);
@@ -132,11 +131,12 @@ public class OAuthCtrl {
         String url = request.getParameter("url");
         String signature = WxUtil.getJsapiSignature(jsapiticket, timestamp, nonceStr, url);
         Map<String, Object> map = new HashMap<>();
-        map.put("appId", appId);
+        map.put("appId", global.wxAppid);
         map.put("timestamp", timestamp);
         map.put("nonceStr", nonceStr);
         map.put("signature", signature);
         return map;
     }
+
 
 }

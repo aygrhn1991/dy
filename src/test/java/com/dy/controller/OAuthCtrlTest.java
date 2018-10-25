@@ -1,6 +1,7 @@
 package com.dy.controller;
 
 import com.dy.util.Global;
+import com.dy.util.WxUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class OAuthCtrlTest {
 
     @Test
     public void log() {
+
+        String accesstoken = WxUtil.getAccesstToken(global.wxAppid, global.wxAppsecret);
+
         System.out.println(this.global.wxAppid);
         String sql = "select * from t_type";
         List<Map<String,Object>> list= this.jdbcTemplate.queryForList(sql);

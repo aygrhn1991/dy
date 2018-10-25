@@ -1,6 +1,7 @@
 package com.dy.util;
 
 import com.dy.model.wx.AccessToken;
+import com.dy.model.wx.BaseCallback;
 import com.dy.model.wx.JsapiTicket;
 import com.google.gson.Gson;
 
@@ -41,6 +42,14 @@ public class WxUtil {
         Gson gson = new Gson();
         JsapiTicket ticket = gson.fromJson(response, JsapiTicket.class);
         return ticket.ticket;
+    }
+
+    public static BaseCallback setMenu(String menujson, String accesstoken) {
+        String url = String.format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s", accesstoken);
+        String response = HttpUtil.Post(url, menujson);
+        Gson gson = new Gson();
+        BaseCallback result = gson.fromJson(response, BaseCallback.class);
+        return result;
     }
 
     private static String getSha1(String str) {

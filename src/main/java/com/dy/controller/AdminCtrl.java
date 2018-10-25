@@ -1,8 +1,10 @@
 package com.dy.controller;
 
 import com.dy.model.*;
+import com.dy.model.wx.BaseCallback;
 import com.dy.util.FileUtil;
 import com.dy.util.Global;
+import com.dy.util.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -530,5 +532,16 @@ public class AdminCtrl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{begin, end});
         return list;
     }
+    //</editor-fold>
+
+    //<editor-fold desc="微信">
+    @RequestMapping("/setmenu/{menu}")
+    @ResponseBody
+    public boolean setmenu(@PathVariable("menu") String menu) {
+        String accesstoken = WxUtil.getAccesstToken(global.wxAppid, global.wxAppsecret);
+        BaseCallback result = WxUtil.setMenu(menu, accesstoken);
+        return result.errcode == 0;
+    }
+
     //</editor-fold>
 }

@@ -6,6 +6,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -39,6 +40,25 @@ public class HttpUtil {
             HttpEntity httpEntity = httpResponse.getEntity();
             String result = EntityUtils.toString(httpEntity, "UTF-8");
             httpResponse.close();
+            httpClient.close();
+            return result;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public static String Post(String url, String body) {
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader("Content-Type", "application/json");
+            httpPost.setEntity(new StringEntity(body));
+            CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            String result = EntityUtils.toString(httpEntity, "UTF-8");
+            httpResponse.close();
+            httpClient.close();
             return result;
         } catch (Exception e) {
             System.out.println(e);
