@@ -18,6 +18,7 @@
         <property name="wxToken" value="${wx.token}"/>
         <property name="wxAppid" value="${wx.appid}"/>
         <property name="wxAppsecret" value="${wx.appsecret}"/>
+        <property name="wxId" value="${wx.id}"/>
     </bean>
 
 </beans>

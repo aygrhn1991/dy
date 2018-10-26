@@ -7,6 +7,15 @@ public class Global {
     public String wxToken;
     public String wxAppid;
     public String wxAppsecret;
+    public String wxId;
+
+    public String getWxId() {
+        return wxId;
+    }
+
+    public void setWxId(String wxId) {
+        this.wxId = wxId;
+    }
 
     public String getWxAppid() {
         return wxAppid;

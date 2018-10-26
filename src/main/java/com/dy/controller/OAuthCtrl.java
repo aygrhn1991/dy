@@ -8,6 +8,10 @@ import com.dy.util.WxUtil;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -41,7 +47,7 @@ public class OAuthCtrl {
 
     @RequestMapping("/config")
     @ResponseBody
-    public String config(HttpServletRequest request) {
+    public String config(HttpServletRequest request, HttpServletResponse response) {
         if (request.getMethod().toLowerCase().equals("get")) {
             String timestamp = request.getParameter("timestamp");
             String nonce = request.getParameter("nonce");
@@ -49,6 +55,34 @@ public class OAuthCtrl {
             String echostr = request.getParameter("echostr");
             return WxUtil.checkConfig(this.global.wxToken, timestamp, nonce, signature) ? echostr : null;
         } else {
+            try {
+                SAXReader reader = new SAXReader();
+                Document document = reader.read(request.getInputStream());
+                Element root = document.getRootElement();
+                logger.info("自动回复-接收：" + document.asXML());
+                String msgType = root.elementText("MsgType");
+                String event = root.elementText("Event");
+                String openId = root.elementText("FromUserName");
+                if (msgType.equals("event") && event.equals("subscribe")) {
+                    Document document2 = DocumentHelper.createDocument();
+                    Element root2 = document2.addElement("xml");
+                    Element toUserName = root2.addElement("ToUserName").addText(openId);
+                    Element fromUserName = root2.addElement("FromUserName").addText(global.wxId);
+                    Element createTime = root2.addElement("CreateTime").addText(String.valueOf(new Date().getTime()));
+                    Element msgType2 = root2.addElement("MsgType").addText("text");
+                    Element Content = root2.addElement("Content").addText("感谢您的关注，医学图解旗下龙江问医网正式上线！\n" +
+                            "您口袋里的专属妇科医生！\n" +
+                            "专家24小时回复，让我们一起成长吧！\n");
+                    String responseXml = document2.asXML();
+                    logger.info("自动回复-回复：" + responseXml);
+                    PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
+                    out.print(responseXml);
+                    out.flush();
+                    out.close();
+                }
+            } catch (Exception e) {
+                logger.error("自动回复异常：" + e.getMessage());
+            }
             return null;
         }
     }
