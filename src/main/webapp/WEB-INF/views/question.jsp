@@ -14,20 +14,33 @@
         </div>
         <div class="common-head-time">
             <span ng-bind="question.t_time|date:'yyyy-MM-dd HH:mm:ss'"></span>
-            <img src="/dy/static/img/18.png" ng-click="deletequestion()">
+            <img src="/dy/static/img/18.png" ng-if="question.t_user_id==userid" ng-click="deletequestion()">
         </div>
     </div>
     <div class="common-wrapper" style="{{'margin-bottom:'+(question.t_user_id==userid?50:0)+'px'}}">
         <div class="common-content">
-            <div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers"
-                 ng-if="!(d.t_isimg==true&&d.t_user_id!=userid)">
+            <%--<div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers"--%>
+            <%--ng-if="!(d.t_isimg==true&&d.t_user_id!=userid)">--%>
+            <%--<div class="answer-time" ng-bind="d.t_time|date:'yyyy-MM-dd HH:mm:ss'"></div>--%>
+            <%--<div class="answer-item">--%>
+            <%--<img src="/dy/static/img/6.png" class="answer-tag" ng-if="d.t_user_id==0">--%>
+            <%--<div class="answer-content" ng-bind="d.t_content" ng-if="d.t_isimg==false"></div>--%>
+            <%--<div class="answer-content" ng-if="d.t_isimg==true">--%>
+            <%--<img src="{{fileServer}}/user/{{d.t_content}}">--%>
+            <%--</div>--%>
+            <%--</div>--%>
+            <%--</div>--%>
+            <div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers">
                 <div class="answer-time" ng-bind="d.t_time|date:'yyyy-MM-dd HH:mm:ss'"></div>
-                <div class="answer-item">
+                <div class="answer-item" ng-if="!(d.t_isimg==true&&d.t_user_id!=userid)">
                     <img src="/dy/static/img/6.png" class="answer-tag" ng-if="d.t_user_id==0">
                     <div class="answer-content" ng-bind="d.t_content" ng-if="d.t_isimg==false"></div>
-                    <div class="answer-content" ng-if="d.t_isimg==true">
+                    <div class="answer-content" ng-if="d.t_isimg==true&&d.t_user_id==userid">
                         <img src="{{fileServer}}/user/{{d.t_content}}">
                     </div>
+                </div>
+                <div class="answer-item answer-content-secret" ng-if="d.t_isimg==true&&d.t_user_id!=userid">
+                    附件保密中
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 html, body {
     padding: 0;
     margin: 0;
+    background: #f9f8f8;
 }
 
 a,
@@ -39,7 +40,6 @@ input:focus {
 }
 
 .header-wrapper {
-    position: relative;
     padding: 15px 10px;
     background: #f9f8f8;
     border-bottom: 1px solid #f9f8f8;
@@ -89,6 +89,7 @@ input:focus {
 .index-top-img {
     display: block;
     padding: 5px;
+    background: white;
 }
 
 .index-top-img img {
@@ -98,6 +99,7 @@ input:focus {
 .common-wrapper {
     background: #f9f8f8;
     padding: 5px;
+    margin-bottom: 10px;
 }
 
 .common-content {
@@ -108,6 +110,13 @@ input:focus {
 
 .common-content img {
     max-width: 100%;
+}
+
+.common-more {
+    float: right;
+    color: #70dff8 !important;
+    font-size: 14px;
+    margin: 5px 10px 0 0;
 }
 
 .question-textarea {
@@ -207,6 +216,7 @@ input:focus {
 
 .user-wrapper {
     padding: 10px;
+    background: white;
 }
 
 .user-headimg {
@@ -260,6 +270,7 @@ input:focus {
 .ask-finish {
     padding: 60px;
     display: block;
+    background: white;
 }
 
 .ask-finish img {
@@ -310,6 +321,7 @@ input:focus {
 .common-search {
     position: relative;
     padding: 10px;
+    background: white;
 }
 
 .common-search img {
@@ -328,6 +340,7 @@ input:focus {
 .common-tabs {
     border-bottom: 1px solid #f9f8f8;
     padding: 10px;
+    background: white;
 }
 
 .common-tab {
@@ -377,6 +390,11 @@ input:focus {
     text-indent: 3em;
 }
 
+.answer-content-secret {
+    border-radius: 5px;
+    background: #fcd1db;
+}
+
 .common-ask-wrapper {
     position: fixed;
     bottom: 50px;
@@ -390,17 +408,19 @@ input:focus {
 }
 
 .common-ask input {
-    width: 66%;
+    width: 55%;
+    font-size: 16px;
 }
 
 .common-ask button {
     float: right;
-    width: 15%;
+    width: 20%;
     margin-left: 2px;
 }
 
 .common-head {
     padding: 10px;
+    background: white;
 }
 
 .common-head-title {

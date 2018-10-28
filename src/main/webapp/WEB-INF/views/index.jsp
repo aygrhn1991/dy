@@ -10,6 +10,10 @@
     </div>
     <div class="common-wrapper">
         <div class="common-content">
+            <div class="question-nav-h">
+                <img src="/dy/static/img/9.png">
+                <a class="common-more" href="/dy/home/ask">更多</a>
+            </div>
             <a href="/dy/home/ask" class="question-nav-v">
                 <img src="/dy/static/img/10.png">
             </a>
@@ -25,11 +29,11 @@
     </div>
     <div class="common-wrapper">
         <div class="common-content">
-            <a class="article-nav-h" href="/dy/home/articles?id=1">
+            <div class="article-nav-h">
                 <img src="/dy/static/img/2.png">
-            </a>
+                <a class="common-more" href="/dy/home/articles?id=1">更多</a>
+            </div>
             <div class="article-items">
-                <%--<a href="{{d.t_mode==0?d.t_url:'/dy/home/article?id='+d.t_id}}" class="article-item" ng-repeat="d in articles">--%>
                 <a class="article-item" ng-repeat="d in articles" ng-click="addscan(d)">
                     <img src="{{fileServer}}/article/{{d.t_cover}}">
                     <div class="article-title" ng-bind="d.t_title"></div>
