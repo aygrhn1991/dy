@@ -155,11 +155,12 @@ public class AdminCtrl {
         return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    @RequestMapping(value = {"/queryarticles/{pageIndex}/{pageSize}/{id}",
-            "/queryarticles/{pageIndex}/{pageSize}/{id}/{keyword}"})
+    @RequestMapping(value = {"/queryarticles/{pageIndex}/{pageSize}/{mode}/{id}",
+            "/queryarticles/{pageIndex}/{pageSize}/{mode}/{id}/{keyword}"})
     @ResponseBody
     public List<Map<String, Object>> queryarticles(@PathVariable("pageIndex") int pageIndex,
                                                    @PathVariable("pageSize") int pageSize,
+                                                   @PathVariable(value = "mode") int mode,
                                                    @PathVariable(value = "id") int id,
                                                    @PathVariable(value = "keyword", required = false) String keyword) {
         String sql = "select t_article.t_id,t_type_id,t_type_name,t_title,t_author,t_time,t_cover,t_scan,t_sort,t_top,t_scan_origin,t_search from t_article left join t_type on t_type.t_id=t_article.t_type_id";
@@ -170,7 +171,11 @@ public class AdminCtrl {
         if (id != -1) {
             sql += " and t_type_id=" + id;
         }
-        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        if (mode == 0) {
+            sql += " order by t_time desc, t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        } else {
+            sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        }
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         return this.jdbcTemplate.queryForList(sql);
     }
@@ -258,11 +263,12 @@ public class AdminCtrl {
         return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
 
-    @RequestMapping(value = {"/queryquestions/{pageIndex}/{pageSize}/{state}",
-            "/queryquestions/{pageIndex}/{pageSize}/{state}/{keyword}"})
+    @RequestMapping(value = {"/queryquestions/{pageIndex}/{pageSize}/{mode}/{state}",
+            "/queryquestions/{pageIndex}/{pageSize}/{mode}/{state}/{keyword}"})
     @ResponseBody
     public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex,
                                                     @PathVariable("pageSize") int pageSize,
+                                                    @PathVariable("mode") int mode,
                                                     @PathVariable(value = "state") int state,
                                                     @PathVariable(value = "keyword", required = false) String keyword) {
         String sql = "select t_question.*,t_user.w_nickname from t_question left join t_user on t_user.t_id=t_question.t_user_id";
@@ -273,7 +279,11 @@ public class AdminCtrl {
         if (state != -1) {
             sql += " and t_solved=" + state;
         }
-        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        if (mode == 0) {
+            sql += " order by t_time desc, t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        } else {
+            sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        }
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         for (Map<String, Object> m : list) {
@@ -405,7 +415,7 @@ public class AdminCtrl {
     @RequestMapping("/queryuserscount")
     @ResponseBody
     public int queryuserscount() {
-        String sql = "select count(*) from t_user order by t_id desc";
+        String sql = "select count(*) from t_user";
         return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
