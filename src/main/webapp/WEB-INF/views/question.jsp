@@ -17,19 +17,8 @@
             <img src="/dy/static/img/18.png" ng-if="question.t_user_id==userid" ng-click="deletequestion()">
         </div>
     </div>
-    <div class="common-wrapper" style="{{'margin-bottom:'+(question.t_user_id==userid?50:0)+'px'}}">
+    <div class="common-wrapper">
         <div class="common-content">
-            <%--<div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers"--%>
-            <%--ng-if="!(d.t_isimg==true&&d.t_user_id!=userid)">--%>
-            <%--<div class="answer-time" ng-bind="d.t_time|date:'yyyy-MM-dd HH:mm:ss'"></div>--%>
-            <%--<div class="answer-item">--%>
-            <%--<img src="/dy/static/img/6.png" class="answer-tag" ng-if="d.t_user_id==0">--%>
-            <%--<div class="answer-content" ng-bind="d.t_content" ng-if="d.t_isimg==false"></div>--%>
-            <%--<div class="answer-content" ng-if="d.t_isimg==true">--%>
-            <%--<img src="{{fileServer}}/user/{{d.t_content}}">--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--</div>--%>
             <div ng-class="{'answer-left':d.t_user_id==0,'answer-right':d.t_user_id!=0}" ng-repeat="d in answers">
                 <div class="answer-time" ng-bind="d.t_time|date:'yyyy-MM-dd HH:mm:ss'"></div>
                 <div class="answer-item" ng-if="!(d.t_isimg==true&&d.t_user_id!=userid)">
@@ -45,6 +34,7 @@
             </div>
         </div>
     </div>
+    <div class="common-ask-secret" ng-show="question.t_user_id==userid">在这里可以上传您的图片，隐私保证。（附件保密）</div>
     <div class="common-ask-wrapper" ng-show="question.t_user_id==userid">
         <div class="common-ask">
             <input type="text" placeholder="点击此处回复..." ng-model="t_content">
@@ -71,5 +61,6 @@
             </div>
         </div>
     </div>
+    <div style="height: 75px;" ng-if="question.t_user_id==userid"></div>
 </div>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

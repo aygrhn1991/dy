@@ -251,8 +251,8 @@ app.controller('questionCtrl', function ($scope, $http, $timeout) {
             $scope.answers = d;
             setTimeout(function () {
                 var ele = document.getElementsByTagName('body')[0];
-                window.scrollTo(0, ele.scrollHeight)
-            }, 200);
+                window.scrollTo(0, ele.scrollHeight);
+            }, 500);
         });
     };
     $scope.deletequestion = function () {
