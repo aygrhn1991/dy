@@ -264,7 +264,7 @@ input:focus {
 .question-item-b:after {
     content: '';
     position: absolute;
-    top: 34px;
+    top: 40%;
     right: 10px;
     width: 12px;
     height: 12px;
