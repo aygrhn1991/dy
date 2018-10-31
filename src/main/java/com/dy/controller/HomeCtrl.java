@@ -276,6 +276,12 @@ public class HomeCtrl {
                 this.jdbcTemplate.update(sql, new Object[]{m.get("t_id")});
             }
         }
+        for (Map<String, Object> m : list) {
+            sql = "select t_tag.t_tag_name from t_question_tag left join t_tag on t_tag.t_id=t_question_tag.t_tag_id left join t_question on t_question.t_id=t_question_tag.t_question_id where t_question_tag.t_question_id=?";
+            m.put("tags", this.jdbcTemplate.queryForList(sql, new Object[]{m.get("t_id")}));
+            sql = "select t_answer.t_content from t_answer where t_answer.t_question_id=? limit 1";
+            m.put("content", this.jdbcTemplate.queryForObject(sql, String.class,new Object[]{m.get("t_id")}));
+        }
         return list;
     }
 

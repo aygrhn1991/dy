@@ -110,6 +110,7 @@ app.controller('askCtrl', function ($scope, $http) {
         });
     };
     $scope.queryquestions = function () {
+        $scope.global_text = '加载中...';
         $http.post('/dy/home/queryquestions/' + $scope.pageIndex + '/' + $scope.pageSize + '/' + $scope.keyword, null).success(function (d) {
             $scope.global_count = d.length;
             if (d.length === 0) {
