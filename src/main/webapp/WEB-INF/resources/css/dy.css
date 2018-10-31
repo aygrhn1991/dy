@@ -291,6 +291,16 @@ input:focus {
     display: block;
 }
 
+.question-badge {
+    position: absolute;
+    left: 3px;
+    top: 10px;
+    background: red;
+    width: 10px;
+    height: 10px;
+    border-radius: 20px;
+}
+
 .question-title-c {
     font-weight: bold;
     width: 100%;
