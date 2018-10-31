@@ -255,15 +255,52 @@ input:focus {
 }
 
 .question-item-b {
+    position: relative;
     border-bottom: 1px solid #f9f8f8;
-    line-height: 40px;
-    padding: 0 15px;
+    padding: 8px 25px 8px 15px;
     display: block;
 }
 
+.question-item-b:after {
+    content: '';
+    position: absolute;
+    top: 34px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    border-top: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    transform: rotate(45deg);
+}
+
+.question-tags-b {
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 16px;
+}
+
+.question-tags-b span {
+    color: #70dff8;
+    border: 1px solid #70dff8;
+    padding: 0 5px;
+    margin-right: 8px;
+    border-radius: 3px;
+}
+
 .question-title-b {
+    padding: 5px 0;
     font-weight: bold;
     width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.question-content-b {
+    color: #bbb;
+    font-size: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

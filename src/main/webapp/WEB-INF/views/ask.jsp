@@ -24,7 +24,14 @@
             </div>
             <div class="question-items-b">
                 <a href="/dy/home/question?id={{d.t_id}}" class="question-item-b" ng-repeat="d in questions">
+                    <div class="question-tags-b">
+                        <span>俩字</span>
+                        <span>仨字</span>
+                        <span>四个文字</span>
+                        <span>仨字</span>
+                    </div>
                     <div class="question-title-b" ng-bind="d.t_title"></div>
+                    <div class="question-content-b">一大堆文字一大堆文字一大堆文字一大堆文字一大堆文字一大堆文字一大堆文字一大堆文字一大堆文字一大堆文字</div>
                 </a>
             </div>
             <div class="common-list-more" ng-bind="global_text" ng-click="querymore()"></div>
