@@ -1,9 +1,6 @@
 package com.dy.controller;
 
 import com.dy.util.Global;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:applicationContext.xml", "classpath*:connectionContext.xml"})
@@ -27,46 +27,25 @@ public class OAuthCtrlTest {
     @Test
     public void log() {
 
-//        String accesstoken = WxUtil.getAccesstToken(global.wxAppid, global.wxAppsecret);
-//
-//        System.out.println(this.global.wxAppid);
-//        String sql = "select * from t_type";
-//        List<Map<String,Object>> list= this.jdbcTemplate.queryForList(sql);
-//        for(Map<String,Object> m:list){
-//            System.out.println(m.get("t_type_name"));
-//        }
-//
-//        Map<String, Object> map = new HashMap<>();
-//        sql = "select t_title,t_scan_origin from t_article order by t_scan_origin desc limit 0,10";
-//        List<Map<String, Object>> article_scan = this.jdbcTemplate.queryForList(sql);
-//        sql = "select t_title,t_search from t_article order by t_search desc limit 0,10";
-//        List<Map<String, Object>> article_search = this.jdbcTemplate.queryForList(sql);
-//        sql = "select t_title,t_scan_origin from t_question order by t_scan_origin desc limit 0,10";
-//        List<Map<String, Object>> question_scan = this.jdbcTemplate.queryForList(sql);
-//        map.put("article_scan", article_scan);
-//        map.put("article_search", article_search);
-//        map.put("question_scan", question_scan);
-//        System.out.println(map);
-
-
-        String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "<root>"
-                + "<data ret_code=\"0\" error_message=\"失败原因\">"
-                + "<refund_no>那就這样</refund_no>"
-                + "</data>"
-                + "<sign>xxxxxxxxxxxxxxxxxxx</sign>"
-                + "</root>";
-        try {
-            Document document = null;
-            document = DocumentHelper.parseText(xmlString);
-
-            Element root = document.getRootElement();
-            Element data = root.element("data");
-            String  text=  data.elementText("refund_no");//获取节点的值
-            String sign=  root.elementText("data");
-            String ss="sf";
-        } catch (Exception e) {
-            e.printStackTrace();
+        String keyword = "试管";
+        int pageIndex = 1;
+        int pageSize = 5;
+        List<Map<String, Object>> list = null;
+        String sql = "select * from t_question where t_solved=1";
+        if (keyword != null && !keyword.equals("")) {
+            sql += " and t_title like '%" + keyword + "%' ";
         }
+        sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
+        sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
+        list = this.jdbcTemplate.queryForList(sql);
+        //处理搜索次数
+        if (keyword != null && !keyword.equals("")) {
+            for (Map<String, Object> m : list) {
+                sql = "update t_question set t_search=t_search+1 where t_id=?";
+                System.out.println(this.jdbcTemplate.update(sql, new Object[]{m.get("t_id")}));
+                System.out.println("--------");
+            }
+        }
+        //System.out.println(list);
     }
 }

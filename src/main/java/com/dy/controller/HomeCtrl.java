@@ -255,14 +255,28 @@ public class HomeCtrl {
         return this.jdbcTemplate.queryForList(sql, new Object[]{id});
     }
 
-    @RequestMapping("/queryquestions/{pageIndex}/{pageSize}")
+    @RequestMapping(value = {"/queryquestions/{pageIndex}/{pageSize}/{keyword}",
+            "/queryquestions/{pageIndex}/{pageSize}"})
     @ResponseBody
     public List<Map<String, Object>> queryquestions(@PathVariable("pageIndex") int pageIndex,
-                                                    @PathVariable("pageSize") int pageSize) {
+                                                    @PathVariable("pageSize") int pageSize,
+                                                    @PathVariable(value = "keyword", required = false) String keyword) {
+        List<Map<String, Object>> list;
         String sql = "select * from t_question where t_solved=1";
+        if (keyword != null && !keyword.equals("")) {
+            sql += " and t_title like '%" + keyword + "%' ";
+        }
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
-        return this.jdbcTemplate.queryForList(sql);
+        list = this.jdbcTemplate.queryForList(sql);
+        //处理搜索次数
+        if (keyword != null && !keyword.equals("")) {
+            for (Map<String, Object> m : list) {
+                sql = "update t_question set t_search=t_search+1 where t_id=?";
+                this.jdbcTemplate.update(sql, new Object[]{m.get("t_id")});
+            }
+        }
+        return list;
     }
 
     @RequestMapping("/queryquestionsbytop")
