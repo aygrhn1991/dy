@@ -12,6 +12,7 @@
     </a>
     <div class="footer-line"></div>
     <a class="footer-tab" ng-click="changeTab(3)">
+        <div class="footer-badge" ng-if="user.unread>0"></div>
         <img src="/dy/static/img/{{menuId=='3'?'14':'17'}}.png">
         <div>我的</div>
     </a>

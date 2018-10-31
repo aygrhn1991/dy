@@ -297,7 +297,7 @@ public class AdminCtrl {
     @RequestMapping("/addquestion")
     @ResponseBody
     public boolean addquestion(@RequestBody final Question question) {
-        final String sql = "insert into t_question( t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved, t_scan_origin) values (?,0,?,0,0,0,0,0)";
+        final String sql = "insert into t_question( t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved, t_read, t_scan_origin, t_search) values (?,0,?,0,0,0,0,1,0,0)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         this.jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -394,7 +394,7 @@ public class AdminCtrl {
         String sql = "insert into t_answer(t_question_id, t_user_id, t_isimg, t_time, t_content) values (?,0,0,?,?)";
         int count = this.jdbcTemplate.update(sql, new Object[]{answer.t_question_id, new Date().getTime(), answer.t_content});
         if (count == 1) {
-            sql = "update t_question set t_solved=1 where t_id=" + answer.t_question_id;
+            sql = "update t_question set t_solved=1, t_read=0 where t_id=" + answer.t_question_id;
             count = this.jdbcTemplate.update(sql);
             return count == 1;
         }

@@ -18,7 +18,7 @@ window.getCookieParam = function (name) {
     return null;
 };
 var app = angular.module('app', []);
-app.controller('mainCtrl', function ($scope) {
+app.controller('mainCtrl', function ($scope, $http) {
     $scope.menuId = window.getCookieParam('menuid');
     $scope.changeTab = function (e) {
         document.cookie = 'menuid=' + e;
@@ -28,6 +28,16 @@ app.controller('mainCtrl', function ($scope) {
             window.location.href = '/dy/home/articles?id=' + e;
         }
     };
+    $scope.queryuser = function () {
+        $http.post('/dy/home/queryuser/' + $scope.userid, null).success(function (d) {
+            $scope.user = d;
+        });
+    };
+    $scope.init = function () {
+        $scope.userid = window.getCookieParam('userid');
+        $scope.queryuser();
+    };
+    $scope.init();
 });
 app.controller('indexCtrl', function ($scope, $http) {
     $scope.ask = function () {
@@ -100,7 +110,7 @@ app.controller('askCtrl', function ($scope, $http) {
         });
     };
     $scope.queryquestions = function () {
-        $http.post('/dy/home/queryquestions/' + $scope.pageIndex + '/' + $scope.pageSize, null).success(function (d) {
+        $http.post('/dy/home/queryquestions/' + $scope.pageIndex + '/' + $scope.pageSize + '/' + $scope.keyword, null).success(function (d) {
             $scope.global_count = d.length;
             if (d.length === 0) {
                 $scope.global_text = '没有更多了';
@@ -118,6 +128,15 @@ app.controller('askCtrl', function ($scope, $http) {
         }
         $scope.pageIndex++;
         $scope.queryquestions();
+    };
+    $scope.querykeyword = function () {
+        $scope.reset();
+        $scope.queryquestions();
+    };
+    $scope.reset = function () {
+        $scope.questions = [];
+        $scope.pageIndex = 1;
+        $scope.pageSize = 10;
     };
     $scope.init = function () {
         $scope.questions = [];
@@ -243,7 +262,7 @@ app.controller('questionCtrl', function ($scope, $http, $timeout) {
         });
     };
     $scope.queryquestion = function () {
-        $http.post('/dy/home/queryquestion/' + $scope.id, null).success(function (d) {
+        $http.post('/dy/home/queryquestion/' + $scope.id + '/' + $scope.userid, null).success(function (d) {
             $scope.question = d;
         });
     };

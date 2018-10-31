@@ -70,6 +70,7 @@ input:focus {
 }
 
 .footer-tab {
+    position: relative;
     padding: 5px 0;
     display: inline-block;
     width: 30%;
@@ -84,6 +85,15 @@ input:focus {
     height: 30px;
     width: 2px;
     background: #f9f8f8;
+}
+
+.footer-badge {
+    position: absolute;
+    left: 55%;
+    background: red;
+    width: 10px;
+    height: 10px;
+    border-radius: 20px;
 }
 
 .index-top-img {
@@ -334,6 +344,7 @@ input:focus {
     position: relative;
     float: right;
     background: white;
+    width: 50%;
 }
 
 .common-nav-search img {

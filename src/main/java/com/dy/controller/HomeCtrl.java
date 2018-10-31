@@ -79,7 +79,7 @@ public class HomeCtrl {
     @RequestMapping("/addquestion")
     @ResponseBody
     public boolean addquestion(@RequestBody final Question question) {
-        final String sql = "insert into t_question(t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved, t_scan_origin) values (?,?,?,0,0,0,0,0)";
+        final String sql = "insert into t_question(t_title, t_user_id, t_time, t_scan, t_sort, t_top, t_solved, t_read, t_scan_origin, t_search) values (?,?,?,0,0,0,0,1,0,0)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         this.jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -313,13 +313,21 @@ public class HomeCtrl {
         return questionList;
     }
 
-    @RequestMapping("/queryquestion/{id}")
+    @RequestMapping(value = {"/queryquestion/{id}/{userid}",
+            "/queryquestion/{id}"})
     @ResponseBody
-    public Map<String, Object> queryquestion(@PathVariable("id") int id) {
+    public Map<String, Object> queryquestion(@PathVariable("id") int id,
+                                             @PathVariable(value = "userid", required = false) Integer userid) {
+        //处理浏览量
         String sql = "update t_question set t_scan=t_scan+1,t_scan_origin=t_scan_origin+1 where t_id=?";
         this.jdbcTemplate.update(sql, new Object[]{id});
         sql = "select * from t_question where t_id=?";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        //处理阅读状态
+        if (userid != null && Integer.parseInt(String.valueOf(list.get(0).get("t_user_id"))) == userid) {
+            sql = "update t_question set t_read=1 where t_id=?";
+            this.jdbcTemplate.update(sql, new Object[]{id});
+        }
         return list.get(0);
     }
 
@@ -336,8 +344,8 @@ public class HomeCtrl {
     @RequestMapping("/queryuser/{id}")
     @ResponseBody
     public Map<String, Object> queryuser(@PathVariable("id") int id) {
-        String sql = "select * from t_user where t_id=?";
-        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        String sql = "select *,(select count(*) from t_question where t_read=0 and t_user_id=?) as unread from t_user where t_id=?";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id, id});
         return list.get(0);
     }
 
