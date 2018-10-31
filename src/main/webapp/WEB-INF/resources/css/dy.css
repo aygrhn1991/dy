@@ -278,7 +278,7 @@ input:focus {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    line-height: 16px;
+    line-height: 20px;
 }
 
 .question-tags-b span {
