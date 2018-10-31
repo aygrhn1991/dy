@@ -14,15 +14,20 @@
     </div>
     <div class="common-wrapper">
         <div class="common-content">
-            <div class="question-nav-h">
+            <div class="common-nav-h">
                 <img src="/dy/static/img/9.png">
+                <div class="common-search">
+                    <img src="/dy/static/img/3.png" ng-click="querykeyword()">
+                    <input type="text" placeholder="点击此处搜索..." ng-model="keyword" ng-model-options="{debounce : 500}"
+                           ng-change="querykeyword()">
+                </div>
             </div>
             <div class="question-items-b">
                 <a href="/dy/home/question?id={{d.t_id}}" class="question-item-b" ng-repeat="d in questions">
                     <div class="question-title-b" ng-bind="d.t_title"></div>
                 </a>
             </div>
-            <div class="article-more" ng-bind="global_text" ng-click="querymore()"></div>
+            <div class="common-list-more" ng-bind="global_text" ng-click="querymore()"></div>
         </div>
     </div>
 </div>

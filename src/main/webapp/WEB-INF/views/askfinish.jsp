@@ -6,7 +6,7 @@
     </a>
     <div class="common-wrapper">
         <div class="common-content">
-            <div class="question-nav-h">
+            <div class="common-nav-h">
                 <img src="/dy/static/img/13.png">
             </div>
             <div class="question-items-b">

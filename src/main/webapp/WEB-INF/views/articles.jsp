@@ -18,7 +18,7 @@
                     <div class="article-title" ng-bind="d.t_title"></div>
                 </a>
             </div>
-            <div class="article-more" ng-bind="global_text" ng-click="querymore()"></div>
+            <div class="common-list-more" ng-bind="global_text" ng-click="querymore()"></div>
         </div>
     </div>
 </div>

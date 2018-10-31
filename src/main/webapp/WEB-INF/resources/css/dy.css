@@ -112,7 +112,7 @@ input:focus {
     max-width: 100%;
 }
 
-.common-more {
+.common-nav-more {
     float: right;
     color: black !important;
     font-size: 16px;
@@ -170,12 +170,12 @@ input:focus {
     top: -1px;
 }
 
-.article-nav-h {
+.common-nav-h {
     padding: 5px 0;
     display: block;
 }
 
-.article-nav-h img {
+.common-nav-h img {
     height: 30px;
 }
 
@@ -208,7 +208,7 @@ input:focus {
     background: rgba(0, 0, 0, 0.2);
 }
 
-.article-more {
+.common-list-more {
     text-align: center;
     padding: 10px;
     color: #bbb;
@@ -238,15 +238,6 @@ input:focus {
 
 .user-myquestion img {
     height: 20px;
-}
-
-.question-nav-h {
-    padding: 5px 0;
-    display: block;
-}
-
-.question-nav-h img {
-    height: 30px;
 }
 
 .question-items-b {
