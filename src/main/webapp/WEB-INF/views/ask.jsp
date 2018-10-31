@@ -16,7 +16,7 @@
         <div class="common-content">
             <div class="common-nav-h">
                 <img src="/dy/static/img/9.png">
-                <div class="common-search">
+                <div class="common-nav-search">
                     <img src="/dy/static/img/3.png" ng-click="querykeyword()">
                     <input type="text" placeholder="点击此处搜索..." ng-model="keyword" ng-model-options="{debounce : 500}"
                            ng-change="querykeyword()">

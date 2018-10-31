@@ -123,6 +123,7 @@ app.controller('askCtrl', function ($scope, $http) {
         $scope.questions = [];
         $scope.pageIndex = 1;
         $scope.pageSize = 10;
+        $scope.keyword = '';
         $scope.global_count = 0;
         $scope.global_text = '点击加载更多';
         $scope.userid = window.getCookieParam('userid');

@@ -329,6 +329,26 @@ input:focus {
     font-size: 16px;
 }
 
+.common-nav-search {
+    display: inline-block;
+    position: relative;
+    float: right;
+    background: white;
+}
+
+.common-nav-search img {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 6px;
+    left: 6px;
+}
+
+.common-nav-search input {
+    text-indent: 2em;
+    font-size: 16px;
+}
+
 .common-tabs {
     border-bottom: 1px solid #f9f8f8;
     padding: 10px;
