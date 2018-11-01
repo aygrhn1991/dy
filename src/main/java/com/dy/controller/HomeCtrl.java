@@ -233,14 +233,26 @@ public class HomeCtrl {
         return result;
     }
 
-    @RequestMapping("/queryarticle/{id}")
+    @RequestMapping(value = {"/queryarticle/{id}/{userid}", "/queryarticle/{id}"})
     @ResponseBody
-    public Map<String, Object> queryarticle(@PathVariable("id") int id) {
-        //处理浏览量
-        String sql = "update t_article set t_scan=t_scan+1,t_scan_origin=t_scan_origin+1 where t_id=?";
-        this.jdbcTemplate.update(sql, new Object[]{id});
-        sql = "select * from t_article where t_id=?";
+    public Map<String, Object> queryarticle(@PathVariable("id") int id,
+                                            @PathVariable(value = "userid", required = false) Integer userid) {
+        String sql = "select * from t_article where t_id=?";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
+        //处理浏览量
+        if (userid != null) {
+            Object visitorsObj = list.get(0).get("t_visitors");
+            String useridStr = "-" + userid + "-";
+            if (visitorsObj == null) {
+                sql = "update t_article set t_scan=t_scan+1, t_scan_origin=t_scan_origin+1, t_visitors='" + useridStr + "' where t_id=?";
+                this.jdbcTemplate.update(sql, new Object[]{id});
+            } else if (visitorsObj != null && !String.valueOf(visitorsObj).contains(useridStr)) {
+                String visitorsStr = String.valueOf(visitorsObj) + useridStr;
+                sql = "update t_article set t_scan=t_scan+1, t_scan_origin=t_scan_origin+1, t_visitors='" + visitorsStr + "' where t_id=?";
+                this.jdbcTemplate.update(sql, new Object[]{id});
+            } else {
+            }
+        }
         return list.get(0);
     }
 
@@ -276,11 +288,12 @@ public class HomeCtrl {
                 this.jdbcTemplate.update(sql, new Object[]{m.get("t_id")});
             }
         }
+        //补充查询
         for (Map<String, Object> m : list) {
             sql = "select t_tag.t_tag_name from t_question_tag left join t_tag on t_tag.t_id=t_question_tag.t_tag_id left join t_question on t_question.t_id=t_question_tag.t_question_id where t_question_tag.t_question_id=?";
             m.put("tags", this.jdbcTemplate.queryForList(sql, new Object[]{m.get("t_id")}));
             sql = "select t_answer.t_content from t_answer where t_answer.t_question_id=? limit 1";
-            m.put("content", this.jdbcTemplate.queryForObject(sql, String.class,new Object[]{m.get("t_id")}));
+            m.put("content", this.jdbcTemplate.queryForObject(sql, String.class, new Object[]{m.get("t_id")}));
         }
         return list;
     }
@@ -324,15 +337,26 @@ public class HomeCtrl {
     @ResponseBody
     public Map<String, Object> queryquestion(@PathVariable("id") int id,
                                              @PathVariable(value = "userid", required = false) Integer userid) {
-        //处理浏览量
-        String sql = "update t_question set t_scan=t_scan+1,t_scan_origin=t_scan_origin+1 where t_id=?";
-        this.jdbcTemplate.update(sql, new Object[]{id});
-        sql = "select * from t_question where t_id=?";
+        String sql = "select * from t_question where t_id=?";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql, new Object[]{id});
         //处理阅读状态
         if (userid != null && Integer.parseInt(String.valueOf(list.get(0).get("t_user_id"))) == userid) {
             sql = "update t_question set t_read=1 where t_id=?";
             this.jdbcTemplate.update(sql, new Object[]{id});
+        }
+        //处理浏览量
+        if (userid != null) {
+            Object visitorsObj = list.get(0).get("t_visitors");
+            String useridStr = "-" + userid + "-";
+            if (visitorsObj == null) {
+                sql = "update t_question set t_scan=t_scan+1, t_scan_origin=t_scan_origin+1, t_visitors='" + useridStr + "' where t_id=?";
+                this.jdbcTemplate.update(sql, new Object[]{id});
+            } else if (visitorsObj != null && !String.valueOf(visitorsObj).contains(useridStr)) {
+                String visitorsStr = String.valueOf(visitorsObj) + useridStr;
+                sql = "update t_question set t_scan=t_scan+1, t_scan_origin=t_scan_origin+1, t_visitors='" + visitorsStr + "' where t_id=?";
+                this.jdbcTemplate.update(sql, new Object[]{id});
+            } else {
+            }
         }
         return list.get(0);
     }

@@ -38,6 +38,11 @@ public class OAuthCtrlTest {
         sql += " order by t_top desc,t_sort desc,t_scan desc,t_id desc ";
         sql += " limit " + (pageIndex - 1) * pageSize + "," + pageSize;
         list = this.jdbcTemplate.queryForList(sql);
+
+        Object o=list.get(0).get("t_visitors");
+        boolean b=o==null;
+        String visitors=String.valueOf(list.get(0).get("t_visitors"));
+        boolean r=visitors.contains("-14-");
         //处理搜索次数
         if (keyword != null && !keyword.equals("")) {
             for (Map<String, Object> m : list) {

@@ -70,7 +70,7 @@ app.controller('indexCtrl', function ($scope, $http) {
     };
     $scope.addscan = function (e) {
         if (e.t_mode === 0) {
-            $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
+            $http.post('/dy/home/queryarticle/' + e.t_id + '/' + $scope.userid, null).success(function (d) {
             });
             window.location.href = e.t_url;
         } else {
@@ -165,7 +165,7 @@ app.controller('askfinishCtrl', function ($scope, $http) {
     };
     $scope.addscan = function (e) {
         if (e.t_mode === 0) {
-            $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
+            $http.post('/dy/home/queryarticle/' + e.t_id + '/' + $scope.userid, null).success(function (d) {
             });
             window.location.href = e.t_url;
         } else {
@@ -174,6 +174,7 @@ app.controller('askfinishCtrl', function ($scope, $http) {
     };
     $scope.init = function () {
         $scope.fileServer = window.fileServer;
+        $scope.userid = window.getCookieParam('userid');
         $scope.t_title = window.getUrlParam('t_title');
         $scope.queryquestionsbytag();
         $scope.queryarticlesbytag();
@@ -182,13 +183,14 @@ app.controller('askfinishCtrl', function ($scope, $http) {
 });
 app.controller('articleCtrl', function ($scope, $http, $sce) {
     $scope.queryarticle = function () {
-        $http.post('/dy/home/queryarticle/' + $scope.id, null).success(function (d) {
+        $http.post('/dy/home/queryarticle/' + $scope.id + '/' + $scope.userid, null).success(function (d) {
             $scope.article = d;
             $scope.article.t_content = $sce.trustAsHtml(d.t_content);
         });
     };
     $scope.init = function () {
         $scope.id = window.getUrlParam('id');
+        $scope.userid = window.getCookieParam('userid');
         $scope.queryarticle();
     };
     $scope.init();
@@ -237,7 +239,7 @@ app.controller('articlesCtrl', function ($scope, $http) {
     };
     $scope.addscan = function (e) {
         if (e.t_mode === 0) {
-            $http.post('/dy/home/queryarticle/' + e.t_id, null).success(function (d) {
+            $http.post('/dy/home/queryarticle/' + e.t_id + '/' + $scope.userid, null).success(function (d) {
             });
             window.location.href = e.t_url;
         } else {
@@ -251,6 +253,7 @@ app.controller('articlesCtrl', function ($scope, $http) {
         $scope.orderby = 1;//1.最新 2.热门
         $scope.keyword = '';
         $scope.fileServer = window.fileServer;
+        $scope.userid = window.getCookieParam('userid');
         $scope.id = window.getUrlParam('id');
         $scope.queryarticles();
     };
